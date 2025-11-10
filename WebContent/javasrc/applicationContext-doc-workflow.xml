@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	ApplicationContext 定義ファイル		ワークフロー(ドキュメント用)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/jee
+			http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<!-- ワークフロー定義(ドキュメント用)サービス -->
+	<bean id="workFlowDefDocService" class="jp.co.ctc_g.eim.app.document.business.service.impl.WorkFlowDefDocServiceImpl">
+		<property name="workFlowDefDao">
+			<ref bean="workFlowDefDao"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDao"/>
+		</property>
+		<property name="statusTypeDaoLight">
+			<ref bean="statusTypeDaoLight"/>
+		</property>
+		<property name="assignEntryDao">
+			<ref bean="assignEntryDao"/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDao"/>
+		</property>
+		<property name="workflowService2">
+			<ref bean="workflowService2"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoWithoutAttribute"/>
+		</property>
+	</bean>
+
+	<!-- Dao実装 -->
+	<!-- ======================================================================================== -->
+	<bean id="eventExecDocDao" class="jp.co.ctc_g.eim.app.document.integration.dao.impl.EventExecDocDaoImpl" >
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoWithoutAttributeForFw"/>
+		</property>
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithCreationUser"/>
+		</property>
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoForFwWithEntryElement"/>
+		</property>
+		<property name="assignmentPlanDao2">
+			<ref bean="assignmentPlanDaoForFwWithEntryElementAndList"/>
+		</property>
+	</bean>
+
+	<!-- ステータスタイプ種別  -->
+	<bean id="STKindEditingPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.STKindEditingPlugInImpl">
+		<property name="eventHistoryService">
+			<ref bean="eventHistoryServiceWithType"/>
+		</property>
+	</bean>
+	<bean id="STKindRequestingApprovalPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.STKindRequestingApprovalPlugInImpl">
+	</bean>
+	<bean id="STKindPublicProcessingPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.STKindPublicProcessingPlugInImpl">
+	</bean>
+	<bean id="STKindPublicPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.STKindPublicPlugInImpl">
+	</bean>
+
+	<!-- ベースイベントタイプ  -->
+	<bean id="BaseEvtApprovalRequestPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtApprovalRequestPlugInImpl">
+		<property name="assignPlanDao">
+			<ref bean="assignPlanDao"/>
+		</property>
+	</bean>
+	<bean id="BaseEvtApprovalPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtApprovalPlugInImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignPlanDao">
+			<ref bean="assignPlanDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+	</bean>
+	<bean id="BaseEvtPublicPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtPublicPlugInImpl">
+	</bean>
+	<bean id="BaseEvtCancelApprovalRequestPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtCancelApprovalRequestPlugInImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDao"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+	</bean>
+	<bean id="BaseEvtTakeBackRequestPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtTakeBackRequestPlugInImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+	</bean>
+	<bean id="BaseEvtSendBackPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtSendBackPlugInImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+	</bean>
+	<bean id="BaseEvtPublicCancelPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.BaseEvtPublicCancelPlugInImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+	</bean>
+	
+	
+	<!-- ガード条件 -->
+	<bean id="GuardCndAlwaysTruePlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndAlwaysTruePlugInImpl">
+	</bean>
+	<bean id="GuardCndNotLastApproverPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndNotLastApproverPlugInImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+	</bean>
+	<bean id="GuardCndPDFConversionPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndPDFConversionPlugInImpl">
+	</bean>
+	<bean id="GuardCndNonPDFConversionPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndNonPDFConversionPlugInImpl">
+	</bean>
+	<bean id="GuardCndCurrentApprovalClientPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndCurrentApprovalClientPlugInImpl">
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+	</bean>
+	<bean id="GuardCndCurrentApprovalRequestPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.GuardCndCurrentApprovalRequestPlugInImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDao"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+	</bean>
+
+</beans>

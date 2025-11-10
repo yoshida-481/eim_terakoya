@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UpdateNoticeConfig>
+	<dataTypeList>
+		<!-- ドキュメント管理 検索インデックス収集データ -->
+		<dataType name="DOCUMENT"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+		<dataType name="FOLDER"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+		<dataType name="TAG"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+		<dataType name="FILE"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+		<dataType name="ATTACHMENT"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+
+		<!-- ドキュメント管理 検索インデックス収集データ (V6140では未使用) -->
+		<dataType name="WORKSPACE"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "false"/>
+		<dataType name="-"  systemKind="DOCUMENT"  dataKind="TRANSACTION_OBJECT" validFlag = "false"/>
+
+		<!-- ドキュメント管理 参照先データ -->
+		<dataType name="FOLDER_MASTER_ALL"  systemKind="DOCUMENT"  dataKind="MASTER_OBJECT" validFlag = "true"/>
+		<dataType name="WORKSPACE_MASTER_ALL"  systemKind="DOCUMENT"  dataKind="MASTER_OBJECT" validFlag = "true"/>
+		<dataType name="FOLDER_MASTER_LATEST"  systemKind="DOCUMENT"  dataKind="MASTER_OBJECT" validFlag = "true"/>
+		<dataType name="WORKSPACE_MASTER_LATEST"  systemKind="DOCUMENT"  dataKind="MASTER_OBJECT" validFlag = "true"/>
+
+		<!-- システム管理 参照先データ -->
+		<dataType name="SECURITY"  systemKind="SYSTEM"  dataKind="SECURITY" validFlag = "true"/>
+		<dataType name="USER"  systemKind="SYSTEM"  dataKind="USER" validFlag = "true"/>
+		<dataType name="OBJECTTYPE"  systemKind="SYSTEM"  dataKind="OBJECTTYPE" validFlag = "true"/>
+		<dataType name="STATUSTYPE"  systemKind="SYSTEM"  dataKind="STATUSTYPE" validFlag = "true"/>
+		<dataType name="CODE"  systemKind="SYSTEM"  dataKind="CODE" validFlag = "true"/>
+
+		<!-- システム管理 参照先データ (V6140では未使用) -->
+		<dataType name="GROUP"  systemKind="SYSTEM"  dataKind="GROUP" validFlag = "false"/>
+		<dataType name="ROLE"  systemKind="SYSTEM"  dataKind="ROLE" validFlag = "false"/>
+		<dataType name="WORKFLOW"  systemKind="SYSTEM"  dataKind="WORKFLOW" validFlag = "false"/>
+
+		<!-- 帳票管理 検索インデックス収集データ -->
+		<dataType name="FORM"  systemKind="FORM"  dataKind="TRANSACTION_OBJECT" validFlag = "true"/>
+		
+	</dataTypeList>
+</UpdateNoticeConfig>

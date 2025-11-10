@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- framework2.integration.dao.util配下のクラスのBean定義 -->
+	<!-- ======================================================================================== -->
+
+	<!-- キャッシュ -->
+	<bean class="jp.co.ctc_g.eim.framework2.integration.dao.util.CacheUtils" depends-on="objectTypeDaoLightForCacheService">
+		<property name="attributeTypeCacheDao" ref="attributeTypeCacheDao" />
+		<property name="formatCacheDao" ref="formatCacheDao" />
+		<property name="directoryCacheDao" ref="directoryCacheDao" />
+		<property name="groupCacheDao" ref="groupCacheDao" />
+		<property name="userCacheDao" ref="userCacheDao" />
+		<property name="objectTypeCacheDao" ref="objectTypeCacheDao" />
+		<property name="objectCacheDao" ref="objectCacheDao" />
+		<property name="fileCacheDao" ref="fileCacheDao" />
+		<property name="objectTypeDao" ref="objectTypeDaoLightForCacheService" />
+	</bean>
+
+	<!-- 他言語 -->
+	<bean id="otherNameUtils2" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.internal.OtherNameUtils">
+		<property name="objectTypeCacheDao" ref="objectTypeCacheDao" />
+		<property name="attributeTypeCacheDao" ref="attributeTypeCacheDao" />
+		<property name="formatCacheDao" ref="formatCacheDao" />
+		<property name="groupCacheDao" ref="groupCacheDao" />
+		<property name="userCacheDao" ref="userCacheDao" />
+	</bean>
+
+	<!-- 属性Util -->
+	<bean class="jp.co.ctc_g.eim.framework2.integration.dao.impl.internal.AttributeUtils">
+		<property name="objectCacheDao" ref="objectCacheDao" />
+	</bean>
+
+</beans>

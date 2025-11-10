@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/jee
+			http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<!-- ワークフローコンフィグサービス -->
+	<bean id="workFlowConfService" class="jp.co.ctc_g.eim.framework.business.service.impl.WorkFlowConfServiceImpl">
+		<property name="adminAuthCheckPlugIn">
+			<ref bean="arbitraryAuthCheckPlugIn"/>
+		</property>
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDao"/>
+		</property>
+		<property name="guardConditionDao">
+			<ref bean="guardConditionDao"/>
+		</property>
+		<property name="statusTypeKindDao">
+			<ref bean="statusTypeKindDao"/>
+		</property>
+		<property name="sysFuncDao">
+			<ref bean="sysFuncDao"/>
+		</property>
+	</bean>
+
+	<!-- メール種別サービス -->
+	<bean id="mailTypeService" class="jp.co.ctc_g.eim.framework.business.service.impl.MailTypeServiceImpl">
+		<property name="adminAuthCheckPlugIn">
+			<ref bean="arbitraryAuthCheckPlugIn"/>
+		</property>
+		<property name="mailTypeDao">
+			<ref bean="mailTypeDao"/>
+		</property>
+	</bean>
+
+	<!-- ワークフロー定義サービス -->
+	<bean id="workFlowDefService" class="jp.co.ctc_g.eim.framework.business.service.impl.WorkFlowDefServiceImpl">
+		<property name="workFlowDefDao">
+			<ref bean="workFlowDefDao"/>
+		</property>
+	</bean>
+
+	<!-- タスクサービス -->
+	<bean id="taskService" class="jp.co.ctc_g.eim.framework.business.service.impl.TaskServiceImpl">
+		<property name="taskDao">
+			<ref bean="taskDao"/>
+		</property>
+	</bean>
+
+	<!-- ステータスサービス -->
+	<bean id="statusService" class="jp.co.ctc_g.eim.framework.business.service.impl.StatusServiceImpl">
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+		<property name="assignEntryDao">
+			<ref bean="assignEntryDao"/>
+		</property>
+	</bean>
+
+	<!-- イベント実行サービス -->
+	<bean id="eventExecService" class="jp.co.ctc_g.eim.framework.business.service.impl.EventExecServiceImpl">
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDao"/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDao"/>
+		</property>
+		<property name="eventExecDao">
+			<ref bean="eventExecDocDao"/>
+		</property>
+		<property name="assignPlanDao">
+			<ref bean="assignPlanDao"/>
+		</property>
+		<property name="mailService">
+			<ref bean="SERVICE.BUNDLE"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス ドキュメント管理拡張 -->
+	<bean id="workflowHistoryService" class="jp.co.ctc_g.eim.app.document.business.service.impl.WorkFlowHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithCommentsAndTypeLists"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス -->
+	<bean id="eventHistoryService" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDao"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス without Attribuet -->
+	<bean id="eventHistoryServiceWithoutAttribute" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithoutAttribute"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス with Type -->
+	<bean id="eventHistoryServiceWithType" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithType"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス with FromStatus -->
+	<bean id="eventHistoryServiceWithFromStatus" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithFromStatus"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス with Comment -->
+	<bean id="eventHistoryServiceWithComment" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithComment"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴サービス with Type and FromStatus and Comment -->
+	<bean id="eventHistoryServiceWithTypeAndFromStatusAndComment" class="jp.co.ctc_g.eim.framework.business.service.impl.EventHistoryServiceImpl">
+		<property name="eventHistoryDao">
+			<ref bean="eventHistoryDaoWithTypeAndFromStatusAndComment"/>
+		</property>
+	</bean>
+
+	<!-- アサイン先予定サービス -->
+	<bean id="assignPlanService" class="jp.co.ctc_g.eim.framework.business.service.impl.AssignPlanServiceImpl">
+		<property name="assignPlanDao">
+			<ref bean="assignPlanDao"/>
+		</property>
+	</bean>
+
+	<!-- Dao実装 -->
+	<!-- ======================================================================================== -->
+	<bean id="baseEventTypeDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.BaseEventTypeDaoImpl">
+	</bean>
+	<bean id="guardConditionDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.GuardConditionDaoImpl">
+	</bean>
+	<bean id="statusTypeKindDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.StatusTypeKindDaoImpl">
+	</bean>
+	<bean id="userDefGroupDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.UserDefGroupDaoImpl">
+	</bean>
+	<bean id="sysFuncDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.SysFuncDaoImpl">
+	</bean>
+	<bean id="mailTypeDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.xml.MailTypeDaoImpl">
+	</bean>
+	<bean id="taskDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.TaskDaoImpl">
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoForFw"/>
+		</property>
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+	</bean>
+	<bean id="statusDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.StatusDaoImpl">
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+		<property name="statusDao2NoAttributes">
+			<ref bean="statusDaoForFwNoAttributes"/>
+		</property>
+		<property name="statusDao2Hierarchical">
+			<ref bean="statusDaoForFwHierarchical"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoForFw"/>
+		</property>
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoLightForFw"/>
+		</property>
+	</bean>
+	<bean id="workFlowDefDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.WorkFlowDefDaoImpl">
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDao"/>
+			</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDao"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+		<property name="workflowDaoLight2">
+			<ref bean="workflowDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO -->
+	<bean id="eventHistoryDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.EventHistoryDaoImpl">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithoutAttribute"/>
+		</property>
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoForFwWithoutEventAttribute"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO ドキュメント管理用抽象Bean -->
+	<bean id="eventHistoryDaoForDoc" abstract="true" class="jp.co.ctc_g.eim.framework.integration.dao.impl.EventHistoryDaoImpl">
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoForFwWithEntryElement"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoLightForFw"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoForFwWithStatus"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO without Attribuet -->
+	<bean id="eventHistoryDaoWithoutAttribute" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithoutAttribute"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO with Type and FromStatus -->
+	<bean id="eventHistoryDaoWithTypeAndFromStatus" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithTypeAndFromStatus"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO with Type -->
+	<bean id="eventHistoryDaoWithType" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithType"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO with FromStatus -->
+	<bean id="eventHistoryDaoWithFromStatus" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithFromStatus"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO without Attribuet with TypeLists -->
+	<bean id="eventHistoryDaoWithCommentsAndTypeLists" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithCommentsAndItems"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoForFwWithLightTypeLists"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO with Comment -->
+	<bean id="eventHistoryDaoWithComment" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithComment"/>
+		</property>
+	</bean>
+
+	<!-- イベント履歴DAO with Type and FromStatus and Comment -->
+	<bean id="eventHistoryDaoWithTypeAndFromStatusAndComment" parent="eventHistoryDaoForDoc">
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithTypeAndFromStatusAndComment"/>
+		</property>
+	</bean>
+
+	<!-- ステータスタイプDao -->
+	<bean id="statusTypeDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.StatusTypeDaoImpl">
+		<property name="statusTypeDao2">
+			<ref bean="statusTypeDaoForFw"/>
+		</property>
+		<property name="eventTypeDao2">
+			<ref bean="eventTypeDaoForFw"/>
+		</property>
+		<property name="assignmentPlanDao2">
+			<ref bean="assignmentPlanDaoForFwNoItems"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- ステータスタイプDao Light -->
+	<bean id="statusTypeDaoLight" parent="statusTypeDao">
+		<property name="statusTypeDao2">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<bean id="assignEntryDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.AssignEntryDaoImpl">
+		<property name="assignmentEntryDao2">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="memberEntryDao">
+			<ref bean="memberEntryDao2WithUserListRecursive"/>
+		</property>
+	</bean>
+	<bean id="eventTypeDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.EventTypeDaoImpl">
+		<property name="eventTypeDao2">
+			<ref bean="eventTypeDaoForFw"/>
+		</property>
+		<property name="eventTypeDao2ForMail">
+			<ref bean="eventTypeDaoForFwForMail"/>
+		</property>
+		<property name="workflowDao2">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- イベント実行Dao -->
+	<bean id="eventExecDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.EventExecDaoImpl" >
+		<property name="statusDao">
+			<ref bean="statusDao"/>
+		</property>
+		<property name="assignDao">
+			<ref bean="assignDao"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoWithoutAttributeForFw"/>
+		</property>
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+		<property name="eventDao2">
+			<ref bean="eventDaoForFwWithCreationUser"/>
+		</property>
+		<property name="assignmentDao2">
+			<ref bean="assignmentDaoForFwWithEntryElement"/>
+		</property>
+		<property name="assignmentPlanDao2">
+			<ref bean="assignmentPlanDaoForFwWithEntryElementAndList"/>
+		</property>
+	</bean>
+
+	<!-- アサイン予定Dao -->
+	<bean id="assignPlanDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.AssignPlanDaoImpl" >
+		<property name="assignmentPlanDao2">
+			<ref bean="assignmentPlanDaoForFw"/>
+		</property>
+		<property name="assignmentPlanDao2NoItems">
+			<ref bean="assignmentPlanDaoForFwNoItems"/>
+		</property>
+		<property name="assignmentPlanDao2WithEntryList">
+			<ref bean="assignmentPlanDaoForFwWithEntryList"/>
+		</property>
+		<property name="assignmentPlanDao2WithObjectAndStatusTypeItems">
+			<ref bean="assignmentPlanDaoForFwWithObjectAndStatusTypeItems"/>
+		</property>
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+		<property name="assignEntryDao">
+			<ref bean="assignEntryDao"/>
+		</property>
+	</bean>
+
+	<!-- アサインDao -->
+	<bean id="assignDao" class="jp.co.ctc_g.eim.framework.integration.dao.impl.AssignDaoImpl" >
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoForFwWithoutEventAndObjectAttribute"/>
+		</property>
+		<property name="statusDao2">
+			<ref bean="statusDaoForFw"/>
+		</property>
+		<property name="objectDao2">
+			<ref bean="objectDaoForFwEmptyAttributeTypeList"/>
+		</property>
+	</bean>
+
+	<!-- PlugIn実装 -->
+	<!-- ======================================================================================== -->
+	<bean id="adminAuthCheckPlugIn" class="jp.co.ctc_g.eim.framework.business.service.impl.GeneralAdminAuthCheckPlugInImpl">
+	</bean>
+	<bean id="arbitraryAuthCheckPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.ArbitraryAdminAuthCheckPlugInImp">
+	<property name="authList">
+		<set>
+			<value>general</value>
+			<value>workflow</value>
+			<value>form</value>
+			<value>task</value>
+		</set>
+	</property>
+	</bean>
+	<bean id="baseEventTypePlugIn" class="jp.co.ctc_g.eim.framework.business.service.impl.BaseEventTypePlugInImpl">
+	</bean>
+	<bean id="guardConditionPlugIn" class="jp.co.ctc_g.eim.framework.business.service.impl.GuardConditionPlugInImpl">
+	</bean>
+	<bean id="statusTypeKindPlugIn" class="jp.co.ctc_g.eim.framework.business.service.impl.StatusTypeKindPlugInImpl">
+	</bean>
+
+</beans>

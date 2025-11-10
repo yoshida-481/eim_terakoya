@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes attrTreeId="[id_1]" attrTreeValue1="2" attrTreeValue2="1025449200000" attrTreeValue3="[id_F21]" objId="[id_F21]">
+<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F211" objId="[id_F211]" objTypeId="[tid_F211]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F212" objId="[id_F212]" objTypeId="[tid_F212]" objTypeName="フォルダ"/>
+</nodes>

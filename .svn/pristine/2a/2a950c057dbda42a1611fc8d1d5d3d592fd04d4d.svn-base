@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entries>
+  <!-- Windowsで作成されたZipファイル内のファイルパスを抽出する際に有効 -->
+  <entry class="org.apache.commons.compress.archivers.ArchiveStreamFactory" impl="org.apache.commons.compress.archivers.ArchiveStreamFactory">
+  <property name="entryEncoding" value="MS932"/>
+  </entry>
+</entries>

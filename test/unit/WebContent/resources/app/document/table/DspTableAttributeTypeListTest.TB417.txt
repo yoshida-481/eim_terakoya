@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attTypeList tableId="417">
+<attType attTypeDefName="差戻しユーザ" attTypeId="37" attTypeName="差戻しユーザ" attValTypeId="1">
+</attType>
+<attType attTypeDefName="承認依頼日" attTypeId="30" attTypeName="承認依頼日" attValTypeId="3">
+</attType>
+<attType attTypeDefName="承認依頼者" attTypeId="29" attTypeName="承認依頼者" attValTypeId="1">
+</attType>
+<attType attTypeDefName="承認日" attTypeId="32" attTypeName="承認日" attValTypeId="3">
+</attType>
+</attTypeList>

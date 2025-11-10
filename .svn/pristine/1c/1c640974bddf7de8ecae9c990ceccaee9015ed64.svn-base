@@ -1,0 +1,16 @@
+# ATOMIKOS JTA Properties
+
+# Specifies the maximum timeout (in milliseconds) that can be allowed for transactions. Defaults to 300000.
+# This means that calls to UserTransaction.setTransactionTimeout() with a value higher than configured here will be max'ed to this value.
+# For 4.x or higher, a value of 0 means no maximum (i.e., unlimited timeouts are allowed).
+# NOTE: as of 5.0, using 0 interferes with recovery. Instead, use Long.MAX_VALUE to specify unlimited.
+com.atomikos.icatch.max_timeout=0
+
+# The default timeout for JTA transactions (optional, defaults to 10000 ms)
+com.atomikos.icatch.default_jta_timeout=900000
+
+# Specifies the directory in which the log files should be stored. Defaults to the current working directory.
+# This directory should be a stable storage like a SAN, RAID or at least backed up location.
+# The transactions logs files are as important as the data themselves to guarantee consistency in case of failures.
+# e.g. java -Dcom.atomikos.icatch.log_base_dir=./BatchName0 ...
+# com.atomikos.icatch.log_base_dir=${com.atomikos.icatch.log_base_dir}

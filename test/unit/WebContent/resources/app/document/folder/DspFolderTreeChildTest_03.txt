@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes objId="[id_A-proj-X]">
+<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F1" objId="[id_F1]" objTypeId="[tid_F1]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F2" objId="[id_F2]" objTypeId="[tid_F2]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F3" objId="[id_F3]" objTypeId="[tid_F3]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F4" objId="[id_F4]" objTypeId="[tid_F4]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F5" objId="[id_F5]" objTypeId="[tid_F5]" objTypeName="フォルダ"/>
+<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F6" objId="[id_F6]" objTypeId="[tid_F6]" objTypeName="フォルダ"/>
+</nodes>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eim framework" default="all" basedir=".">
+	<!-- load user settings -->
+	<property file="build.properties" />
+
+	<!-- define path and filename -->
+	<property name="test.dir" value="." />
+	<property name="test.src.dir" value="${test.dir}/src" />
+	<property name="test.lib.dir" value="${test.dir}/lib" />
+	<property name="test.resources.dir" value="${test.dir}/resources" />
+	<property name="build.dir" value="${test.dir}/antBuild" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="report.dir" value="${build.dir}/report" />
+
+	<property name="main.dir" value="../../../WebContent" />
+	<property name="main.src.dir" value="${main.dir}/javasrc" />
+	<property name="main.lib.dir" value="${main.dir}/WEB-INF/lib" />
+
+	<property name="framework.dir" value="../../../../framework" />
+	<property name="framework.lib.dir" value="${framework.dir}/server/lib" />
+	<property name="framework.test.dir" value="${framework.dir}/test/unit/server" />
+	<property name="framework.test.src.dir" value="${framework.test.dir}/src" />
+	<property name="framework.test.resources.dir" value="${framework.test.dir}/resources" />
+	<property name="framework.test.lib.dir" value="${framework.test.dir}/lib" />
+
+	<!-- define javac options -->
+	<property name="javac.debug" value="true" />
+	<property name="javac.deprecation" value="true" />
+	<property name="javac.encoding" value="utf-8" />
+	<path id="javac.classpath">
+		<fileset dir="${main.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${framework.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${framework.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="junit.exec.classpath">
+		<pathelement location="${classes.dir}" />
+		<pathelement location="${main.src.dir}" />
+		<!-- for properties -->
+		<pathelement location="${test.resources.dir}" />
+		<pathelement location="${framework.test.resources.dir}" />
+	</path>
+
+	<target name="all" description="JUnit test:Compile main and test case ,and exec test" depends="compile,unit-test" />
+
+	<target name="clean" description="Clean dir:${build.dir} directory">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="prepare" description="For prepare build, mkdirs">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${report.dir}" />
+	</target>
+
+	<target name="compile" description="Compile java sources" depends="clean,prepare">
+		<javac srcdir="${framework.test.src.dir}" destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" encoding="${javac.encoding}">
+			<include name="eimtest/**/*" />
+			<classpath refid="javac.classpath" />
+		</javac>
+		<javac srcdir="${main.src.dir}:${test.src.dir}" destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" encoding="${javac.encoding}">
+			<exclude name="eim/**/*" />
+			<classpath refid="javac.classpath" />
+		</javac>
+	</target>
+
+	<target name="unit-test">
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath refid="junit.exec.classpath" />
+			<classpath refid="javac.classpath" />
+			<formatter type="plain" />
+			<batchtest fork="yes" todir="${report.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>

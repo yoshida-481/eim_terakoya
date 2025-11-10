@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/mvc
+        	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<bean id="AdminFileTransferController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.AdminFileTransferController" >
+		<property name="resultView" value="/servlet/XmlUploadResultServlet"/>
+		<property name="maxFileSize" value="105678400"/>
+	</bean>
+
+	<bean id="CodeTypeController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.CodeTypeController">
+		<property name="codeTypeService" ref="codeTypeService2"/>
+	</bean>
+
+	<bean id="CodeController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.CodeController">
+		<property name="codeService" ref="codeService2"/>
+	</bean>
+
+	<bean id="FormWorkspaceController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.FormWorkspaceController">
+		<property name="formWorkspaceService" ref="adminFormWorkspaceService"/>
+		<property name="formWorkspaceService2" ref="adminFormWorkspaceService2"/>
+		<property name="documentFormService" ref="htmlDocumentFormService"/>
+		<!-- <property name="formWorkspaceServiceForWriteAuthority" ref="formWorkspaceServiceForWriteAuthority"/> -->
+		<property name="languageService" ref="languageService2"/>
+		<property name="formTypeService" ref="adminFormTypeService"></property>
+		<property name="formTypeFolderService" ref="adminFormTypeFolderService"></property>
+		<property name="objectTypeService2" ref="objectTypeService2"></property>
+	</bean>
+
+	<bean id="AdminUserController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.AdminUserController" >
+		<property name="adminUserService" ref="adminUserService"/>
+	</bean>
+
+	<!-- ワークフロー定義コントローラ(共用) -->
+	<bean id="WorkFlowDefController" class="jp.co.ctc_g.eim.common.presentation.web.controller.WorkFlowDefController" >
+	</bean>
+
+	<!-- ワークフロー定義コントローラ(システム管理用) -->
+	<bean id="WorkFlowDefAdminController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.WorkFlowDefAdminController">
+	</bean>
+	<!-- ワークフロー定義コントローラ(ドキュメント管理用) -->
+	<bean id="WorkFlowDefDocController" class="jp.co.ctc_g.eim.app.document.presentation.controller.WorkFlowDefDocController">
+	</bean>
+
+	<!-- キャッシュモニタービューコントローラ -->
+	<bean id="CacheMonitorViewController" class="jp.co.ctc_g.eim.admin.presentation.web.controller.CacheMonitorViewController">
+		<property name="cacheMonitorViewService" ref="cacheMonitorViewService"/>
+	</bean>
+
+</beans>

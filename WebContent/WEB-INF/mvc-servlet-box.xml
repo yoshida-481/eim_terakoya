@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/mvc
+        	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- Box連携用Bean定義                                                                        -->
+	<!-- ======================================================================================== -->
+
+	<bean id="BoxAuthorizationController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.BoxAuthorizationController">
+		<property name="boxAPIConnectionService" ref="boxAPIConnectionService2"/>
+	</bean>
+
+	<bean id="BoxFileController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.BoxFileController">
+		<property name="boxFileService" ref="boxFileService2"/>
+		<property name="objectService" ref="objectService2"/>
+		<property name="formatService" ref="formatService2"/>
+	</bean>
+
+	<bean id="BoxFolderController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.BoxFolderController">
+		<property name="boxFolderService" ref="boxFolderService2"/>
+	</bean>
+
+	<bean id="BoxDocumentController"
+		class="jp.co.ctc_g.eim.app.document.presentation.controller.BoxDocumentController">
+		<property name="boxDocumentService" ref="boxDocumentService" />
+		<property name="objectService" ref="objectService2" />
+		<property name="formatService" ref="formatService2" />
+	</bean>
+	
+</beans>

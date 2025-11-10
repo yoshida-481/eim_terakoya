@@ -1,0 +1,12 @@
+{
+	"add-field": {
+		"name": "AUTO_NUMBER",
+		"type": "string"
+	},
+	"add-copy-field": {
+		"source": "AUTO_NUMBER",
+		"dest": [
+			"KEYWORD_ATTRS"
+		]
+	}
+}

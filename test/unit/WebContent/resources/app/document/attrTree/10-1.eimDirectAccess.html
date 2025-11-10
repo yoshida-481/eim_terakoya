@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script>
+var urlBase='http://localhost:8080/eim20/app/document/'
+function httpget(urlRelative,paramObj) {
+	var param = "";
+	if (paramObj) {
+		for (var key in paramObj) {
+			if (param.length > 0) param+="&";
+			param+=key+"="+encodeURI(paramObj[key])
+		}
+	}
+	document.result.navigate(urlBase+urlRelative+(param?('?'+param):''));
+	return void(0);
+}
+</script>
+</head>
+<body>
+<script>
+document.write("<form action='"+urlBase+"session/actLogin.jsp' target=result>")
+</script>
+<input type="hidden" name="langId" value="JA"/>
+<input type="hidden" name="userTzOffset" value="-32400000"/>
+<input type="text" name="userCode" value="system"/>
+<input type="text" name="userPass" value="manager"/>
+<input type="submit" value="login">
+<script>
+document.write("</form>");
+</script>
+<table>
+<tr><td>
+<ul>
+<li><a href="javascript:httpget('folder/dspFolderTree.jsp')">folder/dspFolder</a>
+<li><a href="javascript:httpget('table/dspAttributeTypeList.jsp',{attTypeName:'あ'})">table/dspAttributeTypeList</a>
+<li><a href="javascript:httpget('search/actSearch.jsp',{tableId:'default',searchPath:'',keyword:'',pathCondition:'false',keyword:'承認',createDateFrom:'2001-01-01'})">search/actSearch</a>
+
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp')">Unit4 AttrTree[]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183'})">Unit4 AttrTree[1-1]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計'})">Unit4 AttrTree [1-1]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeSettings:'1,2,3'})">Unit4 AttrTree [1-1x]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料'})">Unit4 AttrTree [1-2]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1'})">Unit4 AttrTree [1-3]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754'})">Unit4 AttrTree [1-4]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'37541'})">Unit4 AttrTree [1-4x]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3769'})">Unit4 AttrTree [1-4x]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754',attrTreeValue5:'3769'})">Unit4 AttrTree [1-5]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4153'})">Unit4 AttrTree[2-1]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4153',attrTreeValue1:'詳細設計'})">Unit4 AttrTree[2-2]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4153',attrTreeValue1:'詳細設計',attrTreeValue2:'機能A'})">Unit4 AttrTree[2-3]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4153',attrTreeValue1:'詳細設計',attrTreeValue2:'機能A',attrTreeValue3:'1'})">Unit4 AttrTree[2-4]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTree.jsp',{attrTreeId:'4153',attrTreeValue1:'詳細設計',attrTreeValue2:'機能A',attrTreeValue3:'1',attrTreeValue4:'1217516400000'})">Unit4 AttrTree[2-5]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTreeChild.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料'})">Unit4 AttrTree Child[2]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTreeChild.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1'})">Unit4 AttrTree Child[3]</a>
+<li><a href="javascript:httpget('attrTree/dspAttrTreeChild.jsp',{attrTreeId:'-1',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1'})">Unit4 AttrTree Child[err]</a>
+<li><a href="javascript:httpget('folder/dspChildObject.jsp',{attrTreeId:'-1',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1'})">Unit4 ChildObject Child[err]</a>
+<li><a href="javascript:httpget('folder/dspChildObject.jsp',{attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1'})">Unit4 ChildObject Child[1]</a>
+<li><a href="javascript:httpget('folder/dspChildObject.jsp',{objId:'3754'})">Unit4 ChildObject Child[1x]</a>
+<li><a href="javascript:httpget('folder/dspChildObject.jsp',{objId:'3754',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754'})">Unit4 ChildObject Child[1y]</a>
+<li><a href="javascript:httpget('folder/dspChildObject.jsp',{objId:'3754',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754',attrTreePath:'/a/b/c/d/'})">Unit4 ChildObject Child[1y]</a>
+<li><a href="javascript:httpget('folder/dspFolderTreeChild.jsp',{ObjectId:'3754'})">Unit4 FolderTreeChild[1]</a>
+<li><a href="javascript:httpget('folder/dspFolderTreeChild.jsp',{ObjectId:'3754',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754'})">Unit4 FolderTreeChild[1x]</a>
+<li><a href="javascript:httpget('folder/dspFolderTreeChild.jsp',{ObjectId:'3769',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754',attrTreeValue5:'3769'})">Unit4 FolderTreeChild[1y]</a>
+<li><a href="javascript:httpget('folder/dspFolderTreeChild.jsp',{ObjectId:'3769',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'37541',attrTreeValue5:'3769'})">Unit4 FolderTreeChild[1x]</a>
+<li><a href="javascript:httpget('folder/dspFolderTreeChild.jsp',{ObjectId:'3769',attrTreeId:'4183',attrTreeValue1:'基本設計',attrTreeValue2:'会議資料',attrTreeValue3:'1',attrTreeValue4:'3754',attrTreeValue5:'37691'})">Unit4 FolderTreeChild[1x]</a>
+</ul>
+</td>
+<td>
+<iframe id="result" name="result" height="400" width="700">
+</iframe>
+</td>
+</tr>
+</table>
+</body>

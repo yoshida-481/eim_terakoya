@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+<node attrTreeId="[id_1]" attrTreeSettings="[settings_1]" classifyTarget="0" isBranch="true" isSearch="true" label="[name_1]" objTypeName="属性">
+<node isBranch="true" isLeaf="false" isSearch="false" label="1" objTypeName="属性" value="1">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="2" objTypeName="属性" value="2">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="3" objTypeName="属性" value="3">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="4" objTypeName="属性" value="4">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="true" label="" objTypeName="属性" value="">
+<node isBranch="true" isLeaf="true" isSearch="true" label="" objTypeName="属性" value="">
+<node isBranch="true" isLeaf="false" isSearch="true" isWorkflowFolder="true" label="F5" objId="[id_F5]" objTypeId="[tid_F5]" objTypeName="フォルダ">
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkflowFolder="false" label="F51" objId="[id_F51]" objTypeId="[tid_F51]" objTypeName="フォルダ">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkflowFolder="false" label="F52" objId="[id_F52]" objTypeId="[tid_F52]" objTypeName="フォルダ">
+</node>
+
+</node>
+
+</node>
+
+</node>
+
+</node>
+<node attrTreeId="[id_2]" attrTreeSettings="[settings_2]" classifyTarget="1" isBranch="true" isSearch="false" label="[name_2]" objTypeName="属性">
+</node>
+</nodes>

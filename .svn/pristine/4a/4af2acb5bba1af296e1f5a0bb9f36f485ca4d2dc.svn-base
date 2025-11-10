@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<import resource="classpath:applicationContext-fw.xml" />
+
+	<import resource="mvc-servlet-admin.xml" />
+	<import resource="mvc-servlet-form.xml" />
+	<import resource="mvc-servlet-doc.xml" />
+	<import resource="mvc-servlet-box.xml" />
+	<import resource="mvc-servlet-search.xml" />
+
+	<!--
+		==================================================================================
+		Spring 5.3以降、でフォルトでサフィックスパターンマッチングが実行されなくなった
+		https://spring.pleiades.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-suffix-pattern-match
+		ワークフロー管理の*.mvcを使用するためsuffix-pattern="true"を指定し、サフィックスパターンマッチングが実行されるように変更
+		==================================================================================
+	-->
+	<mvc:annotation-driven>
+	    <mvc:path-matching suffix-pattern="true" />
+	</mvc:annotation-driven>
+
+	<!--
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+			<property name="messageConverters">
+				<list>
+					<ref bean="jacksonMessageConverter"/>
+				</list>
+			</property>
+	</bean>
+	-->
+
+	<!-- マルチパートのリゾルバ -->
+	<!-- HttpMethodの強制チェック排除のためEIMのリゾルバを使用する -->
+	<bean id="multipartResolver" class="jp.co.ctc_g.eim.framework2.presentation.web.resolver.MultipartResolver"/>
+
+	<!-- 共通コントローラAdvice -->
+	<bean class="jp.co.ctc_g.eim.framework2.presentation.web.controller.CommonControllerAdvice">
+		<property name="errorView" value="/servlet/XmlErrorMessageServlet"/>
+	</bean>
+
+	<!-- ファイル転送コントローラ -->
+	<bean id="FileTransferController" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.FileTransferController" >
+		<property name="fileTransferService" ref="fileTransferService2"/>
+		<property name="resultView" value="/servlet/XmlUploadResultServlet"/>
+		<property name="errorView" value="/servlet/XmlErrorMessageServlet"/>
+		<property name="downloadErrorView" value="/servlet/HtmlErrorMessageServlet"/>
+		<property name="zipFileName" value="Tmp"/>
+	</bean>
+
+	<!-- キャッシュモニタ用コントローラ -->
+	<bean id="CacheMonitorController" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.CacheMonitorController">
+		<property name="cacheMonitorService" ref="cacheMonitorService2"/>
+	</bean>
+
+	<!-- 言語設定用コントローラ -->
+	<bean id="languageController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.LanguageController">
+		<property name="languageService" ref="languageService2"/>
+	</bean>
+
+	<!-- オブジェクトロールコントローラ -->
+	<bean id="objectRoleController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.ObjectRoleController">
+		<property name="objectRoleService" ref="objectRoleService2"/>
+	</bean>
+
+	<!-- 汎用オブジェクト用コントローラ -->
+	<bean id="ObjectController2" class="jp.co.ctc_g.eim.framework2.presentation.web.controller.ObjectController">
+		<property name="createObjectServiceAdapter">
+			<ref bean="createObjectServiceAdapter2"/>
+		</property>
+		<property name="createListObjectServiceAdapter">
+			<ref bean="createListObjectServiceAdapter2"/>
+		</property>
+		<property name="getObjectServiceAdapter">
+			<ref bean="getObjectServiceAdapter2"/>
+		</property>
+		<property name="getListObjectServiceAdapter">
+			<ref bean="getListObjectServiceAdapter2"/>
+		</property>
+		<property name="updateObjectServiceAdapter">
+			<ref bean="updateObjectServiceAdapter2"/>
+		</property>
+		<property name="updateListObjectServiceAdapter">
+			<ref bean="updateListObjectServiceAdapter2"/>
+		</property>
+		<property name="deleteObjectServiceAdapter">
+			<ref bean="deleteObjectServiceAdapter2"/>
+		</property>
+		<property name="deleteListObjectServiceAdapter">
+			<ref bean="deleteListObjectServiceAdapter2"/>
+		</property>
+		<property name="downloadFileObjectServiceAdapter">
+			<ref bean="downloadFileObjectServiceAdapter2"/>
+		</property>
+		<property name="downloadFileListObjectServiceAdapter">
+			<ref bean="downloadFileListObjectServiceAdapter2"/>
+		</property>
+		<property name="formFormatResultDTOConverter">
+			<ref bean="formFormatResultDTOConverter"/>
+		</property>
+		<property name="listFormatResultDTOConverter">
+			<ref bean="listFormatResultDTOConverter"/>
+		</property>
+		<property name="defaultDTOConverter">
+			<ref bean="simpleObjectDTOConverter"/>
+		</property>
+		<property name="defaultJsonToObjectDomainConverter">
+			<ref bean="simpleObjectDTOJsonToObjectDomainConverter"/>
+		</property>
+		<property name="objectTypeService">
+			<ref bean="objectTypeService2"/>
+		</property>
+		<property name="fileAccessService">
+			<ref bean="fileAccessService2"/>
+		</property>
+	</bean>
+</beans>

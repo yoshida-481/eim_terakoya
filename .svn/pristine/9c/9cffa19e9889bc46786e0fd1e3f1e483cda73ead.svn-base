@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- Box連携用Bean定義 (文書管理)                                                             -->
+	<!-- ======================================================================================== -->
+
+	<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<!-- Box保管Jobサービス -->
+	<bean id="boxArchiveJobServiceForDoc" parent="boxArchiveJobService2">
+		<property name="archiveConditionList">
+			<list>
+				<!-- オブジェクトタイプに設定されたフォーマットにBoxフォルダIDが指定されている -->
+				<bean class="jp.co.ctc_g.eim.framework2.business.plugin.box.impl.SpecificFormatArchiveConditionPlugInImpl" />
+				<!-- オブジェクトの更新日が指定日数よりも後であるものを除外する -->
+				<bean class="jp.co.ctc_g.eim.framework2.business.plugin.box.impl.ElapsedDaysArchiveConditionPlugInImpl">
+					<!-- 最大経過日数 -->
+					<property name="maxDaysFromMDate" value="${BOX_INTEGRATION_MAX_DAYS_FROM_MDATE}"/>
+				</bean>
+				<!-- オブジェクトの更新日がアーカイブ完了日時より前であるものを除外する -->
+				<bean class="jp.co.ctc_g.eim.framework2.business.plugin.box.impl.AlreadyArchivedArchiveConditionPlugInImpl" />
+				<!-- 検索FW用 -->
+				<!-- 全文インデックス作成待ちを除外する -->
+				<bean class="jp.co.ctc_g.eim.framework2.business.plugin.box.impl.SearchIndexNotYetArchiveConditionPlugInImpl">
+					<property name="dataTypeList">
+						<list>
+							<value>FILE</value>
+							<value>ATTACHMENT</value>
+						</list>
+					</property>
+				</bean>
+				<!-- PDF変換指示オブジェクトが存在するものを除外する -->
+				<bean class="jp.co.ctc_g.eim.app.document.business.plugin.box.impl.PDFConvertionArchiveConditionPlugInImpl">
+					<!-- PDF変換オブジェクトタイプ名 -->
+					<property name="objectTypeNamePDFConv" value="${OBJECT_TYPE_NAME_CONVPDF}" />
+				</bean>
+				<!-- 指定日数内のダウンロード回数が指定回数（設定ファイルの「最低ダウンロード回数」）を上回って回いるものを除外する -->
+				<bean class="jp.co.ctc_g.eim.app.document.business.plugin.box.impl.DownloadTimesArchiveConditionPlugInImpl">
+					<!-- 最大経過日数 -->
+					<property name="maxDaysFromMDate" value="${BOX_INTEGRATION_MAX_DAYS_FROM_MDATE}"/>
+					<!-- 最低ダウンロード回数 -->
+					<property name="minDownloadNum" value="${EIM_BOX_INTEGRATION_MIN_DOWNLOAD_NUM}"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Box連携ファイルサービス -->
+	<bean id="boxDocumentService" class="jp.co.ctc_g.eim.app.document.business.service.impl.BoxDocumentServiceImpl">
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="objectTypeService2"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="fileAccessor" ref="fileAccessor2"/>
+		<property name="fileDao" ref="fileDao2"/>
+		<property name="boxFileDao" ref="boxFileDao2"/>
+		<property name="boxFolderDao" ref="boxFolderDao2"/>
+		<property name="boxArchiveInfoService" ref="boxArchiveInfoService2"/>
+	</bean>
+</beans>

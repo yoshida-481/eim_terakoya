@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/mvc
+        	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<bean id="FileObjectCreatorController" class="jp.co.ctc_g.eim.app.form.presentation.controller.FileObjectCreatorController">
+		<property name="fileObjectCreatorService" ref="fileObjectCreatorService"/>
+		<!-- 設定例：/TemplateFileConf.xml -->
+		<property name="templateFileConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<bean id="TempFileObjectController" class="jp.co.ctc_g.eim.app.form.presentation.controller.TempFileObjectController">
+		<property name="tempFileObjectService" ref="tempFileObjectService2"/>
+		<property name="tempFilePath">
+			<value>/tmp</value>
+		</property>	
+	</bean>
+
+	<bean id="TemplateFileController" class="jp.co.ctc_g.eim.app.form.presentation.controller.TemplateFileController">
+		<property name="templateFileService" ref="templateFileService"/>
+	</bean>
+
+	<bean id="UserController" class="jp.co.ctc_g.eim.app.form.presentation.controller.UserController">
+		<property name="userService" ref="formUserService2"/>
+	</bean>
+
+</beans>

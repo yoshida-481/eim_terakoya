@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objList attrTreeId="[id_1]" attrTreePath="a/b/c" attrTreeValue1="[val_1]" attrTreeValue2="[val_2]" objTypeName="‘®«">
+</objList>

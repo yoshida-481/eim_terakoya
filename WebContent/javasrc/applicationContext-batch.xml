@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=
+		"http://www.springframework.org/schema/beans
+		 http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- ============================================================= -->
+	<!-- ドキュメント管理バッチプログラム用 ApplicationContextファイル -->
+	<!-- ============================================================= -->
+
+	<!-- アノテーションを有効にする -->
+	<context:annotation-config/>
+
+	<!-- コンフィグレーションクラスを読み込み各機能を有効にする -->
+	<context:component-scan base-package="jp.co.ctc_g.eim.framework2" use-default-filters="false">
+		<!-- MyBatis -->
+		<context:include-filter type="assignable" expression="jp.co.ctc_g.eim.framework2.integration.mybatis.MyBatisConfig"/>
+	</context:component-scan>
+
+	<!-- ApplicationContextを保持するApplicationContextAware -->
+	<bean id="applicationContextLoader" class="jp.co.ctc_g.eim.framework2.common.context.ApplicationContextLoader"/>
+
+	<!-- 各種プロパティ値の取得元となるプロパティファイルのロケーション -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config_doc_search.properties</value>
+				<value>classpath:config_search.properties</value>
+				<value>classpath:config_doc.properties</value>
+				<value>classpath:config_eim_form.properties</value>
+				<value>classpath:config_task.properties</value>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ======================================= -->
+	<!-- 読み込むApplicationContextファイル      -->
+	<!-- ======================================= -->
+
+	<!-- システム管理用コンテキストファイル -->
+	<import resource="applicationContext-admin-aop-adminAuthCheck.xml" />
+	<import resource="applicationContext-admin-aop-operationHistory.xml" />
+	<import resource="applicationContext-admin-business.xml" />
+	<import resource="applicationContext-admin-integration.xml" />
+	<import resource="applicationContext-admin.xml" />
+
+	<!-- ドキュメント管理用コンテキストファイル -->
+	<import resource="applicationContext-doc-business.xml" />
+	<import resource="applicationContext-doc-integration.xml" />
+	<!-- <import resource="applicationContext-doc-aop-accessCheck.xml" /> -->
+	<!-- <import resource="applicationContext-doc-aop-accessHistory.xml" /> -->
+	<!-- <import resource="applicationContext-doc-aop-operationHistory.xml" /> -->
+	<import resource="applicationContext-doc-aop-optimisticLockCheck.xml" />
+	<import resource="applicationContext-doc-mail.xml" />
+	<import resource="applicationContext-doc-option.xml" />
+	<import resource="applicationContext-doc-userDefGroup.xml" />
+	<import resource="applicationContext-doc-workflow.xml" />
+	<import resource="applicationContext-doc.xml" />
+	<import resource="applicationContext-fw2-business-for-doc.xml" />
+	<import resource="applicationContext-fw2-integration-for-doc.xml" />
+	<import resource="applicationContext-form-business-for-doc.xml" />
+
+	<!-- ドキュメント管理(検索)用コンテキストファイル -->
+	<import resource="applicationContext-search-updateNotice-for-doc.xml" />
+
+	<!-- ドキュメントAPI用コンテキストファイル -->
+	<import resource="applicationContext-doc-api-aop-accessCheck.xml" />
+	<import resource="applicationContext-doc-api-aop-adminAuthCheck.xml" />
+	<import resource="applicationContext-doc-api-aop-operationHistory.xml" />
+	<import resource="applicationContext-doc-api-aop.xml" />
+	<import resource="applicationContext-doc-api-business.xml" />
+	<import resource="applicationContext-doc-api-integration.xml" />
+
+	<!-- 帳票管理用コンテキストファイル -->
+	<import resource="applicationContext-form-business.xml" />
+	<import resource="applicationContext-form-integration.xml" />
+	<import resource="applicationContext-form-aop.xml" />
+	<import resource="applicationContext-form-aop-accessCheck.xml" />
+	<import resource="applicationContext-formadmin-business.xml" />
+	<import resource="applicationContext-fw2-aop-for-form.xml" />
+	<import resource="applicationContext-fw2-business-for-formadmin.xml" />
+	<import resource="applicationContext-fw2-integration-for-formadmin.xml" />
+	<import resource="applicationContext-fw2-business-for-form.xml" />
+	<import resource="applicationContext-fw2-integration-for-form.xml" />
+
+	<!-- EIMANAGER FW2用 コンテキストファイル -->
+	<import resource="applicationContext-fw.xml" />
+	<import resource="applicationContext-fw2-aop.xml" />
+	<import resource="applicationContext-fw2-business.xml" />
+	<import resource="applicationContext-fw2-integration.xml" />
+	<import resource="applicationContext-fw2-jobCtrl.xml" /> <!-- Job実行制御 -->
+	<import resource="applicationContext-fw2-business-udg.xml" />
+
+	<!-- EIMANAGER FW1用コンテキストファイル -->
+	<import resource="applicationContext-fw-fileIo.xml" />
+	<import resource="applicationContext-fw-mail.xml" />
+	<import resource="applicationContext-fw-userDefGroup.xml" />
+	<import resource="applicationContext-fw-workflow.xml" />
+	<import resource="applicationContext-fw2-integration-for-fw.xml" />
+
+	<!-- EIMANAGER UTIL用コンテキストファイル -->
+	<import resource="applicationContext-eim-util.xml" />
+	<import resource="applicationContext-fw2-integration-for-util.xml" />
+
+	<!-- EIMANAGER FW トランザクション管理用コンテキストファイル ※いずれか一つを有効にして下さい。 -->
+	<import resource="applicationContext-tx-batch.xml" /> <!-- バッチ用 通常トランザクション (JTA非対応) Oracle用 -->
+	<!-- <import resource="applicationContext-tx-batch-jta.xml" /> バッチ用 分散トランザクション (JTA対応) Oracle用 -->
+	<!-- <import resource="applicationContext-tx-batch-pg.xml" /> バッチ用 通常トランザクション (JTA非対応) PostgreSQL用 -->
+	<!-- <import resource="applicationContext-tx-batch-jta-pg.xml" /> バッチ用 分散トランザクション (JTA対応) PostgreSQL用 -->
+
+	<!-- EIMANAGER FW APIキャッシュ用コンテキストファイル -->
+	<import resource="applicationContext-fw2-business-cache.xml" />
+	<import resource="applicationContext-fw2-integration-cache.xml" />
+	<import resource="applicationContext-fw2-integration-util.xml" />
+	<import resource="applicationContext-fw2-integration-for-cacheService.xml" />
+	<!-- <import resource="applicationContext-fw2-aop-cache.xml" /> -->
+	<!-- <import resource="applicationContext-fw2-cache-jobCtrl.xml" /> -->
+
+	<!-- Box連携用コンテキストファイル -->
+	<import resource="applicationContext-fw2-box.xml" />
+	<!-- <import resource="applicationContext-fw2-box-quartz.xml" /> BoxアーカイブJobスケジュール設定 -->
+	<import resource="applicationContext-doc-box.xml" />
+
+	<!-- 検索FW 標準コンテキストファイル -->
+	<!-- <import resource="applicationContext-search-indexBase.xml" /> -->
+	<!-- <import resource="applicationContext-search-searchApi.xml" /> -->
+	<import resource="applicationContext-search-updateNotice.xml" />
+	<import resource="applicationContext-fw2-business-for-search.xml" />
+	<import resource="applicationContext-fw2-integration-for-search.xml" />
+
+</beans>

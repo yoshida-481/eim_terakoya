@@ -1,0 +1,107 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- framework2.integration.dao.cache配下のクラスのBean定義 -->
+	<!-- ======================================================================================== -->
+
+	<!-- オブジェクトタイプ -->
+	<bean id="objectTypeCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.ObjectTypeCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+		<!-- 不足ログ -->
+		<property name="insufficientLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.InsufficientLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+	<!-- フォーマット -->
+	<bean id="formatCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.FormatCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+	<!-- オブジェクト -->
+	<bean id="objectCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.ObjectCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+		<!-- 不足ログ -->
+		<property name="insufficientLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.InsufficientLogCacheDaoImpl" />
+		</property>
+		<property name="cacheValueFormatMode">
+			<value>MESSAGEPACK</value>
+		</property>
+		<property name="specificCacheTargetList">
+			 <list>
+			</list>
+		</property>
+		<property name="isCompressed">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- ユーザ -->
+	<bean id="userCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UserCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+	<!-- グループ -->
+	<bean id="groupCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.GroupCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+    <!-- ディレクトリ -->
+	<bean id="directoryCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.DirectoryCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+    <!-- 属性タイプ -->
+	<bean id="attributeTypeCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.AttributeTypeCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+		<!-- 不足ログ -->
+		<property name="insufficientLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.InsufficientLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+    <!-- ファイル -->
+	<bean id="fileCacheDao" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.FileCacheDaoImpl" >
+		<!-- 更新ログ -->
+		<property name="updateLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.UpdateLogCacheDaoImpl" />
+		</property>
+		<!-- 不足ログ -->
+		<property name="insufficientLogCacheDao">
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.InsufficientLogCacheDaoImpl" />
+		</property>
+	</bean>
+
+	<!-- cacheMonitorDao2 -->
+	<bean id="cacheMonitorDao2" class="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl.CacheMonitorDaoImpl" >
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDao2"/>
+		</property>
+	</bean>
+</beans>

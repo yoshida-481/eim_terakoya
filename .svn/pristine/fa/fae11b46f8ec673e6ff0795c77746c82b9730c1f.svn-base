@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 更新通知アドバイス -->
+
+	<!-- 帳票コード用更新通知アドバイス -->
+	<bean id="updateNoticeAdviceForCode" class="jp.co.ctc_g.eim.app.document.common.aop.advice.CodeUpdateNoticeAdvice">
+		<property name="updateNoticeService" ref="updateNoticeService" />
+		<!-- データタイプ -->
+		<property name="dataType" value="CODE" />
+	</bean>
+
+	<!-- 帳票コード用更新通知アドバイス -->
+	<bean id="updateNoticeAdviceForCodeForU" parent="updateNoticeAdviceForCode">
+		<!-- 更新種別 -->
+		<property name="updateKind" value="CU" />
+	</bean>
+
+	<!-- 帳票コード用更新通知アドバイス (削除時) -->
+	<bean id="updateNoticeAdviceForCodeForD" parent="updateNoticeAdviceForCode">
+		<!-- 更新種別 -->
+		<property name="updateKind" value="D" />
+	</bean>
+
+	<!-- 帳票コード更新時 更新通知AOP -->
+	<aop:config>
+		<aop:aspect order="10" ref="updateNoticeAdviceForCodeForU">
+			<aop:after-returning
+				method="insert"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+	<!-- 帳票コード削除時 更新通知AOP -->
+	<aop:config>
+		<aop:aspect order="10" ref="updateNoticeAdviceForCodeForD">
+			<aop:after-returning
+				method="insert"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>

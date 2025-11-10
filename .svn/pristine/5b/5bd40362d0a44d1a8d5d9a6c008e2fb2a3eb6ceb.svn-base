@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/batch
+			http://www.springframework.org/schema/batch/spring-batch.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task.xsd
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/jdbc
+			http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+			">
+
+	<!-- DataSource for Spring Batch Meta-Data -->
+	<bean name="batchDataSource" class="org.h2.jdbcx.JdbcDataSource">
+		<property name="url" value="jdbc:h2:mem:meta;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE" />
+		<property name="user" value="sa" />
+	</bean>
+
+	<!-- Initialize Spring Batch Meta-Data Schema -->
+	<jdbc:initialize-database data-source="batchDataSource">
+		<jdbc:script location="classpath:org/springframework/batch/core/schema-h2.sql"/>
+	</jdbc:initialize-database>
+
+	<!-- Job -->
+	<batch:job id="cacheWarmUpJob">
+		<batch:split id="masterParalel" task-executor="parallelTaskExecutorForOtherWarmUp">
+			<batch:flow>
+				<batch:step id="formatWarmUp">
+					<batch:tasklet ref="formatTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="groupWarmUp">
+					<batch:tasklet ref="groupTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="attributeTypeWarmUp">
+					<batch:tasklet ref="attributeTypeTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="userWarmUp">
+					<batch:tasklet ref="userTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="directoryWarmUp">
+					<batch:tasklet ref="directoryTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="objectTypeWarmUp">
+					<batch:tasklet ref="objectTypeTasklet"/>
+				</batch:step>
+			</batch:flow>
+			<!-- 他のオブジェクト以外のデータも同様にflowを追加する -->
+		</batch:split>
+	</batch:job>
+
+	<!-- Job related beans -->
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="dataSource" ref="batchDataSource" />
+	</bean>
+
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.TaskExecutorJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<bean id="parallelTaskExecutorForOtherWarmUp" class="org.springframework.core.task.SimpleAsyncTaskExecutor"  /> 
+
+	<!-- Tasklets -->
+	<bean id="groupTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="groupCacheService"/>
+		</property>
+	</bean>
+
+	<bean id="formatTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="formatCacheService"/>
+		</property>
+	</bean>
+
+	<bean id="attributeTypeTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="attributeTypeCacheService"/>
+		</property>
+	</bean>
+
+	<bean id="userTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="userCacheService"/>
+		</property>
+	</bean>
+
+	<bean id="directoryTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="directoryCacheService"/>
+		</property>
+	</bean>
+
+	<bean id="objectTypeTasklet" class="jp.co.ctc_g.eim.framework2.presentation.batch.tasklet.WarmUpTasklet">
+		<property name="cacheService">
+			<ref bean="objectTypeCacheService"/>
+		</property>
+	</bean>
+
+</beans>

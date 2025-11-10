@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 管理者権限チェックアドバイス -->
+	<bean id="adminAuthorityCheckAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.AdminAuthorityCheckAdvice" >
+		<!-- authorizationIdList、applicationIdList どちらか一方を指定する -->
+		<property name="authorizationIdList">
+			<null/>
+		</property>
+		<property name="applicationIdList">
+			<null/>
+		</property>
+		<property name="adminAuthOperatorEnum">
+			<value>OR</value>
+		</property>
+		<property name="adminAuthService" ref="adminAuthService2"/>
+		<property name="adminAuthErrorCode" value="EIM.ERROR.NOTADMINISTRATOR"/>
+	</bean>
+
+	<!-- アクセス権限チェックアドバイス -->
+	<bean id="accessAuthorityCheckAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.AccessAuthorityCheckAdvice" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="accessErrorCode" value="EIM.ERROR.LOGIC.ACCESSROLE.NOTFOUND"/>
+		<property name="notFoundErrorCode" value="EIM.ERROR.LOGIC.OBJECT.NOTFOUND"/>
+	</bean>
+
+	<!-- アクセス権限チェックアドバイス（複数値用） -->
+	<bean id="multipleAccessAuthorityCheckAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.MultipleAccessAuthorityCheckAdvice" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="accessRoleTypeService" ref="accessRoleTypeService2"/>
+		<property name="accessErrorCode" value="EIM.ERROR.LOGIC.MULTIPLE.ACCESSROLE.NOTFOUND"/>
+		<property name="notFoundErrorCode" value="EIM.ERROR.LOGIC.MULTIPLE.OBJECT.NOTFOUND"/>
+	</bean>
+
+	<!-- 操作履歴出力アドバイス -->
+	<bean id="operationHistoryAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.OperationHistoryAdvice" >
+		<property name="operationHistoryService" ref="operationHistoryService2"/>
+	</bean>
+
+	<!-- 操作履歴出力アドバイス（複数値用） -->
+	<bean id="multipleOperationHistoryAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.MultipleOperationHistoryAdvice" >
+		<property name="operationHistoryService" ref="operationHistoryService2"/>
+	</bean>
+
+	<!-- セッションタイムアウトチェックアドバイス -->
+	<!-- サーブレットフィルターによるセッションタイムアウトチェックを介さずに呼び出されるサービスBeanに指定してください -->
+	<bean id="sessionTimeoutCheckAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.SessionTimeoutCheckAdvice" />
+
+	<!-- AMF通信軽量化アドバイス -->
+	<bean id="amfTransportTrimAdvice" class="jp.co.ctc_g.eim.framework2.common.aop.advice.AmfTransportTrimAdvice" >
+		<property name="targetPackage">
+			<list>
+				<value>jp.co.ctc_g.eim.framework2.business.domain.entity</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

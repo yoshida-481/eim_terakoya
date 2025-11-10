@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ====================== -->
+	<!-- 参照元取得プラグイン   -->
+	<!-- ====================== -->
+
+	<!-- 参照元取得プラグイン：子フォルダ・ドキュメント取得プラグイン_過去リビジョンのオブジェクトも取得 -->
+	<bean id="eimObjectRefObjectPlugInImplAll" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.ChildObjectEIMObjectRefObjectPlugInImpl">
+		<!-- 過去リビジョン取得フラグ -->
+		<property name="oldRevSelectFlg">
+			<value>true</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataTypeDocument">
+			<value>DOCUMENT</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataTypeFolder">
+			<value>FOLDER</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataTypeTag">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：子フォルダ・ドキュメント取得プラグイン_最新オブジェクトのみ取得 -->
+	<bean id="eimObjectRefObjectPlugInImplLatest" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.ChildObjectEIMObjectRefObjectPlugInImpl">
+		<!-- 過去リビジョン取得フラグ -->
+		<property name="oldRevSelectFlg">
+			<value>false</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataTypeDocument">
+			<value>DOCUMENT</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataTypeFolder">
+			<value>FOLDER</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataTypeTag">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- ====================== -->
+	<!-- 関連データ取得プラグイン   -->
+	<!-- ====================== -->
+
+	<!-- 関連データ取得プラグイン（ドキュメント用） -->
+	<bean id="documentEIMRelationDataPlugIn" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.DocumentEIMRelationDataPlugInImpl">
+	</bean>
+
+	<!-- 関連データ取得プラグイン（フォルダ用） -->
+	<bean id="folderEIMRelationDataPlugIn" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.FolderEIMRelationDataPlugInImpl">
+	</bean>
+
+	<!-- 関連データ取得プラグイン（ワークスペース用） -->
+	<bean id="workspaceEIMRelationDataPlugIn" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.WorkspaceEIMRelationDataPlugInImpl">
+	</bean>
+
+	<!-- ======================== -->
+	<!-- セキュリティプラグイン   -->
+	<!-- ======================== -->
+
+	<!-- EIMセキュリティプラグイン -->
+	<bean id="eimDocumentSecurityPlugIn" class="jp.co.ctc_g.eim.search.app.document.business.service.plugin.impl.EIMDocumentSecurityPlugInImpl">
+		<property name="securityDao" ref="securityDao2" />
+		<property name="objectDao" ref="objectDao2" />
+		<property name="seriesDao">
+			<bean parent="seriesDao2">
+				<property name="membersDao">
+					<bean parent="membersDao2">
+						<property name="memberEntryDao">
+							<!-- メンバーエントリのエントリIDと役割リストを取得 -->
+							<bean parent="memberEntryDao2">
+								<property name="itemListForMultiTargetMethod">
+									<list>
+										<value>MEMBER_ROLE_LIST</value>
+									</list>
+								</property>
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	 	<property name="userDefGroupIdEIMUserDefGroupPlugInMap">
+			<map>
+				<entry key="-12000">
+					<ref bean="workSpaceAdminSecurityPlugIn"/>
+				</entry>
+				<entry key="-12001">
+					<ref bean="workSpaceAdminSecurityPlugIn"/>
+				</entry>
+				<entry key="-1001">
+					<ref bean="creatorEIMUserDefGroupPlugIn"/>
+				</entry>
+				<entry key="-1002">
+					<ref bean="assignedPersonsEIMUserDefGroupPlugIn"/>
+				</entry>
+				<entry key="-11000">
+					<ref bean="creatorEIMUserDefGroupPlugIn"/>
+				</entry>
+				<entry key="-11001">
+					<ref bean="assignedPersonsEIMUserDefGroupPlugIn"/>
+				</entry>
+				<entry key="-21001">
+					<ref bean="disabledEIMUserDefGroupPlugIn"/>
+				</entry>
+				<entry key="-21002">
+					<ref bean="disabledEIMUserDefGroupPlugIn"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

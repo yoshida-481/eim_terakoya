@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ================ -->
+	<!-- 検索FW用Service  -->
+	<!-- ================ -->
+
+	<!-- ページ指定ファイルダウンロード用FileAccessService -->
+	<bean id="fileAccessServiceForSearch" parent="fileAccessService2" >
+		<property name="fileDao">
+			<ref bean="fileDaoForSearch"/>
+		</property>
+	</bean>
+
+	<!-- ページ指定ファイルダウンロード用FileTransferService -->
+	<bean id="fileTransferServiceForSearch" parent="fileTransferService2" >
+	</bean>
+
+	<!-- 更新通知アドバイス用オブジェクトタイプService -->
+	<bean id="objectTypeServiceForSearch" parent="objectTypeService2" >
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForSearch"/>
+		</property>
+	</bean>
+
+</beans>

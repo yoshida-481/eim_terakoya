@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- サービス -->
+	<!-- ======================================================================================== -->
+	
+	<!-- ドキュメント管理用帳票レイアウトサービス -->
+	<bean id="formLayoutServiceForDocument" parent="formLayoutService" >
+		<property name="objectTypeLayoutService" ref="documentObjectTypeLayoutService"/>
+	</bean>
+	
+	<!-- ドキュメント管理用帳票レイアウトサービス(値リストを取得する) -->
+	<bean id="formLayoutServiceForHandlingValueList" parent="formLayoutService" >
+		<property name="objectTypeLayoutService" ref="documentObjectTypeLayoutServiceForHandlingValueList"/>
+	</bean>
+
+</beans>

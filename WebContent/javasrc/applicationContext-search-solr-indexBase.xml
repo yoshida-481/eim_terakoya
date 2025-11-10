@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ======================= -->
+	<!-- データ出力サービス      -->
+	<!-- ======================= -->
+
+	<!-- データ出力サービス -->
+	<bean id="dataOutputService" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.impl.SolrDataOutputServiceImpl">
+		<!-- デフォルトインデックス更新サービス (コンテンツ属性) -->
+		<property name="defaultIndexUpdateService" ref="contentIndexUpdateService" />
+		<!-- 拡張インデックス更新サービス (ファイル全文・添付ファイル全文) -->
+		<property name="indexUpdateServiceMap">
+			<map>
+				<entry key="FILE" value-ref="fullTextIndexUpdateService" />
+				<entry key="ATTACHMENT" value-ref="attachmentIndexUpdateService" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- ======================= -->
+	<!-- インデックス更新サービス -->
+	<!-- ======================= -->
+
+	<!-- 属性インデックス更新サービス -->
+	<bean id="indexUpdateService" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.impl.SolrAttributesIndexUpdateServiceImpl">
+		<property name="objectIndexUpdateDao" ref="objectIndexUpdateDao" />
+		<property name="keywordIndexUpdateDao" ref="keywordIndexUpdateDao" />
+		<property name="pageIndexUpdateDao" ref="pageIndexUpdateDao" />
+		<!-- サジェストキーワード抽出対象フィールド設定リスト -->
+		<property name="suggestKeywordFieldConfigList">
+			<list>
+				<!-- オブジェクト名 -->
+				<bean class="jp.co.ctc_g.eim.search.solr.indexBase.business.domain.SuggestKeywordFieldConfigDomain">
+					<property name="fieldName" value="OBJECT_NAME" />
+				</bean>
+				<!-- 更新者(日本語) -->
+				<bean class="jp.co.ctc_g.eim.search.solr.indexBase.business.domain.SuggestKeywordFieldConfigDomain">
+					<property name="fieldName" value="MODIFY_USER_JA_NAME" />
+					<property name="langId" value="JA" />
+				</bean>
+				<!-- 更新者(英語) -->
+				<bean class="jp.co.ctc_g.eim.search.solr.indexBase.business.domain.SuggestKeywordFieldConfigDomain">
+					<property name="fieldName" value="MODIFY_USER_EN_NAME" />
+					<property name="langId" value="EN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 全文インデックス更新サービス -->
+	<bean id="fullTextIndexUpdateService" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.impl.SolrFullTextIndexUpdateServiceImpl">
+		<property name="objectIndexUpdateDao" ref="fullTextIndexUpdateDao" />
+		<property name="pageIndexUpdateDao" ref="pageIndexUpdateDao" />
+		<property name="searchDao" ref="objectSearchDao" />
+	</bean>
+
+	<!-- =================== -->
+	<!-- インデックス更新Dao -->
+	<!-- =================== -->
+
+	<!-- 基底インデックス更新Dao -->
+	<bean id="baseIndexUpdateDao" class="jp.co.ctc_g.eim.search.solr.indexBase.integration.dao.impl.SolrBaseIndexUpdateDaoImpl"
+			abstract="true" destroy-method="close">
+		<!-- プロトコル -->
+		<property name="protocol" value="${SOLR_PROTOCOL}" />
+		<!-- ホスト名 -->
+		<property name="host" value="${SOLR_HOST}" />
+		<!-- ポート番号 -->
+		<property name="port" value="${SOLR_PORT}" />
+		<!-- キューサイズ -->
+		<property name="queueSize" value="${SOLR_QUEUE_SIZE}" />
+		<!-- スレッド数 -->
+		<property name="threadCount" value="${SOLR_THREAD_COUNT}" />
+		<!-- サイトコード -->
+		<property name="siteCode" value="${SITE_CODE}" />
+		<!-- コミット期限(ms) -->
+		<property name="commitWithinMs" value="${SOLR_COMMIT_WITHIN_MS}" />
+		<!-- コネクションタイムアウト -->
+		<property name="connectionTimeout" value="${SOLR_CONNECTION_TIMEOUT}" />
+		<!-- ソケットタイムアウト -->
+		<property name="socketTimeout" value="${SOLR_SOCKET_TIMEOUT}" />
+	</bean>
+
+	<!-- オブジェクトインデックス更新Dao -->
+	<bean id="objectIndexUpdateDao" class="jp.co.ctc_g.eim.search.solr.indexBase.integration.dao.impl.SolrObjectIndexUpdateDaoImpl"
+			parent="baseIndexUpdateDao">
+		<property name="searchDao" ref="objectSearchDao" />
+		<!-- CORE -->
+		<property name="core" value="${SOLR_OBJECT_CORE}" />
+		<!-- 非差分更新対象フィールド -->
+		<!-- 制御用フィールドと全文インデックス更新対象フィールドを非差分更新対象フィールドとして指定します。 -->
+		<!-- これ以外のフィールドが差分更新の対象になります。                                                 -->
+		<!-- KEYはレコードを特定するために必要なため、ここには指定しないで下さい。                            -->
+		<property name="disUpdatableFieldList">
+			<list>
+				<!-- Solr標準フィールド -->
+				<value>_version_</value>
+				<!-- EIMANAGER標準フィールド -->
+				<value>ID</value>
+				<value>SITE_CODE</value>
+				<value>SYSTEM_KIND</value>
+				<value>DATA_KIND</value>
+				<value>DATA_TYPE</value>
+				<value>APP_KIND</value>
+				<value>DOC_FULL_TEXT</value>
+				<value>KEYWORD_ATTRS</value>
+				<value>KEYWORD_FULL_TEXTS</value>
+				<!-- ドキュメント管理用フィールド -->
+				<value>ATTACHMENT_IDS</value>
+				<value>ATTACHMENT_FULL_TEXTS</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 全文インデックス更新Dao -->
+	<bean id="fullTextIndexUpdateDao" parent="objectIndexUpdateDao">
+		<!-- スレッド数 (config_searchのSOLR_THREAD_COUNTを参照せず個別に指定する) -->
+		<property name="threadCount" value="1" />
+	</bean>
+
+	<!-- キーワードインデックス更新Dao -->
+	<bean id="keywordIndexUpdateDao" class="jp.co.ctc_g.eim.search.solr.indexBase.integration.dao.impl.SolrChildIndexUpdateDaoImpl"
+			parent="baseIndexUpdateDao">
+		<!-- CORE -->
+		<property name="core" value="${SOLR_KEYWORD_CORE}" />
+	</bean>
+
+	<!-- ページインデックス更新Dao -->
+	<bean id="pageIndexUpdateDao" class="jp.co.ctc_g.eim.search.solr.indexBase.integration.dao.impl.SolrChildIndexUpdateDaoImpl"
+			parent="baseIndexUpdateDao">
+		<!-- CORE -->
+		<property name="core" value="${SOLR_PAGE_CORE}" />
+	</bean>
+
+	<!-- ======================== -->
+	<!-- 関連データ取得プラグイン -->
+	<!-- ========================= -->
+
+	<!-- EIM標準オブジェクトデータ取得プラグイン -->
+	<bean id="generalEIMObjectDataPlugIn" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.plugin.impl.SolrEIMObjectDataPlugInImpl">
+		<!-- ファイルインデックス付加情報取得プラグイン ※指定が無い時はファイル情報の取得を行いません。 -->
+		<property name="indexAdditionalInfoPlugIn" ref="fileIndexAdditionalInfoPlugIn" />
+		<!-- アプリケーション種別 -->
+		<property name="applicationKind" value="${APPLICATION_KIND}" />
+		<!-- ダイナミックフィールド更新除外属性 -->
+		<property name="ignoreAttributeTypeNameList">
+			<list></list>
+		</property>
+	</bean>
+
+	<!-- EIM標準ファイルデータ取得プラグイン -->
+	<bean id="generalEIMFileDataPlugIn" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.plugin.impl.SolrEIMFileDataPlugInImpl">
+		<property name="indexAdditionalInfoPlugIn" ref="fileIndexAdditionalInfoPlugIn" />
+		<!-- アプリケーション種別 -->
+		<property name="applicationKind" value="${APPLICATION_KIND}" />
+		<!-- 全文インデックス生成対象拡張子 -->
+		<property name="targetExtensions" value="${SOLR_TARGET_EXTENSIONS}" />
+		<!-- 全文インデックス生成対象最大ファイルサイズ(単位バイト) -->
+		<property name="targetMaxSize" value="${SOLR_TARGET_MAX_SIZE}" />
+		<!-- ※全文インデックス生成対象の設定がない場合は全てが対象となります。 -->
+	</bean>
+
+	<!-- ファイルインデックス付加情報取得プラグイン -->
+	<bean id="fileIndexAdditionalInfoPlugIn" class="jp.co.ctc_g.eim.search.solr.indexBase.business.service.plugin.impl.FileIndexAdditionalInfoPlugInImpl">
+		<property name="fileDao" ref="fileDaoForSearch" />
+		<property name="formatDao" ref="formatDaoLight2" />
+	</bean>
+
+	<!-- === -->
+	<!-- AOP -->
+	<!-- === -->
+
+	<!-- ConcurrentUpdateSolrClientContext設定アドバイス -->
+	<bean id="concurrentUpdateSolrClientContextSettingAdvice" class="jp.co.ctc_g.eim.search.solr.common.aop.advice.ConcurrentUpdateSolrClientContextSettingAdvice"/>
+
+	<!-- ConcurrentUpdateSolrClientContext設定アドバイスポイントカット -->
+	<aop:config>
+		<aop:aspect ref="concurrentUpdateSolrClientContextSettingAdvice" order="100">
+			<aop:pointcut id="concurrentUpdateSolrClientContextSetting"
+					expression="execution(* jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherDataExecUpdNoticeServiceImpl.execute(..))"/>
+			<aop:around pointcut-ref="concurrentUpdateSolrClientContextSetting" method="setContext" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

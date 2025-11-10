@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attrTree attrTreeId="[attrTreeId]" classifyTarget="[classifyTarget]" otherCnt="[otherCnt]">
+<lang otherLId="EN" otherName="[EN_otherName]"/>
+<lang otherLId="JA" otherName="[JA_otherName]"/>
+</attrTree>

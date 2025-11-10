@@ -1,0 +1,132 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- MvcRequestMatcherが使用するヘルパークラス -->
+	<bean id="mvcHandlerMappingIntrospector" class="org.springframework.web.servlet.handler.HandlerMappingIntrospector" />
+
+	<!-- HTTPセキュリティ設定 -->
+	<sec:http entry-point-ref="eimSpnegoEntryPoint" use-expressions="true">
+		<sec:csrf disabled="true" />
+		<sec:intercept-url pattern="/client/index.html" access="authenticated" />
+		<sec:custom-filter ref="eimSpnegoAuthenticationProcessingFilter" before="BASIC_AUTH_FILTER" />
+	</sec:http>
+
+	<!-- HTTPファイアウォール設定 -->
+	<sec:http-firewall ref="httpFirewall"/>
+	<bean id="httpFirewall" class="org.springframework.security.web.firewall.StrictHttpFirewall">
+		<!-- 許可するメソッド -->
+		<property name="allowedHttpMethods">
+			<set>
+				<!-- デフォルト設定 -->
+				<value>HEAD</value>
+				<value>DELETE</value>
+				<value>POST</value>
+				<value>GET</value>
+				<value>OPTIONS</value>
+				<value>PATCH</value>
+				<value>PUT</value>
+				<!-- WebDAV用設定 -->
+				<value>PROPFIND</value>
+				<value>PROPPATCH</value>
+				<value>MKCOL</value>
+				<value>COPY</value>
+				<value>MOVE</value>
+				<value>LOCK</value>
+				<value>UNLOCK</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- Spnegoエントリーポイント -->
+	<bean id="spnegoEntryPoint" class="org.springframework.security.kerberos.web.authentication.SpnegoEntryPoint" />
+
+	<!-- Spnego認証フィルタ -->
+	<bean id="spnegoAuthenticationProcessingFilter" class="org.springframework.security.kerberos.web.authentication.SpnegoAuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<!-- 認証成功ハンドラ -->
+		<property name="successHandler">
+			<bean class="jp.co.ctc_g.eim.framework2.common.security.EIMSpnegoAuthenticationSuccessHandler" />
+		</property>
+	</bean>
+
+	<!-- EIMANAGER拡張Spnegoエントリーポイント -->
+	<bean id="eimSpnegoEntryPoint" class="jp.co.ctc_g.eim.framework2.common.security.EIMSpnegoAuthenticationEntryPoint" />
+
+	<!-- EIMANAGER拡張Spnego認証フィルタ -->
+	<bean id="eimSpnegoAuthenticationProcessingFilter" class="jp.co.ctc_g.eim.framework2.common.security.EIMSpnegoAuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<!-- 認証成功ハンドラ -->
+		<property name="successHandler">
+			<bean class="jp.co.ctc_g.eim.framework2.common.security.EIMSpnegoAuthenticationSuccessHandler" />
+		</property>
+	</bean>
+
+	<!-- 認証マネージャ -->
+	<sec:authentication-manager alias="authenticationManager">
+		<!-- EIM認証プロバイダ ※EIMユーザ認証用 -->
+		<sec:authentication-provider ref="eimAuthenticationProvider" />
+		<!-- Kerberos認証プロバイダ ※Active Directory認証用 -->
+		<!-- <sec:authentication-provider ref="kerberosAuthenticationProvider" /> -->
+		<!-- Kerberosサービス認証プロバイダ ※統合Windows認証用 -->
+		<!-- <sec:authentication-provider ref="kerberosServiceAuthenticationProvider" /> -->
+	</sec:authentication-manager>
+
+	<!-- EIM認証プロバイダ -->
+	<bean id="eimAuthenticationProvider" class="jp.co.ctc_g.eim.framework2.common.security.EIMAuthenticationProvider">
+		<property name="userDetailsService" ref="eimUserDetailsService" />
+		<!-- 認証対象のユーザコードリスト nullの場合は全ユーザに対して判定を行う -->
+		<property name="targetUserCodeList">
+			<null />
+			<!-- <list>
+				<value>system</value>
+			</list> -->
+		</property>
+	</bean>
+
+	<!-- Kerberos認証プロバイダ -->
+	<bean id="kerberosAuthenticationProvider" class="org.springframework.security.kerberos.authentication.KerberosAuthenticationProvider">
+		<property name="kerberosClient">
+			<bean class="org.springframework.security.kerberos.authentication.sun.SunJaasKerberosClient">
+				<!-- <property name="debug" value="true" /> -->
+			</bean>
+		</property>
+		<property name="userDetailsService" ref="eimUserDetailsService" />
+	</bean>
+
+	<!-- Kerberosサービス認証プロバイダ -->
+	<bean id="kerberosServiceAuthenticationProvider" class="org.springframework.security.kerberos.authentication.KerberosServiceAuthenticationProvider">
+		<property name="ticketValidator">
+			<bean class="org.springframework.security.kerberos.authentication.sun.SunJaasKerberosTicketValidator">
+				<!-- プリンシパル名 -->
+				<property name="servicePrincipal" value="HTTP/testapp.eim-flnet.local@EIM-FLNET.LOCAL" />
+				<!-- KeyTabファイルパス -->
+				<property name="keyTabLocation" value="file:///home/tomcat/testapp.eim-flnet.local.keytab" />
+				<!-- <property name="debug" value="true" /> -->
+			</bean>
+		</property>
+		<property name="userDetailsService" ref="eimUserDetailsService" />
+	</bean>
+
+	<!-- EIMユーザサービス -->
+	<bean id="eimUserDetailsService" class="jp.co.ctc_g.eim.framework2.common.security.EIMUserDetailsService">
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="userRealmService" ref="userRealmService" />
+	</bean>
+
+	<!-- レルムサービス -->
+	<bean id="userRealmService" class="jp.co.ctc_g.eim.framework2.common.security.UserRealmServiceImpl">
+		<!-- レルム名リスト -->
+		<property name="realmNameList">
+			<list>
+				<value>EIM-FLNET.LOCAL</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>
