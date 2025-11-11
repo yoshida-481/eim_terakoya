@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes attrTreeId="[id_2]">
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkFlowFolder="false" label="a" objTypeName="‘®«" value="a">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkFlowFolder="false" label="b" objTypeName="‘®«" value="b">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkFlowFolder="false" label="c" objTypeName="‘®«" value="c">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" isWorkFlowFolder="false" label="d" objTypeName="‘®«" value="d">
+</node>
+</nodes>

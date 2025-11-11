@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ========================== -->
+	<!-- Advice Bean                -->
+	<!-- ========================== -->
+
+	<!-- 帳票ワークスペース新規 操作履歴出力アドバイス -->
+	<bean id="formWorkspaceCreateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="3001"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+
+	<!-- 帳票ワークスペース更新 操作履歴出力アドバイス -->
+	<bean id="formWorkspaceUpdateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="3002"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+
+	<!-- 帳票ワークスペース削除 操作履歴出力アドバイス -->
+	<bean id="formWorkspaceDeleteOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="3003"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+
+	<!-- 帳票ワークスペース割り当て 操作履歴出力アドバイス -->
+	<bean id="formWorkspaceAssignOperationHistoryAdvice" parent="multipleOperationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="3004"/>
+		<property name="recordInfoIdA" value="52"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="recordInfoIdB" value="50"/>
+		<property name="recordTypeIdB" value="6"/>
+	</bean>
+
+	<!-- コードタイプ新規 操作履歴出力アドバイス -->
+	<bean id="codeTypeCreateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1124"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="19"/>
+	</bean>
+
+	<!-- コードタイプ編集 操作履歴出力アドバイス -->
+	<bean id="codeTypeUpdateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1125"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="19"/>
+	</bean>
+
+	<!-- コードタイプ複写 操作履歴出力アドバイス -->
+	<bean id="codeTypeCopyOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1126"/>
+		<property name="recordInfoIdA" value="32"/>
+		<property name="recordTypeIdA" value="19"/>
+		<property name="recordInfoIdB" value="51"/>
+		<property name="recordTypeIdB" value="19"/>
+	</bean>
+
+	<!-- コードタイプ削除 操作履歴出力アドバイス -->
+	<bean id="codeTypeDeleteOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1127"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="19"/>
+	</bean>
+
+	<!-- コード新規 操作履歴出力アドバイス -->
+	<bean id="codeCreateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1128"/>
+		<property name="recordInfoIdA" value="53"/>
+		<property name="recordTypeIdA" value="19"/>
+		<property name="recordInfoIdB" value="1"/>
+		<property name="recordTypeIdB" value="18"/>
+	</bean>
+
+	<!-- コード編集 操作履歴出力アドバイス -->
+	<bean id="codeUpdateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1129"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="18"/>
+	</bean>
+
+	<!-- コード削除 操作履歴出力アドバイス -->
+	<bean id="codeDeleteOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1130"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="18"/>
+	</bean>
+
+	<!-- コード並び替え 操作履歴出力アドバイス -->
+	<bean id="codeSortOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1131"/>
+		<property name="recordInfoIdA" value="49"/>
+		<property name="recordTypeIdA" value="18"/>
+	</bean>
+	
+	<!-- エクスポート 操作履歴出力アドバイス -->
+	<bean id="exportOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1135"/>
+		<property name="recordInfoIdA" value="42"/>
+		<!-- パラメータ変換 -->
+		<property name="parameterConverterForTargetA" ref="workbookToObjectConverter"/>
+	</bean>
+	
+	<!-- WorkbookからObjectDomainを生成 -->
+	<bean id="workbookToObjectConverter" class="jp.co.ctc_g.eim.admin.common.aop.plugin.impl.WorkbookToObjectConverterPlugInImpl"/>
+	
+	<!-- インポート 操作履歴出力アドバイス -->
+	<bean id="importOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1136"/>
+		<property name="recordInfoIdA" value="35"/>
+		<!-- パラメータ変換 -->
+		<property name="parameterConverterForTargetA" ref="importFileNameToObjectConverter"/>
+	</bean>
+	
+	<!-- FileNameからObjectDomainを生成 -->
+	<bean id="importFileNameToObjectConverter" class="jp.co.ctc_g.eim.admin.common.aop.plugin.impl.ImportFileNameToObjectConverterPlugInImpl"/>
+	
+	<!-- ユーザ新規作成 操作履歴出力アドバイス -->
+	<bean id="userCreateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1079"/>
+		<property name="recordInfoIdA" value="1"/>
+	</bean>
+	
+	<!-- ユーザ編集 操作履歴出力アドバイス -->
+	<bean id="userUpdateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1080"/>
+		<property name="recordInfoIdA" value="3"/>
+	</bean>
+	
+	<!-- ユーザ削除 操作履歴出力アドバイス -->
+	<bean id="userDeleteOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1062"/>
+		<property name="recordInfoIdA" value="2"/>
+	</bean>
+	
+	<!-- グループ割当 操作履歴出力アドバイス -->
+	<bean id="groupRegistrationOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1014"/>
+		<property name="recordInfoIdA" value="10"/>
+		<property name="recordInfoIdB" value="11"/>
+	</bean>
+	
+	<!-- グループ割当解除 操作履歴出力アドバイス -->
+	<bean id="groupCancellationOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1017"/>
+		<property name="recordInfoIdA" value="12"/>
+		<property name="recordInfoIdB" value="13"/>
+	</bean>
+	
+	<!-- ロール割当 操作履歴出力アドバイス -->
+	<bean id="roleRegistrationOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1031"/>
+		<property name="recordInfoIdA" value="10"/>
+		<property name="recordInfoIdB" value="11"/>
+	</bean>
+	
+	<!-- ロール割当解除 操作履歴出力アドバイス -->
+	<bean id="roleCancellationOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1034"/>
+		<property name="recordInfoIdA" value="12"/>
+		<property name="recordInfoIdB" value="13"/>
+	</bean>
+	
+	<!-- キャッシュエントリリロード 操作履歴出力アドバイス -->
+	<bean id="cacheEntryReloadOperationHistoryAdvice" parent="multipleOperationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1150"/>
+		<property name="recordInfoIdA" value="38"/>
+		<property name="recordInfoIdB" value="39"/>
+	</bean>
+
+	<!-- 業務役割新規作成 操作履歴出力アドバイス -->
+	<bean id="objectRoleCreateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1138"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="20"/>
+	</bean>
+
+	<!-- 業務役割編集 操作履歴出力アドバイス -->
+	<bean id="objectRoleUpdateOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1139"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="20"/>
+	</bean>
+
+	<!-- 業務役割削除 操作履歴出力アドバイス -->
+	<bean id="objectRoleDeleteOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="1"/>
+		<property name="operationTypeId" value="1140"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="20"/>
+	</bean>
+
+	<!-- ========================== -->
+	<!-- AOP Config                 -->
+	<!-- ========================== -->
+
+	<aop:config>
+		<!-- 帳票ワークスペース新規　操作履歴出力 -->
+		<aop:aspect order="20" ref="formWorkspaceCreateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FormWorkspaceService.create(..))"
+	        	returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- 帳票ワークスペース更新　操作履歴出力 -->
+		<aop:aspect order="20" ref="formWorkspaceUpdateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FormWorkspaceService.updateName(..)) and args(arg0,..)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- 帳票ワークスペース削除　操作履歴出力 -->
+		<aop:aspect order="20" ref="formWorkspaceDeleteOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FormWorkspaceService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- 帳票ワークスペース割り当て　操作履歴出力 -->
+		<aop:aspect order="20" ref="formWorkspaceAssignOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithBAndRepeatA"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FormWorkspaceService.addFormType(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- コードタイプ新規　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeTypeCreateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeTypeService.create(..))"
+	        	returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- コードタイプ変更　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeTypeUpdateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeTypeService.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!--  コードタイプ複写　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeTypeCopyOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeTypeService.copy(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- コードタイプ削除　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeTypeDeleteOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeTypeService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- コード新規　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeCreateOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.create(..)) and args(arg0,..)"
+	        	returning="arg1"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- コード編集　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeUpdateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- コード削除　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeDeleteOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- コード並び替え　操作履歴出力 -->
+		<aop:aspect order="20" ref="codeSortOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.CodeService.sortSequence(..)) and args(arg0,..)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- エクスポート　操作履歴出力 -->
+		<aop:aspect order="20" ref="exportOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.admin.business.service.AdminUserService.exportUser(..))"
+	        	returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+				
+		<!-- インポート　操作履歴出力 -->
+		<aop:aspect order="20" ref="importOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.admin.business.service.impl.AdminUserServiceImpl.importUser(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ユーザ新規登録　操作履歴出力 -->
+		<aop:aspect order="20" ref="userCreateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.UserService.create(..))"
+	        	returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ユーザ編集　操作履歴出力 -->
+		<aop:aspect order="20" ref="userUpdateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.UserService.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ユーザ削除　操作履歴出力 -->
+		<aop:aspect order="20" ref="userDeleteOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.UserService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- グループ割当　操作履歴出力 -->
+		<aop:aspect order="20" ref="groupRegistrationOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.GroupService.addUser(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- グループ割当解除　操作履歴出力 -->
+		<aop:aspect order="20" ref="groupCancellationOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.GroupService.removeUser(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- ロール割当　操作履歴出力 -->
+		<aop:aspect order="20" ref="roleRegistrationOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.RoleService.addUser(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- ロール割当解除　操作履歴出力 -->
+		<aop:aspect order="20" ref="roleCancellationOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithB"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.RoleService.removeUser(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- キャッシュエントリリロード　操作履歴出力 -->
+		<aop:aspect order="20" ref="cacheEntryReloadOperationHistoryAdvice">
+			<aop:before
+				method="createWithBAndRepeatA"
+				pointcut="execution(* jp.co.ctc_g.eim.admin.business.dao.CacheMonitorViewDao.reload(..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- 業務役割新規登録　操作履歴出力 -->
+		<aop:aspect order="20" ref="objectRoleCreateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.ObjectRoleService.create(..))"
+	        	returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- 業務役割編集　操作履歴出力 -->
+		<aop:aspect order="20" ref="objectRoleUpdateOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.ObjectRoleService.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+
+		<!-- 業務役割削除　操作履歴出力 -->
+		<aop:aspect order="20" ref="objectRoleDeleteOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.ObjectRoleService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>

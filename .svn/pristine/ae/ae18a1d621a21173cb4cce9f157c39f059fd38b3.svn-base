@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="eim_trunk_forV66">
+        <wb-resource deploy-path="/" source-path="/release_work/webapp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/javasrc"/>
+        <property name="java-output-path"/>
+        <property name="context-root" value="eim"/>
+    </wb-module>
+</project-modules>

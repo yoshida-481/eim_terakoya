@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 添付ファイル用更新通知アドバイス -->
+	<bean id="updateNoticeAdviceForAttachment" parent="updateNoticeAdvice">
+		<!-- 通知対象オブジェクトタイプ名 -->
+		<property name="targetObjectTypeName" value="app.form.dev:帳票添付ファイル" />
+		<!-- 子オブジェクトタイプを含めるか -->
+		<property name="includingChildren" value="false" />
+		<!-- データタイプ -->
+		<property name="dataType" value="ATTACHMENT" />
+	</bean>
+
+	<!-- ドキュメント管理 更新通知アドバイス -->
+	<bean id="documentUpdateNoticeAdvice" class="jp.co.ctc_g.eim.app.document.common.aop.advice.DocumentUpdateNoticeAdvice">
+	</bean>
+	
+	<!-- 添付ファイル用更新通知アドバイス (登録時) -->
+	<bean id="updateNoticeAdviceForAttachmentForCU" parent="updateNoticeAdviceForAttachment">
+		<!-- 更新種別 -->
+		<property name="updateKind" value="CU" />
+	</bean>
+
+	<!-- 添付ファイル用更新通知アドバイス (削除時) -->
+	<bean id="updateNoticeAdviceForAttachmentForD" parent="updateNoticeAdviceForAttachment">
+		<!-- 更新種別 -->
+		<property name="updateKind" value="D" />
+	</bean>
+
+	<!-- 添付ファイル登録時 更新通知AOP -->
+	<aop:config>
+		<aop:aspect order="10" ref="updateNoticeAdviceForAttachmentForCU">
+			<aop:after-returning
+				method="insert"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.ObjectService.create(..))"
+				returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+	<!-- 添付ファイル削除時 更新通知AOP -->
+	<aop:config>
+		<aop:aspect order="10" ref="updateNoticeAdviceForAttachmentForD">
+			<aop:after-returning
+				method="insert"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.ObjectService.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+	<aop:config>
+		<aop:aspect order="10" ref="documentUpdateNoticeAdvice">
+			<!-- 公開PDF事前登録 -->
+			<aop:after-returning 
+				method="afterReplacePublicFile"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.PublicDocumentService.preRegistPublicPdf(..,..))" />
+			<!-- 事前登録公開PDF削除 -->
+			<aop:after-returning 
+				method="afterReplacePublicFile"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.PublicDocumentService.deletePreRegistPdf(..))" />
+
+			<!-- Create Document -->
+			<aop:after-returning
+				method="afterCreateDocument"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.DocumentService.create(*,*,*))"
+				returning="result"
+			/>
+			<!-- Checkout -->
+			<aop:after-returning
+				method="afterCheckout"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.DocumentService.checkout(*))"
+				returning="result"
+			/>
+			<!-- Checkin -->
+			<aop:after-returning
+				method="afterCheckin"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.DocumentService.checkin(*,*))"
+			/>
+			<!-- Delete Document -->
+			<aop:before
+				method="beforeDeleteDocument"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.DocumentService.delete(*))"
+			/>
+
+			<!-- Create Folder -->
+			<aop:after-returning
+				method="afterCreateFolder"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.FolderService.create(*,*))"
+				returning="result"
+			/>
+		</aop:aspect>
+	</aop:config>
+</beans>

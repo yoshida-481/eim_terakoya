@@ -1,0 +1,2193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- jp.co.ctc_g.eim.framework配下のクラスが利用するDaoのBean定義                                              -->
+	<!-- ======================================================================================== -->
+	<!-- この定義ファイルはapplicationContext-fw2-integrationを複製して作成しています。未使用Beanが含まれます。 -->
+
+	<!-- accessEntryDaoForFw -->
+	<bean id="accessEntryDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessEntryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoLightForFw"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="objectRoleDao">
+			<ref bean="objectRoleDao2"/>
+		</property>
+	</bean>
+
+	<!-- accessHistoryDaoForFw -->
+	<bean id="accessHistoryDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessHistoryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- accessRoleTypeDaoForFw -->
+	<bean id="accessRoleTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessRoleTypeDaoImpl" >
+	</bean>
+
+	<!-- accumulationMailDaoForFw -->
+	<bean id="accumulationMailDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccumulationMailDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoWithoutAttributeForFw"/>
+		</property>
+	</bean>
+
+	<!-- adminAuthTypeDaoForFw -->
+	<bean id="adminAuthTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.AdminAuthTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/adminAuth.xml -->
+		<property name="adminAuthFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoLightForFw -->
+	<bean id="assignmentDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="eventDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFw -->
+	<bean id="assignmentDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>EVENT</value>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>EVENT</value>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="eventDao">
+			<ref bean="eventDaoForFw"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoForFw"/>
+		</property>
+		<property name="limit">
+			<value>10000</value>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFwHierarchical -->
+	<bean id="assignmentDaoForFwHierarchical" parent="assignmentDaoForFw" >
+		<property name="eventDao">
+			<ref bean="eventDaoForFwWithoutAssignmentList"/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFwWithoutEventAttribute -->
+	<bean id="assignmentDaoForFwWithoutEventAttribute" parent="assignmentDaoForFw" >
+		<property name="eventDao">
+			<ref bean="eventDaoForFwWithoutAttribute"/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFwHierarchicalWithoutObjectAttribute -->
+	<bean id="assignmentDaoForFwHierarchicalWithoutObjectAttribute" parent="assignmentDaoForFw" >
+		<property name="eventDao">
+			<ref bean="eventDaoForFwWithoutAssignmentList"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoWithoutAttributeForFw"/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFwWithoutEventAndObjectAttribute -->
+	<bean id="assignmentDaoForFwWithoutEventAndObjectAttribute" parent="assignmentDaoForFw" >
+		<property name="eventDao">
+			<ref bean="eventDaoForFwWithoutAttribute"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoWithoutAttributeForFw"/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForFwWithEntryElement -->
+	<bean id="assignmentDaoForFwWithEntryElement" parent="assignmentDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- assignmentEntryDaoForFw -->
+	<bean id="assignmentEntryDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentEntryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoForAssignmentEntryForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoForAssignmentEntryForFw"/>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoForAssignmentEntryForFw"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="objectRoleDao">
+			<ref bean="objectRoleDao2"/>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoLightForFw -->
+	<bean id="assignmentPlanDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentPlanDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="assignmentEntryDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForFw -->
+	<bean id="assignmentPlanDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentPlanDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>OBJECT</value>
+				<value>STATUSTYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>OBJECT</value>
+				<value>STATUSTYPE</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForFwNoItems -->
+	<bean id="assignmentPlanDaoForFwNoItems" parent="assignmentPlanDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForFwWithEntryElementAndList -->
+	<bean id="assignmentPlanDaoForFwWithEntryElementAndList" parent="assignmentPlanDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForFwWithEntryList -->
+	<bean id="assignmentPlanDaoForFwWithEntryList" parent="assignmentPlanDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForFwWithObjectAndStatusTypeItems -->
+	<bean id="assignmentPlanDaoForFwWithObjectAndStatusTypeItems" parent="assignmentPlanDaoForFw" >
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoLightForFw -->
+	<bean id="attributeTypeDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoForFw -->
+	<bean id="attributeTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DEFAULT_VALUE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoForFw -->
+	<bean id="attributeTypeAllDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- baseEventTypeDaoForFw -->
+	<bean id="baseEventTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.BaseEventTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- baseStatusTypeDaoForFw -->
+	<bean id="baseStatusTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.BaseStatusTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- complexDaoLightForFw -->
+	<bean id="complexDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- complexDaoForAssignmentEntry -->
+	<bean id="complexDaoForAssignmentEntryForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- complexDaoForFw -->
+	<bean id="complexDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- configDaoForFw -->
+	<bean id="configDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ConfigDaoImpl"  init-method="init" >
+		<property name="configFilePathList">
+			<list>
+				<value>config</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- directoryDaoForFw -->
+	<bean id="directoryDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.DirectoryDaoImpl" >
+	</bean>
+
+	<!-- eventDaoLightForFw -->
+	<bean id="eventDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoLightForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFw -->
+	<bean id="eventDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>TO_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>TO_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoForFw"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithoutAssignmentList -->
+	<bean id="eventDaoForFwWithoutAssignmentList" parent="eventDaoForFw">
+		<property name="statusDao">
+			<ref bean="statusDaoForFwWithoutAssignmentList"/>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithoutAttribute -->
+	<bean id="eventDaoForFwWithoutAttribute" parent="eventDaoForFw">
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list/>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoForFwNoAttributes"/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoForFwWithoutAssignmentEntryAndAttributeType"/>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithTypeAndFromStatus -->
+	<bean id="eventDaoForFwWithTypeAndFromStatus" parent="eventDaoForFwWithoutAttribute">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithType -->
+	<bean id="eventDaoForFwWithType" parent="eventDaoForFwWithoutAttribute">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithFromStatus -->
+	<bean id="eventDaoForFwWithFromStatus" parent="eventDaoForFwWithoutAttribute">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithComment -->
+	<bean id="eventDaoForFwWithComment" parent="eventDaoForFwWithoutAttribute">
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list>
+				<value>コメント</value>
+			</list>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list>
+				<value>コメント</value>
+			</list>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithCommentsAndItems -->
+	<bean id="eventDaoForFwWithCommentsAndItems" parent="eventDaoForFwWithoutAttribute">
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list>
+				<value>コメント</value>
+				<value>app.task.dev:コメント</value>
+				<value>公開通知コメントログ</value>
+			</list>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list>
+				<value>コメント</value>
+				<value>app.task.dev:コメント</value>
+				<value>公開通知コメントログ</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithTypeAndFromStatusAndComment -->
+	<bean id="eventDaoForFwWithTypeAndFromStatusAndComment" parent="eventDaoForFwWithoutAttribute">
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list>
+				<value>コメント</value>
+			</list>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list>
+				<value>コメント</value>
+			</list>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventDaoForFwWithCreationUser -->
+	<bean id="eventDaoForFwWithCreationUser" parent="eventDaoForFw">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoLightForFw -->
+	<bean id="eventTypeDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDaoForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="guardConditionDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="mailTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoForFw -->
+	<bean id="eventTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDaoForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForFw"/>
+		</property>
+		<property name="guardConditionDao">
+			<ref bean="guardConditionDaoForFw"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoForFw"/>
+		</property>
+		<property name="mailTypeDao">
+			<ref bean="mailTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoForFwForMail -->
+	<bean id="eventTypeDaoForFwForMail" parent="eventTypeDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoForFwWithoutAssignmentEntryAndAttributeType -->
+	<bean id="eventTypeDaoForFwWithoutAssignmentEntryAndAttributeType" parent="eventTypeDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- fileDaoForFw -->
+	<bean id="fileDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FileDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DIRECTORY</value>
+				<value>FORMAT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>FORMAT</value>
+			</list>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForFw"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- formatDaoLightForFw -->
+	<bean id="formatDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FormatDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="directoryDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- formatDaoForFw -->
+	<bean id="formatDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FormatDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DIRECTORY_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoLightForFw -->
+	<bean id="groupDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForAssignmentEntry -->
+	<bean id="groupDaoForAssignmentEntryForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForFw -->
+	<bean id="groupDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>GROUP_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- guardConditionDaoForFw -->
+	<bean id="guardConditionDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.GuardConditionDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- languageDaoForFw -->
+	<bean id="languageDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.LanguageDaoImpl"  init-method="init" >
+		<!-- 設定例：/language.xml -->
+		<property name="langInfoConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- mailTypeDaoForFw -->
+	<bean id="mailTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.MailTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/MailTypeConf.xml -->
+		<property name="mailTypeConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- objectDaoLightForFw -->
+	<bean id="objectDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForFw"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForSequenceForFw -->
+	<bean id="objectDaoForSequenceForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list>
+				<value>連続データID</value>
+			</list>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list>
+				<value>連続データID</value>
+			</list>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForFw"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForFw -->
+	<bean id="objectDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForFw"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForFw"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForFw"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!-- オブジェクト複数取得メソッドでステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiTarget">
+			<value>false</value>
+		</property>
+		<!-- オブジェクト単数取得メソッドでステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleTarget">
+			<value>false</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoWithoutAttributeForFw -->
+	<bean id="objectDaoWithoutAttributeForFw" parent="objectDaoForFw" >
+		<!-- 空list (取得しない） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list/>
+		</property>
+		<!-- 空list（取得しない） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list/>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForFwEmptyAttributeTypeList -->
+	<bean id="objectDaoForFwEmptyAttributeTypeList" parent="objectDaoForFw" >
+		<!-- 空list (取得しない） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list/>
+		</property>
+		<!-- 空list（取得しない） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list/>
+		</property>
+		<!-- REVISION_GROUP_ID以外の項目 -->
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+				<value>LOCK_USER</value>
+				<value>STATUS</value>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<!-- REVISION_GROUP_ID以外の項目 -->
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+				<value>LOCK_USER</value>
+				<value>STATUS</value>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForFwWithStatus -->
+	<bean id="objectDaoForFwWithStatus" parent="objectDaoForFw" >
+		<!-- 空list (取得しない） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list/>
+		</property>
+		<!-- 空list（取得しない） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>STATUS</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>STATUS</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoForFwNoAttributes"/>
+		</property>
+	</bean>
+
+	<!-- objectTypeDaoLightForFw -->
+	<bean id="objectTypeDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="formatDao">
+			<null/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="workflowDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="sequenceDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- objectTypeDaoForFw -->
+	<bean id="objectTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>WORKFLOW</value>
+				<value>OBJECT_TYPE_FORMAT_LIST</value>
+				<value>OBJECT_TYPE_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForFw"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoForSequenceForFw"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForFw"/>
+		</property>
+		<property name="sequenceDao">
+			<ref bean="sequenceDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- operationHistoryConfigDaoForFw -->
+	<bean id="operationHistoryConfigDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.OperationHistoryConfigDaoImpl" >
+		<!-- 設定例：/EimOpeHistConf.xml -->
+		<property name="fwOpeHistConfFilePath">
+			<null/>
+		</property>
+		<!-- 設定例：/AppOpeHistConf.xml -->
+		<property name="appOpeHistConfFilePath">
+			<null/>
+		</property>
+		<property name="operationHistoryLang">
+			<value>${OPERATION_HISTORY_LANG}</value>
+		</property>
+	</bean>
+
+	<!-- operationHistoryDaoForFw -->
+	<bean id="operationHistoryDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.OperationHistoryDaoImpl" >
+		<property name="limit">
+			<value>0</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="operationHistoryLang">
+			<value>${OPERATION_HISTORY_LANG}</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForFw"/>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoLightForFw"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForFw"/>
+		</property>
+		<property name="securityDao">
+			<ref bean="securityDaoForFw"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForFw"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForFw"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForFw"/>
+		</property>
+		<property name="relationTypeDao">
+			<ref bean="relationTypeDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForFw"/>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForFw"/>
+		</property>
+		<property name="operationHistoryConfigDao">
+			<ref bean="operationHistoryConfigDaoForFw"/>
+		</property>
+
+		<property name="codeDao">
+			<ref bean="codeDaoForFw"/>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForFw"/>
+		</property>
+
+	</bean>
+
+	<!-- relationDaoForFw -->
+	<bean id="relationDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>PARENT</value>
+				<value>CHILD</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>PARENT</value>
+				<value>CHILD</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForFw"/>
+		</property>
+		<property name="relationTypeDao">
+			<ref bean="relationTypeDaoLightForFw"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!-- リレーション複数取得メソッドでリレーションと伴に取得される親オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiParentTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション複数取得メソッドでリレーションと伴に取得される子オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiChildTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション単数取得メソッドでリレーションと伴に取得される親オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleParentTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション単数取得メソッドでリレーションと伴に取得される子オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleChildTarget">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- relationTypeDaoLightForFw -->
+	<bean id="relationTypeDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- relationTypeDaoForFw -->
+	<bean id="relationTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- resourceDaoForFw -->
+	<bean id="resourceDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ResourceDaoImpl"  init-method="init" >
+		<property name="resourceFilePathList">
+			<list>
+				<value>resource</value>
+			</list>
+		</property>
+		<property name="messageLang">
+			<value>JA</value>
+		</property>
+		<property name="displayLang">
+			<value>EN</value>
+		</property>
+	</bean>
+
+	<!-- roleDaoLightForFw -->
+	<bean id="roleDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- roleDaoForAssignmentEntryForFw -->
+	<bean id="roleDaoForAssignmentEntryForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- roleDaoForFw -->
+	<bean id="roleDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>ROLE_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- securityDaoLightForFw -->
+	<bean id="securityDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SecurityDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="workflowDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="accessEntryDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- securityDaoForFw -->
+	<bean id="securityDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SecurityDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ENTRY_LIST</value>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoLightForFw -->
+	<bean id="statusDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoLightForFw"/>
+		</property>
+		<property name="assignmentPlanDao">
+			<ref bean="assignmentPlanDaoForFw"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="memberEntryDao">
+			<ref bean="memberEntryDao2WithUserListRecursive"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoForFw -->
+	<bean id="statusDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+				<value>ASSIGNMENT_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+				<value>ASSIGNMENT_LIST</value>
+			</list>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoLightForFw"/>
+		</property>
+		<property name="assignmentPlanDao">
+			<ref bean="assignmentPlanDaoForFw"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForFw"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForFw"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForFw"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForFw"/>
+		</property>
+		<property name="memberEntryDao">
+			<ref bean="memberEntryDao2WithUserListRecursive"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoForFwNoAttributes -->
+	<bean id="statusDaoForFwNoAttributes" parent="statusDaoForFw" >
+		<!-- 取得しない -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list></list>
+		</property>
+		<!-- 取得しない -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list></list>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoForFwHierarchical -->
+	<bean id="statusDaoForFwHierarchical" parent="statusDaoForFw" >
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoForFwHierarchical"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoForFwWithoutAssignmentList -->
+	<bean id="statusDaoForFwWithoutAssignmentList" parent="statusDaoForFw" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- statusTypeDaoLightForFw -->
+	<bean id="statusTypeDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="assignmentEntryDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<property name="baseStatusTypeDao">
+			<ref bean="baseStatusTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- statusTypeDaoForFw -->
+	<bean id="statusTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>ASSIGNMENT_ENTRY_LIST</value>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>ASSIGNMENT_ENTRY_LIST</value>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForFw"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForFw"/>
+		</property>
+		<property name="baseStatusTypeDao">
+			<ref bean="baseStatusTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- systemFunctionDaoForFw -->
+	<bean id="systemFunctionDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.SystemFunctionDaoImpl"  init-method="init" >
+		<!-- 設定例：/SysFuncEntryConf.xml -->
+		<property name="sysFuncEntryConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- userDaoLightForFw -->
+	<bean id="userDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.UserDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="groupDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="roleDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<property name="mailAddressUnique">
+			<value>${USER_MAILADDRESS_UNIQUE}</value>
+		</property>
+	</bean>
+
+	<!-- userDaoForFw -->
+	<bean id="userDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.UserDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP_LIST</value>
+				<value>ROLE_LIST</value>
+				<value>USER_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_COMPATIBLE}</value>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForFw"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForFw"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForFw"/>
+		</property>
+		<property name="mailAddressUnique">
+			<value>${USER_MAILADDRESS_UNIQUE}</value>
+		</property>
+	</bean>
+
+	<!-- userDefinitionGroupDaoForFw -->
+	<bean id="userDefinitionGroupDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.UserDefinitionGroupDaoImpl"  init-method="init" >
+		<!-- 設定例：/UserDefGroupConf.xml -->
+		<property name="userDefGroupConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- workflowDaoLightForFw -->
+	<bean id="workflowDaoLightForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.WorkflowDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="eventTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- workflowDaoForFw -->
+	<bean id="workflowDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.WorkflowDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>EVENT_TYPE_LIST</value>
+				<value>STATUS_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoForFw"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- workflowDaoForFwWithLightTypeLists -->
+	<bean id="workflowDaoForFwWithLightTypeLists" parent="workflowDaoForFw" >
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoForFwWithoutAssignmentEntryAndAttributeType"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForFw"/>
+		</property>
+	</bean>
+
+	<!-- mailSender2ForFw -->
+	<bean id="mailSender2ForFw" class="jp.co.ctc_g.eim.framework2.integration.mail.impl.MailSenderImpl" >
+		<property name="smtpHost">
+			<null/>
+		</property>
+		<property name="smtpAddress">
+			<null/>
+		</property>
+		<property name="smtpName">
+			<null/>
+		</property>
+		<property name="mailEncoding">
+			<null/>
+		</property>
+		<property name="smtpUser">
+			<null/>
+		</property>
+		<property name="smtpPass">
+			<null/>
+		</property>
+		<!-- 接続タイムアウト時間(ミリ秒で指定。nullを指定した場合は無限。) -->
+		<property name="smtpConnectionTimeOut">
+			<null/>
+		</property>
+		<!-- 送信タイムアウト（ミリ秒で指定。nullを指定した場合は無限。) -->
+		<property name="smtpTimeOut">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- fileAccessor2ForFw -->
+	<bean id="fileAccessor2ForFw" class="jp.co.ctc_g.eim.framework2.integration.file.impl.FileAccessorImpl" >
+		<property name="bufferdSize">
+			<value>4096</value>
+		</property>
+		<property name="flushSize">
+			<value>0</value>
+		</property>
+		<property name="zipEncoding">
+			<value>MS932</value>
+		</property>
+	</bean>
+
+	<!-- directoryAccessor2ForFw -->
+	<bean id="directoryAccessor2ForFw" class="jp.co.ctc_g.eim.framework2.integration.file.impl.DirectoryAccessorImpl" >
+	</bean>
+
+	<!-- codeTypeDaoForFw -->
+	<bean id="codeTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.CodeTypeDaoImpl" >
+		<property name="codeDao">
+			<ref bean="codeDaoForFw"/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CODE_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- codeDaoForFw -->
+	<bean id="codeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.CodeDaoImpl" >
+	</bean>
+
+	<!-- sequenceTypeDaoForFw -->
+	<bean id="sequenceTypeDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SequenceTypeDaoImpl" >
+	</bean>
+
+	<!-- sequenceDaoForFw -->
+	<bean id="sequenceDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SequenceDaoImpl" >
+		<property name="sequenceTypeDao">
+			<ref bean="sequenceTypeDaoForFw"/>
+		</property>
+	</bean>
+
+	<!-- textConversionInfoDaoForFw -->
+	<bean id="textConversionInfoDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.TextConversionInfoDaoImpl" >
+	</bean>
+
+	<!-- tableDaoForFw -->
+	<bean id="tableDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.TableDaoImpl" >
+	</bean>
+
+	<!-- Job実行制御Dao -->
+	<bean id="jobControlDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.JobControlDaoImpl" />
+
+	<!-- LDAP情報Dao -->
+	<bean id="ldapDaoForFw" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.LdapDaoImpl" >
+		<!-- 設定項目 -->
+		<property name="initialContextFactory" value="${LDAP_INITIAL_CONTEXT_FACTORY}" />
+		<property name="providerUrl" value="${LDAP_PROVIDER_URL}" />
+		<property name="securityAuthentication" value="${LDAP_SECURITY_AUTHENTICATION}" />
+		<property name="securityPrincipal" value="${LDAP_SECURITY_PRINCIPAL}" />
+		<property name="securityCredentials" value="${LDAP_SECURITY_CREDENTIALS}" />
+		<property name="dc" value="${SYNC_LDAP_DC}" />
+		<property name="rootOu" value="${SYNC_LDAP_ROOT_OU}" />
+		<property name="ignoreOus" value="${SYNC_LDAP_IGNORE_OUS}" />
+	</bean>
+
+	<!-- LDAP情報連携用groupDaoForFw -->
+	<bean id="groupDaoForSyncLdapForFw" parent="groupDaoForFw" >
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+	</bean>
+</beans>

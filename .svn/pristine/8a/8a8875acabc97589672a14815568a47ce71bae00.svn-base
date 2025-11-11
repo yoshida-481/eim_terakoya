@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<WorkFlowConf>
+
+	<statusTypeKindList>
+		<!-- EIMANAGER 帳票管理ver6 -->
+		<statusTypeKind key="baseStatusTypePlugIn2" id="-3001">
+				<nameList>
+					<name lang="JA" langname="帳票デフォルトステータスタイプ種別" />
+					<name lang="EN" langname="Form Default Status Type Kind" />
+				</nameList>
+		</statusTypeKind>
+	</statusTypeKindList>
+
+	<!-- EIMANAGER 帳票管理ver6 -->
+	<baseEventTypeList>
+		<baseEventType key="setAssignmentPlanBaseEventTypePlugIn" id="-4001" acl="READ">
+				<nameList>
+					<name lang="JA" langname="帳票デフォルトベースイベントタイプ" />
+					<name lang="EN" langname="Form Default Base Event Type" />
+				</nameList>
+		</baseEventType>
+		<baseEventType key="regainBaseEventTypePlugIn" id="-4002" acl="READ">
+			<nameList>
+				<name lang="JA" langname="帳票取戻しベースイベントタイプ" />
+				<name lang="EN" langname="Form Regain Base Event Type" />
+			</nameList>
+		</baseEventType>
+	</baseEventTypeList>
+	<guardConditionList>
+		<!-- EIMANAGER 帳票管理ver6 -->
+		<guardCondition key="guardCndSelectEventTypePlugIn" id="-5001">
+				<nameList>
+					<name lang="JA" langname="デフォルト(帳票管理用)" />
+					<name lang="EN" langname="Default(For Form)" />
+				</nameList>
+		</guardCondition>
+	</guardConditionList>
+
+</WorkFlowConf>

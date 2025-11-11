@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<!-- ■■■■■■■■■ -->
+	<!--   ワークスペース   -->
+	<!-- ■■■■■■■■■ -->
+	
+	<!-- ワークスペース作成 操作履歴出力アドバイス -->
+	<bean id="createWorkspaceOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2006"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="6"/>
+	</bean>
+	<!-- ワークスペース更新 操作履歴出力アドバイス -->
+	<bean id="updateWorkspaceOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2008"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ワークスペース削除 操作履歴出力アドバイス -->
+	<bean id="deleteWorkspaceOperationHistoryAdvice" parent="multipleOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2007"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="6"/>
+	</bean>
+	
+	<!-- ■■■■■■■■■ -->
+	<!--      フォルダ      -->
+	<!-- ■■■■■■■■■ -->
+	
+	<!-- フォルダ作成 操作履歴出力アドバイス -->
+	<bean id="createFolderOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2005"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="6"/>
+	</bean>
+	<!-- フォルダ移動 操作履歴出力アドバイス -->
+	<bean id="moveFolderOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2016"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- フォルダ移動（ワークスペースごみ箱から復帰） 操作履歴出力アドバイス -->
+	<bean id="moveFolderFromWsOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2058"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- フォルダ移動（システムごみ箱から復帰） 操作履歴出力アドバイス -->
+	<bean id="moveFolderFromSysOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2033"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- フォルダ ワークスペースごみ箱へ移動 操作履歴出力アドバイス -->
+	<bean id="disposeToWsFolderOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2057"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- フォルダ システムごみ箱へ移動 操作履歴出力アドバイス -->
+	<bean id="disposeToSysFolderOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2032"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- フォルダ削除 操作履歴出力アドバイス -->
+	<bean id="deleteFolderOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2069"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ■■■■■■■■■ -->
+	<!--    ドキュメント    -->
+	<!-- ■■■■■■■■■ -->
+	
+	<!-- ドキュメント登録 操作履歴出力アドバイス -->
+	<bean id="createDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2012"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="6"/>
+	</bean>
+	<!-- ドキュメントダウンロード(原本ファイル) 操作履歴出力アドバイス -->
+	<bean id="downloadOriginalDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2030"/>
+		<property name="recordInfoIdA" value="25"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ドキュメントダウンロード(公開ファイル) 操作履歴出力アドバイス -->
+	<bean id="downloadPublicDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2030"/>
+		<property name="recordInfoIdA" value="25"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメント移動 操作履歴出力アドバイス -->
+	<bean id="moveDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2016"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメント移動（ワークスペースごみ箱から復帰） 操作履歴出力アドバイス -->
+	<bean id="moveDocumentFromWsOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2058"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ドキュメント移動（ごみ箱から復帰） 操作履歴出力アドバイス -->
+	<bean id="moveDocumentFromSysOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2033"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメント ワークスペースごみ箱へ移動 操作履歴出力アドバイス -->
+	<bean id="disposeToWsDocumentOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2057"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ドキュメント システムごみ箱へ移動 操作履歴出力アドバイス -->
+	<bean id="disposeToSysDocumentOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2032"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメント削除 操作履歴出力アドバイス -->
+	<bean id="deleteDocumentOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2070"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメントチェックアウト 操作履歴出力アドバイス -->
+	<bean id="checkoutDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2011"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメントチェックアウト取消 操作履歴出力アドバイス -->
+	<bean id="cancelCheckoutDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2009"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ドキュメントバージョン削除 操作履歴出力アドバイス -->
+	<bean id="deleteVersionDocumentOperationHistoryAdvice" parent="multipleDocumentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2070"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ドキュメント原本ファイル差し替え 操作履歴出力アドバイス -->
+	<bean id="replaceOriginalFileDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2071"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	<!-- ドキュメント公開ファイル差し替え 操作履歴出力アドバイス -->
+	<bean id="replacePublicFileDocumentOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2072"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+	
+	<!-- ■■■■■■■■■ -->
+	<!--    セキュリティ    -->
+	<!-- ■■■■■■■■■ -->
+	
+	<!-- セキュリティ削除 操作履歴出力アドバイス -->
+	<bean id="deleteSecurityOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="1046"/>
+		<property name="recordInfoIdA" value="2"/>
+		<property name="recordTypeIdA" value="9"/>
+		<!-- パラメータ変換 -->
+		<property name="parameterConverterForTargetA" ref="securityDomainToObjectConverter"/>
+	</bean>
+	
+	
+	<!-- ■■■■■■■■■ -->
+	<!--   パラメータ変換   -->
+	<!-- ■■■■■■■■■ -->
+	<!-- SecurityDomainからObjectDomainを生成 -->
+	<bean id="securityDomainToObjectConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.SecurityDomainToObjectConverterPlugInImpl"/>
+	
+	
+	<aop:config>
+		<!-- ■■■■■■■■■ -->
+		<!--   ワークスペース   -->
+		<!-- ■■■■■■■■■ -->
+		
+		<!-- ワークスペース作成　操作履歴出力 -->
+		<aop:aspect order="50" ref="createWorkspaceOperationHistoryAdvice">
+			<aop:after-returning
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.WorkspaceServiceImpl.create(..))"
+				returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		<!-- ワークスペース更新　操作履歴出力 -->
+		<aop:aspect order="30" ref="updateWorkspaceOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.WorkspaceServiceImpl.update(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ワークスペース削除　操作履歴出力 -->
+		<aop:aspect order="30" ref="deleteWorkspaceOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.WorkspaceServiceImpl.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ■■■■■■■■■ -->
+		<!--      フォルダ      -->
+		<!-- ■■■■■■■■■ -->
+		
+		<!-- フォルダ作成　操作履歴出力 -->
+		<aop:aspect order="50" ref="createFolderOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetailWriteInPathFromFolderDomain"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.create(..,..))"
+				returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- フォルダ移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveFolderOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- フォルダ移動（ワークスペースごみ箱から復帰）　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveFolderFromWsOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainIdForBackFromWsRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+				
+		<!-- フォルダ移動（システムごみ箱から復帰）　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveFolderFromSysOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainIdForBackFromSysRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- フォルダ ワークスペースごみ箱へ移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="disposeToWsFolderOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainIdToWsRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.dispose(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+				
+		<!-- フォルダ システムごみ箱へ移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="disposeToSysFolderOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainIdToSysRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.dispose(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- フォルダ削除　操作履歴出力 -->
+		<aop:aspect order="30" ref="deleteFolderOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromFolderDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ■■■■■■■■■ -->
+		<!--   ドキュメント     -->
+		<!-- ■■■■■■■■■ -->
+		
+		<!-- ドキュメント登録　操作履歴出力 -->
+		<aop:aspect order="50" ref="createDocumentOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetailWriteInPathFromDocumentDomain"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.create(..,..,..))"
+				returning="arg0"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントダウンロード(原本ファイル)　操作履歴出力 -->
+		<aop:aspect order="30" ref="downloadOriginalDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.getOriginalFile(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントダウンロード(公開ファイル)　操作履歴出力 -->
+		<aop:aspect order="30" ref="downloadPublicDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.getPublicFile(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメント移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathForMoveDocument"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+				
+		<!-- ドキュメント移動（ワークスペースごみ箱から復帰）　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveDocumentFromWsOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathForMoveDocumentForBackFromWsRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		<!-- ドキュメント移動（システムごみ箱から復帰）　操作履歴出力 -->
+		<aop:aspect order="30" ref="moveDocumentFromSysOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathForMoveDocumentForBackFromSysRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.move(..,..)) and args(arg0,arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントワークスペースごみ箱へ移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="disposeToWsDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainIdToWsRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.dispose(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントシステムごみ箱へ移動　操作履歴出力 -->
+		<aop:aspect order="30" ref="disposeToSysDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainIdToSysRecBox"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.dispose(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメント削除　操作履歴出力 -->
+		<aop:aspect order="30" ref="deleteDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントチェックアウト　操作履歴出力 -->
+		<aop:aspect order="40" ref="checkoutDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.checkout(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントチェックアウト取消　操作履歴出力 -->
+		<aop:aspect order="30" ref="cancelCheckoutDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.cancelCheckout(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ドキュメントバージョン削除　操作履歴出力 -->
+		<aop:aspect order="30" ref="deleteVersionDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathAndRevision"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.deleteRevision(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		<!-- ドキュメントチェックイン　操作履歴出力 -->
+		
+		<aop:aspect order="30" ref="replaceOriginalFileDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.replaceOriginalFile(..,..)) and args(arg0,..)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- 公開ドキュメント差替え　操作履歴出力 -->
+		<aop:aspect order="30" ref="replacePublicFileDocumentOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathFromDocumentDomainID"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl.replacePublicFile(..,..)) and args(arg0,..)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+		
+		<!-- ■■■■■■■■■ -->
+		<!--    セキュリティ    -->
+		<!-- ■■■■■■■■■ -->
+		
+		<!-- セキュリティ削除　操作履歴出力 -->
+		<aop:aspect order="30" ref="deleteSecurityOperationHistoryAdvice">
+			<aop:before
+				method="create"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.impl.DocumentSecurityServiceImpl.delete(..)) and args(arg0)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>

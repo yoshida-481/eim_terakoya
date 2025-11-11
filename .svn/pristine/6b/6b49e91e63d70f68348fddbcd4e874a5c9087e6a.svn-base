@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<!-- =========== -->
+	<!-- Service実装 -->
+	<!-- =========== -->
+
+	<!-- サムネイル・プレビューファイルサービス -->
+	<bean id="thumbnailPreviewService" class="jp.co.ctc_g.eim.app.document.business.service.impl.ThumbnailPreviewServiceImpl" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="fileDao" ref="fileDao2WithFormatDaoLight2"/>
+		<property name="convertDocumentService" ref="convertDocumentService"/>
+	</bean>
+
+	<!-- サムネイル・プレビューファイル変換サービス -->
+	<bean id="convertDocumentService" class="jp.co.ctc_g.eim.app.document.business.service.impl.ConvertDocumentServiceImpl">
+		<property name="objectService" ref="objectService2"/>
+		<property name="fileDao" ref="fileDao2WithDirectoryDisabledUpdateMInfo"/>
+		<property name="convertDocumentAsyncService" ref="convertDocumentAsyncService"/>
+	</bean>
+
+	<!-- サムネイル・プレビューファイル変換サービス -->
+	<bean id="convertDocumentAsyncService" class="jp.co.ctc_g.eim.app.document.business.service.impl.ConvertDocumentAsyncServiceImpl">
+		<property name="objectService" ref="objectServiceWithoutAttribute"/>
+		<property name="fileDao" ref="fileDao2WithDirectoryDisabledUpdateMInfo"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="directoryService" ref="directoryService2"/>
+		<property name="taskExecutor" ref="thumbnailPreviewTaskExecutor"/>
+		<property name="asyncTxControlObjectDao" ref="asyncTxControlObjectDao"/>
+	</bean>
+
+	<!-- ========== -->
+	<!-- 非同期処理 -->
+	<!-- ========== -->
+
+	<!-- 非同期Executorアノテーション有効化 -->
+	<task:annotation-driven executor="thumbnailPreviewTaskExecutor"/>
+
+	<!-- サムネイル・プレビューファイル変換Executor -->
+	<bean id="thumbnailPreviewTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="6"/>
+		<property name="maxPoolSize" value="6"/>
+		<property name="queueCapacity" value="100000"/>
+		<property name="threadNamePrefix" value="ThumbnailPreviewTask-"/>
+	</bean>
+
+</beans>

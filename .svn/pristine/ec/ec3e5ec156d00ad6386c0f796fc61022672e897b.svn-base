@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- ================================================================================ -->
+	<!-- JOB実行制御設定ファイル                                                          -->
+	<!--     同一Jobの同時実行を回避するために使用するJOB実行制御クラスの設定を行います。 -->
+	<!-- ================================================================================ -->
+
+	<!-- =========== -->
+	<!-- Service定義 -->
+	<!-- =========== -->
+
+	<!-- Job実行制御サービス(タイムアウト時間内) -->
+	<bean id="jobControlWithinTimeService" class="jp.co.ctc_g.eim.framework2.business.service.impl.JobControlWithinTimeServiceImpl" >
+		<property name="jobControlDao" ref="jobControlDao2" />
+		<!-- 最大ロック時間(分) -->
+		<property name="maxLockMinutes" value="${JOB_MAX_LOCK_MINUTE}" />
+	</bean>
+
+	<!-- =========== -->
+	<!-- Dao定義 -->
+	<!-- =========== -->
+
+	<!-- Job実行制御Dao -->
+	<bean id="jobControlDao2" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.JobControlDaoImpl" />
+
+	<!-- ========================== -->
+	<!-- 宣言型トランザクション設定 -->
+	<!-- ========================== -->
+
+	<!-- トランザクション境界アドバイス (REQUIRES_NEW:境界内の子階層でもトランザクション制御を行う) -->
+	<tx:advice id="txAdviceReqNew" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Throwable" propagation="REQUIRES_NEW" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 時間内実行不可制御用 ポイントカット設定 -->
+	<aop:config>
+		<aop:pointcut id="jobControlOperation"
+			expression="execution(* jp.co.ctc_g.eim.framework2.business.dao.JobControlDao.create(..)) or
+						execution(* jp.co.ctc_g.eim.framework2.business.service.impl.JobControlWithinTimeServiceImpl.*(..))" />
+		<aop:advisor advice-ref="txAdviceReqNew" order="1" pointcut-ref="jobControlOperation" />
+	</aop:config>
+
+</beans>

@@ -1,0 +1,27 @@
+# Common
+
+# IndexBase
+EIM.ERROR.INPUT.NO.ID=No ID is specified.
+EIM.ERROR.INPUT.NO.FILE.PATH=No physical file path is specified.
+EIM.ERROR.LOGIC.NO.STRING.SUGGEST.KEYWORD=Since the field [{0}] is not a character string type, it cannot be registered as a suggestion keyword.
+EIM.ERROR.LOGIC.NO.FOUND.FILE.PATH=The file with the physical file path [{0}] does not exist.
+EIM.ERROR.LOGIC.FAILED.EXTRACT.FILE.PATH=Failed to extract the text of the physical file path [{0}].
+EIM.ERROR.INPUT.NO.FIELD.DATA.TO.UPDATE=No field data has been specified to update.
+EIM.ERROR.LOGIC.CAN.NOT.LIST.TYPE=List type cannot be set. I need an array.
+EIM.ERROR.INPUT.NO.REAL.FILE.PATH.SPECIFIED=Full text extraction is not possible because the actual file path is not specified. Skip.[ID:{0}]
+EIM.ERROR.LOGIC.NO.SOLRCLIENT.CONTEXT=SolrClientContext is not set in the thread local variable [{0}].
+
+EIM.INFO.LOGIC.EXECUTED.FULLTEXT.FIELD.UPDATE=The file full-text field of object ID [{0}] has been updated. [{1}]
+EIM.INFO.LOGIC.OBJECT.NOT.UPDATED=Object ID [{0}] The object attribute of the sequence [{1}] has not been updated and will be skipped.
+EIM.INFO.LOGIC.EXECUTED.OBJECT.INDEX.UPDATE=The object ID [{0}] sequence [{1}] has been updated for the object index. [{2}]
+EIM.INFO.LOGIC.EXECUTED.PAGE.INDEX.UPDATE=Updated the page index of object ID [{0}]. [{1}]
+EIM.INFO.LOGIC.EXECUTED.KEYWORD.INDEX.UPDATE=Updated the keyword index for object ID [{0}]. [{1}]
+EIM.INFO.LOGIC.EXECUTED.OBJECT.INDEX.DELETE=The object ID [{0}] has been deleted from the object index.
+EIM.INFO.LOGIC.EXECUTED.KEYWORD.INDEX.DELETE=The object ID [{0}] has been deleted from the keyword index.
+EIM.INFO.LOGIC.EXECUTED.PAGE.INDEX.DELETE=The object ID [{0}] has been deleted from the page index.
+
+EIM.ERROR.LOGIC.INDEX.UPDATE.FAILURE=An error occurred during the index update process.
+EIM.INFO.LOGIC.INDEX.UPDATE.COMPLETE=The index update process has completed without error.
+
+# SearchApi
+EIM.ERROR.LOGIC.UNSUPPORTED.DATE.FACET=Unsupported date facet units. [{0}]

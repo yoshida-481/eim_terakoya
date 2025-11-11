@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context path="/eim" docBase="eim" reloadable="false">
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+	<Resource
+		name="jdbc/eimdb"
+		type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp2.BasicDataSourceFactory"
+		driverClassName="oracle.jdbc.OracleDriver"
+		url="jdbc:oracle:thin:@localhost:1521:EIM"
+		username="docv6190" password="docv6190"
+		accessToUnderlyingConnectionAllowed="true"
+		auth="Container"
+		maxTotal="128"
+		logAbandoned="true" removeAbandonedTimeout="60"
+		removeAbandonedOnBorrow="true" removeAbandonedOnMaintenance="true" />
+	<Resource
+		name="jdbc/eimdbLock"
+		type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp2.BasicDataSourceFactory"
+		driverClassName="oracle.jdbc.OracleDriver"
+		url="jdbc:oracle:thin:@localhost:1521:EIM"
+		username="docv6190" password="docv6190"
+		accessToUnderlyingConnectionAllowed="true"
+		auth="Container"
+		maxTotal="128"
+		logAbandoned="true" removeAbandonedTimeout="60"
+		removeAbandonedOnBorrow="true" removeAbandonedOnMaintenance="true" />
+</Context>

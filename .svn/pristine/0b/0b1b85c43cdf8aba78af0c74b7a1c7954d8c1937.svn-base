@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ================================= -->
+	<!-- データ収集JOB起動スケジュール設定 -->
+	<!-- ================================= -->
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="stop">
+		<property name="triggers">
+			<list>
+				<!-- コンテンツ属性 -->
+				<ref bean="gatherContentsAttributesJobTrigger" />
+				<!-- ファイル全文 -->
+				<ref bean="gatherDocsAndFullTextJobTrigger" />
+				<!-- 親フォルダ・ワークスペース参照元 -->
+				<ref bean="gatherParentRefJobTrigger" />
+				<!-- システム管理情報参照元 -->
+				<ref bean="gatherAdminRefJobTrigger" />
+			</list>
+		</property>
+		<property name="autoStartup" value="true" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+	</bean>
+
+	<!-- コンテンツ属性用 -->
+	<bean id="gatherContentsAttributesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="gatherContentsAttributesJobDetail" />
+		<property name="cronExpression" value="0/10 * * * * ?" />
+	</bean>
+
+	<!-- ファイル全文用 -->
+	<bean id="gatherDocsAndFullTextJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="gatherDocsAndFullTextJobDetail" />
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+
+	<!-- 親フォルダ・ワークスペース参照元用 -->
+	<bean id="gatherParentRefJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="gatherParentRefJobDetail" />
+		<property name="cronExpression" value="5/10 * * * * ?" />
+	</bean>
+
+	<!-- システム管理情報参照元用 -->
+	<bean id="gatherAdminRefJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="gatherAdminRefJobDetail" />
+		<property name="cronExpression" value="0 0 22 * * ?" />
+	</bean>
+
+	<!-- ============================= -->
+	<!-- データ収集JOB対象メソッド設定 -->
+	<!-- ============================= -->
+
+	<!-- コンテンツ属性用 -->
+	<bean id="gatherContentsAttributesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="gatheringContentsAttributesJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+	<!-- ファイル全文用 -->
+	<bean id="gatherDocsAndFullTextJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="gatheringDocsAndFullTextJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+	<!-- 親フォルダ・ワークスペース参照元用 -->
+	<bean id="gatherParentRefJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="gatheringParentRefJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+	<!-- システム管理情報参照元用 -->
+	<bean id="gatherAdminRefJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="gatheringAdminRefJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+</beans>

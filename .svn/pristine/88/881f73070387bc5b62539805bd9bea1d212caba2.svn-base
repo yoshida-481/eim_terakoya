@@ -1,0 +1,25 @@
+#############externalIFOptions##############
+
+# Value separeter for update multiple attribute
+EIM.COMMAND.SERPARATER=,
+# Date format for update attribute
+EIM.COMMAND.DATE.FORMAT=yyyy/MM/dd HH:mm:ss
+# Date format for find objects
+EIM.COMMAND.FIND.COMMAND.DATE.FORMAT=yyyy/MM/dd
+# Default folder type for mkdir
+EIM.COMMAND.MKDIR.DEFAULT.FOLDER.TYPE=\u30d5\u30a9\u30eb\u30c0
+
+# Object Kind
+EIM.COMMAND.KIND.FOLDER=f
+EIM.COMMAND.KIND.DOCUMENT=d
+EIM.COMMAND.KIND.TAG=t
+
+# prefix for mapping inner error to external error
+EIM.COMMAND.IN.EX.ERROR.MAPPING.PREFIX=EXTERNAL.ERRORCODE
+
+### Signature and Encryption for externalIFOptions
+EIM.COMMAND.SSH = /usr/bin/ssh
+EIM.COMMAND.SSH.HOST = sphinx2-sig.ccm.canon.co.jp
+EIM.COMMAND.SSH.USER = weblogic
+EIM.COMMAND.VERIFY = /home/weblogic/batch/eim_unixBatch/verify
+EIM.COMMAND.VERSION = home/weblogic/batch/eim_unixBatch/version

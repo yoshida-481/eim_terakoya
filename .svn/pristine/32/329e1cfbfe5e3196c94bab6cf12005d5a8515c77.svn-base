@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SysFuncEntryConf>
+
+	<sysFuncList>
+		<!-- ダミーシステム処理（キーに対応するbeanが無いので動作しません） -->
+		<!-- 
+		<sysFunc key="dummySysFunc" id="-2000">
+				<nameList>
+					<name lang="JA" langname="デフォルトシステム処理" />
+					<name lang="EN" langname="Default System Process" />
+				</nameList>
+		</sysFunc>
+		-->
+	</sysFuncList>
+
+</SysFuncEntryConf>
