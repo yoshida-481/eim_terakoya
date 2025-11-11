@@ -1,5 +1,0 @@
-# Solr
-EIM.INFO.LOGIC.NOT.EXIST.INDEX.DATA=The search index target data did not exist.
-EIM.INFO.LOGIC.GET.INDEX.DATA=The search index target data has been acquired. [{0}]
-EIM.INFO.LOGIC.NOT.EXIST.SECURITY.INFO=Security information did not exist.
-EIM.INFO.LOGIC.GET.SECURITY.INFO=Obtained security information. [{0}]

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nodes attrTreeId="[id_1]" attrTreeValue1="2" attrTreeValue2="1025449200000">
-<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F21" objId="[id_F21]" objTypeId="[tid_F21]" objTypeName="フォルダ">
-</node>
-<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F6" objId="[id_F6]" objTypeId="[tid_F6]" objTypeName="フォルダ">
-</node>
-</nodes>

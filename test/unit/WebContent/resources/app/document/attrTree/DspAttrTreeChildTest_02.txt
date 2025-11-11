@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nodes attrTreeId="[id_1]" attrTreeValue1="2">
-<node isBranch="true" isLeaf="true" isSearch="false" isWorkFlowFolder="false" label="2002-06-01" objTypeName="‘®«" value="1022857200000">
-</node>
-<node isBranch="true" isLeaf="true" isSearch="false" isWorkFlowFolder="false" label="2002-07-01" objTypeName="‘®«" value="1025449200000">
-</node>
-<node isBranch="true" isLeaf="true" isSearch="false" isWorkFlowFolder="false" label="" objTypeName="‘®«" value="">
-</node>
-</nodes>

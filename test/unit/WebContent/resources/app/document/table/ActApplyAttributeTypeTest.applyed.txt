@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<attTypes>
-<attType attTypeId="20" attTypeName="パス" valTypeId="2" valTypeName="文字列型">
-</attType>
-<attType attTypeId="22" attTypeName="改訂内容" valTypeId="2" valTypeName="文字列型">
-</attType>
-<attType attTypeId="21" attTypeName="プロパティ" valTypeId="2" valTypeName="文字列型">
-</attType>
-</attTypes>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nodes>
-<node isSearch="true" isWorkflowFolder="false" label="A-proj-X" objId="[id_A-proj-X]" objTypeId="[tid_A-proj-X]" objTypeName="ワークスペース">
-<node isBranch="true" isSearch="false" isWorkflowFolder="true" label="F5" objId="[id_F5]" objTypeId="[tid_F5]" objTypeName="フォルダ">
-</node>
-<node isBranch="true" isSearch="false" isWorkflowFolder="false" label="F6" objId="[id_F6]" objTypeId="[tid_F6]" objTypeName="フォルダ">
-</node>
-</node>
-</nodes>

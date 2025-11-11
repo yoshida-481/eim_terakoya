@@ -1,5 +1,0 @@
-1.OutOfMemory時のSolr停止
-
-Solr v8で、SolrでOutOfMemoryErrorが発生した際、oom_solr.shを実行して自身のプロセスを強制終了するような設定が行われていました。
-Solr v9ではJavaの起動オプションとして-XX:+CrashOnOutOfMemoryErrorを指定することで代替しています。
-強制終了を回避する必要がある場合は、起動スクリプトを修正してJavaの起動オプションの指定を除去して下さい。
