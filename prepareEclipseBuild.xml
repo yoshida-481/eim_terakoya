@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eim-prepareEclipseBuild" default="prepareAll" basedir=".">
+	<property file="build.properties"/>
+	<property name="webdir" value="WebContent"/>
+	<property name="javasrcdir" value="${webdir}/javasrc"/>
+
+	<property name="workDir" value="release_work"/>
+	<property name="workWebappDir" value="${workDir}/webapp"/>
+
+	<!-- compiler output dir -->
+	<property name="javadestdir" value="${workWebappDir}/WEB-INF/classes"/>
+
+	<!-- release type -->
+	<property name="eimOrsphinx" value="eim"/>
+	<property name="eimOrSphinx" value="eim"/>
+	<property  name="cssType" value="default"/>
+
+	<target name="prepareAll">
+		<antcall target="CopyWebContextFiles"/>
+		<antcall target="CopyLibraries"/>
+		<antcall target="CopyProperties"/>
+	</target>
+
+	<!-- ====================== -->
+	<!-- Copy Web Context Files -->
+	<!-- ====================== -->
+	<target name="CopyWebContextFiles">
+		<copy todir="${workWebappDir}/WEB-INF">
+			<fileset dir="${webdir}/WEB-INF" includes="web_${eimOrSphinx}.xml"/>
+			<mapper type="merge" to="web.xml"/>
+		</copy>
+	</target>
+
+	<!-- ============== -->
+	<!-- Copy Libraries -->
+	<!-- ============== -->
+	<target name="CopyLibraries">
+		<copy todir="${workWebappDir}/WEB-INF/lib">
+			<fileset dir="${webdir}/WEB-INF/lib" includes="*.jar" excludes="ProMoCIPFilter.jar, WWZZBCookies.jar"/>
+		</copy>
+	</target>
+
+	<!-- ==================== -->
+	<!-- Copy Java Properties -->
+	<!-- ==================== -->
+	<target name="CopyProperties">
+		<copy file="${javasrcdir}/EimOpeHistConf_eim.xml" tofile="${javadestdir}/EimOpeHistConf.xml"/>
+		<copy todir="${javadestdir}" >
+			<fileset dir="${javasrcdir}" includes="config_eim_option.properties" />
+			<mapper type="merge" to="config_option.properties" />
+		</copy>
+		<concat destfile="${javadestdir}/resource_doc_ja.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_ja.properties"/>
+	    		<include name="resource_${eimOrsphinx}_ja.properties"/>
+	    		<include name="resource_dm_ja.properties"/>
+	    	</fileset>
+	    </concat>
+		<concat destfile="${javadestdir}/resource_doc_en.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_en.properties"/>
+	    		<include name="resource_${eimOrsphinx}_en.properties"/>
+		    		<include name="resource_dm_en.properties"/>
+	    	</fileset>
+		</concat>
+	</target>
+
+</project>

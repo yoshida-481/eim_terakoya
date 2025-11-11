@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- ================================================================================ -->
+	<!-- ファイル変換処理に必要なintegration層の定義                                      -->
+	<!-- ================================================================================ -->
+
+	<!-- =========== -->
+	<!-- Dao定義 -->
+	<!-- =========== -->
+
+	<!-- 非同期トランザクション制御用オブジェクトDao -->
+	<bean id="asyncTxControlObjectDao" class="jp.co.ctc_g.eim.app.document.integration.dao.impl.AsyncTxControlObjectDaoImpl" >
+	</bean>
+
+	<!-- ========================== -->
+	<!-- 宣言型トランザクション設定 -->
+	<!-- ========================== -->
+
+	<!-- トランザクション境界アドバイス (REQUIRES_NEW:トランザクション境界内でも新たにトランザクション境界を設ける) -->
+	<tx:advice id="txAdviceAsyncTxControl" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Throwable" propagation="REQUIRES_NEW" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 非同期トランザクション制御用 ポイントカット設定 -->
+	<aop:config>
+		<aop:pointcut id="asyncTxControlOperation"
+			expression="execution(* jp.co.ctc_g.eim.app.document.business.dao.AsyncTxControlObjectDao.*(..))" />
+		<aop:advisor advice-ref="txAdviceAsyncTxControl" order="1" pointcut-ref="asyncTxControlOperation" />
+	</aop:config>
+
+</beans>

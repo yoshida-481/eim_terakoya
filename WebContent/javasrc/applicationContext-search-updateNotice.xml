@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 設定ファイル読込  -->
+	<!-- PropertyPlaceholder データソースの取得元 -->
+	<!--
+		applicationContext-fw.xmlでconfig設定ファイルを読み込む設定をしているが、
+		EIMANAGERを使用していない環境に更新通知APIを追加する場合は、
+		このアプリケーションコンテキストファイルだけを提供するので
+		ここでもconfig設定ファイルを読み込む設定を定義する
+	-->
+	<!--
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config_search.properties</value>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+	-->
+
+	<!-- 更新通知APIサービス（Webアプリケーション用） -->
+	<bean id="updateNoticeService" class="jp.co.ctc_g.eim.search.core.updateNotice.business.service.impl.UpdateNoticeServiceImpl">
+		<property name="dataTypeList" value="-"/>
+		<property name="updateNoticeConfig" value="${UPDATE_NOTICE_CONFIG}"/>
+		<property name="commitCnt" value="${COMMIT_CNT}"/>
+		<property name="targetLimit" value="${TARGET_LIMIT}"/>
+		<property name="updateNoticeDao">
+			<ref bean="updateNoticeDao"/>
+		</property>
+	</bean>
+
+	<!-- 更新通知DAO -->
+	<bean id="updateNoticeDao" class="jp.co.ctc_g.eim.search.core.updateNotice.integration.dao.impl.UpdateNoticeDaoImpl">
+		<property name="dbCharCodeSet" value="${SEARCH_FW_DB_CHARCODE_SET}"/>
+	</bean>
+
+	<!-- 更新通知アドバイス -->
+	<bean id="updateNoticeAdvice" class="jp.co.ctc_g.eim.search.core.updateNotice.common.aop.advice.UpdateNoticeAdvice">
+		<property name="updateNoticeService" ref="updateNoticeService" />
+		<property name="objectTypeService" ref="objectTypeServiceForSearch" />
+	</bean>
+
+</beans>

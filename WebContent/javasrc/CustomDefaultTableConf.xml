@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CustomTableLayoutConf>
+	
+	<!-- 階層の表示設定をしてください -->
+	<tableList>
+		<!-- <table definitionName="table_1">
+		</table>
+		<table definitionName="table_2">
+			<table definitionName="table_2-1"/>
+		</table> -->
+
+	</tableList>
+	
+	<!-- 以下で各テーブルの表示内容を定義してください -->
+	<tableAttributeTypeList>
+		<!--  
+		<tableInfo definitionName="table_1">
+			<nameList>
+				<name lang="JA" langname="テーブル1" />
+				<name lang="EN" langname="Table1" />
+			</nameList>
+			<attributeTypeList>
+				<value>属性タイプA</value>
+				<value>属性タイプB</value>
+				<value>属性タイプC</value>
+			</attributeTypeList>
+		</tableInfo>
+		
+		<tableInfo definitionName="table_2">
+			<nameList>
+				<name lang="JA" langname="テーブル2" />
+				<name lang="EN" langname="Table2" />
+			</nameList>
+		</tableInfo>
+		<tableInfo definitionName="">
+			<nameList>
+				<name lang="JA" langname="テーブル2_1" />
+				<name lang="EN" langname="Table2_1" />
+			</nameList>
+			<attributeTypeList>
+				<value>属性タイプD</value>
+				<value>属性タイプE</value>
+				<value>属性タイプF</value>
+			</attributeTypeList>
+		</tableInfo>
+		-->
+	</tableAttributeTypeList>
+</CustomTableLayoutConf>
+

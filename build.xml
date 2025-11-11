@@ -1,0 +1,1457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eim" default="eimAll" basedir=".">
+	<property file="build.properties"/>
+	<!-- source & resources -->
+	<property name="webdir" value="WebContent"/>
+	<property name="batchdir" value="agent"/>
+	<property name="javasrcdir" value="${webdir}/javasrc"/>
+	<property name="serverLibDir" value="server/ap_server_lib" />
+	<property name="spring-batch.libdir" value="server/spring-batch_lib" />
+	<property name="flexsrcdir" value="flex"/>
+	<property name="flexpropertiesdir" value="flex/resource"/>
+	<property name="clientdir" value="client"/>
+
+	<!-- compiler output dir -->
+	<property name="javadestdir" value="${webdir}/WEB-INF/classes"/>
+	<property name="flexdestdir" value="flex/build"/>
+
+	<!-- online release filename & path -->
+	<property name="releasedir" value="release"/>
+	<property name="warfile" value="eim.war"/>
+	<property name="adminWarfile" value="eimadmin.war"/>
+	<property name="formAdminWarfile" value="eimformadmin.war"/>
+	<property name="jarfile.online" value="eimDoc.jar"/>
+	<property name="jarfile.command" value="eim-command.jar"/>
+
+	<!-- 汎用システム管理単体リリースのために追加 -->
+	<property name="workDir" value="release_work"/>
+	<property name="workWebappDir" value="${workDir}/webapp"/>
+	<property name="workExifWebappDir" value="${workDir}/Exifwebapp"/>
+	<property name="releasedir.oracle" value="${releasedir}/oracle"/>
+	<property name="releasedir.postgresql" value="${releasedir}/postgresql"/>
+	<property name="pdftmpdir" value="${workWebappDir}/pdftmp"/>
+	<property name="publish" value="${workWebappDir}/admin/publish"/>
+	<property name="workspaceManagementAppDir" value="${workWebappDir}/app/document/workspace" />
+	<property name="workspaceManagementAdminDir" value="${workWebappDir}/admin/workspace" />
+	<property name="commonUser" value="${workWebappDir}/common/user"/>
+	<property name="commonOpehist" value="${workWebappDir}/common/opehist"/>
+	<property name="workWebappAdminIndexJsp" value="${workWebappDir}/admin/index.jsp"/>
+	<property name="workWebappAdminIndexGeneralJsp" value="${workWebappDir}/admin/indexGeneral.jsp"/>
+	<property name="workWebappAdminIndexFormJsp" value="${workWebappDir}/admin/indexForm.jsp"/>
+	<property name="workflowConfXMLForm" value="WorkFlowConf_form.xml"/>
+	<property name="workflowConfXMLEIM" value="WorkFlowConf.xml"/>
+	<property name="mailtypeConfXMLForm" value="MailTypeConf_form.xml"/>
+	<property name="mailtypeConfXMLEIM" value="MailTypeConf.xml"/>
+
+	<!-- batch release filename & path -->
+	<property name="releasedir.batch" value="${releasedir}/agent"/>
+	<property name="jarfile.batch" value="eimDocBatch.jar"/>
+	<!-- unix batch release filename & path -->
+	<property name="releasedir.batch.docUnix" value="${releasedir.batch}/docUnix"/>
+	<property name="zipfile.docUnixBatch" value="docUnixBatch.zip"/>
+	<!-- docUnixEIMPack batch release filename & path -->
+	<property name="releasedir.batch.docUnixEIMPack" value="${releasedir.batch}/docUnixEIMPack"/>
+	<property name="zipfile.docUnixEIMPackBatch" value="docUnixEIMPackBatch.zip"/>
+	<!-- docUnixOption batch release filename & path -->
+	<property name="releasedir.batch.docUnixOption" value="${releasedir.batch}/docUnixOption"/>
+	<property name="zipfile.docUnixOptionBatch" value="docUnixOptionBatch.zip"/>
+	<!-- pdf(windows) batch release filename & path -->
+	<property name="releasedir.batch.pdf" value="${releasedir.batch}/pdf"/>
+	<property name="zipfile.pdfBatch" value="pdf.zip"/>
+	<!-- ocr(windows) batch release filename & path -->
+	<property name="releasedir.batch.ocr" value="${releasedir.batch}/ocr"/>
+	<property name="zipfile.ocrBatch" value="ocr.zip"/>
+	<!-- migration(windows) batch release filename & path -->
+	<property name="releasedir.batch.migration" value="${releasedir.batch}/migration"/>
+	<property name="zipfile.migrationBatch" value="migration.zip"/>
+	<!-- attributeupdate batch release filename & path -->
+	<property name="releasedir.batch.attributeupdate" value="${releasedir.batch}/attributeupdate"/>
+	<property name="zipfile.attributeupdateBatch" value="attributeupdateBatch.zip"/>
+	<!-- maintenance batch release filename & path -->
+	<property name="releasedir.batch.maintenance" value="${releasedir.batch}/maintenance"/>
+	<property name="zipfile.maintenanceBatch" value="maintenanceBatch.zip"/>
+
+	<!-- file list creator -->
+	<property name="jarfile.fileList" value="FileListCreator.jar"/>
+
+	<!-- multi-instance option -->
+	<property name="liblary.multi-instance" value="Multi-Instance-lib.zip"/>
+
+	<!-- javac option -->
+	<property name="javac.opt.debug" value="true"/>
+
+	<!-- Revision Text File Name -->
+	<property name="revision.file" value="${workWebappDir}/revision.txt"/>
+
+	<!-- Version File Name -->
+	<property name="version.file" value="config_doc_version.properties"/>
+
+	<!-- Init Script -->
+	<property name="scriptdir" value="script"/>
+	<property name="scriptfile" value="${releasedir}/initDocScript.zip"/>
+	<property name="releasedir.initDocScript" value="${releasedir}/initDocScript"/>
+	<property name="releasedir.initDocScript.config" value="${releasedir}/initDocScript/config"/>
+	<property name="releasedir.initDocScript.lib" value="${releasedir}/initDocScript/lib"/>
+
+	<!-- Solr configuration & tools -->
+	<property name="solrdir" value="solr"/>
+	<property name="zipfile.solr" value="${releasedir}/solr.zip"/>
+
+	<!-- ============================================= -->
+	<!-- Build eimAll(標準品) -->
+	<!-- ============================================= -->
+	<target name="eimAll">
+		<property  name="eimOrsphinx" value="eim"/>
+		<property  name="option"  value="eim"/>
+		<property  name="cssType" value="default"/>
+		<antcall target="JavaBuild"/>
+		<antcall target="ReleaseMake"/>
+		<antcall target="ReleaseBatchMake"/>
+		<antcall target="ReleaseOracleMake"/>
+		<antcall target="ReleasePostgresqlMake"/>
+		<antcall target="ReleaseInitScriptMake"/>
+		<antcall target="ReleaseSolrMake"/>
+<!--
+		<antcall target="jsp2javasrc"/>
+        <antcall target="jspcompile"/>
+-->
+	</target>
+	<!-- ============================================= -->
+	<!-- Build Sphinx(crossdomain用)-->
+	<!-- ============================================= -->
+	<target name="sphinxAll">
+
+		<property  name="cssType" value="default"/>
+		<property  name="option"  value="sphinx"/>
+		<property  name="eimOrsphinx" value="sphinx"/>
+		<antcall target="sphinxCommon"/>
+	</target>
+	<!-- ============================================= -->
+	<!-- Build ProMoAll(forProMo用)-->
+	<!-- ============================================= -->
+	<target name="ProMoAll">
+		<property  name="cssType" value="meiryo"/>
+		<property  name="option"  value="proMo"/>
+		<property  name="eimOrsphinx" value="sphinx"/>
+		<antcall target="sphinxCommon"/>
+		<antcall target="mkAsperaDocumentSWC"/>
+	</target>
+	<!-- ============================================= -->
+	<!-- Sphinx、SphinxStandalone共通-->
+	<!-- ============================================= -->
+	<target name="sphinxCommon">
+		<antcall target="SphinxJavaBuild"/>
+		<antcall target="SphinxReleaseMake"/>
+		<antcall target="SphinxReleaseBatchMake"/>
+		<antcall target="ReleaseToolMake"/>
+		<antcall target="ProMoCIPFilterMake"/>
+		<antcall target="SphinxReleaseOracleMake"/>
+		<antcall target="exif"/>
+	<!--
+		<antcall target="jsp2javasrc"/>
+	    <antcall target="jspcompile"/>
+	-->
+	</target>
+	<!-- ============================================= -->
+	<!-- Build exifOnly(外部連携IFモジュールのみ) -->
+	<!-- ============================================= -->
+	<target name="exif">
+		<property  name="eimOrsphinx" value="sphinx"/>
+		<!-- 現状ProMo用出荷のみなのでcssはメイリオ指定。標準品での出荷の際はdefaultにすること -->
+		<property  name="cssType" value="meiryo"/>
+		<antcall target="JavaBuild"/>
+		<antcall target="ExifModuleReleaseMake"/>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- SVNレビジョンをリリースフォルダに埋め込む -->
+	<!-- ============================================= -->
+	<!-- SVN1.4クライアントで動作している前提。1.5用のクライアントに対応するには下記から対応するjarを取得する -->
+	<!-- http://subclipse.tigris.org/svnant.html -->
+	<path id="svnant.classpath">
+		<fileset dir="bin/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" />
+	<target name="PrintRevision">
+		<!--<svn>
+			<status path="." revisionProperty="wc.revision" urlProperty="wc.url"/>
+		</svn>-->
+	    <tstamp>
+	    	<format property="build_time"  pattern="yyyy/MM/dd HH:mm:ss" />
+	    </tstamp>
+		<echo>
+			Build revision : ${wc.revision}
+			Build time : ${build_time}
+		</echo>
+		<echo file="${revision.file}">
+			Build revision : ${wc.revision}
+			Build time : ${build_time}
+		</echo>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Build Java(標準品) -->
+	<!-- ============================================= -->
+	<target name="JavaBuild">
+		<antcall target="CleanJavaDest"/>
+		<copy todir="${javadestdir}">
+			<fileset dir="${javasrcdir}" includes="*.properties" excludes="*option.properties,resource_*_*.properties,*_exif.properties"/>
+			<fileset dir="${javasrcdir}" includes="resource_eim_form_*.properties"/>
+			<fileset dir="${javasrcdir}" includes="resource_doc_api_*.properties"/>
+			<fileset dir="${javasrcdir}" includes="resource_search_*.properties"/>
+			<fileset dir="${javasrcdir}" includes="*.xml" excludes="*_*.xml"/>
+			<fileset dir="${javasrcdir}" includes="*.dtd"/>
+			<fileset dir="${javasrcdir}" includes="search.form.json"/>
+			<fileset dir="${javasrcdir}" includes="box_config.json"/>
+		</copy>
+		<concat destfile="${javadestdir}/resource_doc_ja.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_ja.properties"/>
+	    		<include name="resource_${eimOrsphinx}_ja.properties"/>
+	    	</fileset>
+	    </concat>
+		<concat destfile="${javadestdir}/resource_doc_en.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_en.properties"/>
+	    		<include name="resource_${eimOrsphinx}_en.properties"/>
+	    	</fileset>
+		</concat>
+		<copy todir="${javadestdir}" >
+			<fileset dir="${javasrcdir}" includes="config_eim_option.properties" />
+			<mapper type="merge" to="config_option.properties" />
+		</copy>
+		<copy todir="${javadestdir}" >
+			<fileset dir="${javasrcdir}" includes="${version.file}" />
+		</copy>
+		<copy file="${javasrcdir}/EimOpeHistConf_eim.xml" tofile="${javadestdir}/EimOpeHistConf.xml"/>
+		<javac fork="true" srcdir="${javasrcdir}" destdir="${javadestdir}" encoding="UTF-8" debug="${javac.opt.debug}" includeantruntime="false">
+			<classpath>
+				<fileset dir="${webdir}/WEB-INF/lib">
+					<include name="*.jar"/>
+					<exclude name="ProMoCIPFilter.jar"/>
+					<exclude name="WWZZBCookies.jar"/>
+				</fileset>
+				<fileset dir="${serverLibDir}/">
+					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${spring-batch.libdir}/">
+					<include name="**/*.jar"/>
+				</fileset>
+				<pathelement path="${JUNIT_HOME}/junit.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<!-- ============================================= -->
+	<!-- Build Java(Sphinx) -->
+	<!-- ============================================= -->
+	<target name="SphinxJavaBuild" description="eimOrsphinxを事前に設定してください">
+		<antcall target="CleanJavaDest"/>
+		<copy todir="${javadestdir}">
+			<fileset dir="${javasrcdir}" includes="*.properties" excludes="*option.properties,resource_*_*.properties,*_exif.properties"/>
+			<fileset dir="${javasrcdir}" includes="resource_eim_form_*.properties"/>
+			<fileset dir="${javasrcdir}" includes="*.xml" excludes="*_*.xml"/>
+			<fileset dir="${javasrcdir}" includes="*.dtd"/>
+			<fileset dir="${javasrcdir}" includes="search.form.json"/>
+		</copy>
+		<concat destfile="${javadestdir}/resource_doc_ja.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_ja.properties"/>
+	    		<include name="resource_${eimOrsphinx}_ja.properties"/>
+	    	</fileset>
+	    </concat>
+
+		<concat destfile="${javadestdir}/resource_doc_en.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_en.properties"/>
+	    		<include name="resource_${eimOrsphinx}_en.properties"/>
+	    	</fileset>
+		</concat>
+		<echo message="${javadestdir}/config_doc.properties"/>
+		<replaceregexp file="${javadestdir}/config_doc.properties" match="QUERY_STRING=(.*)" replace="QUERY_STRING=tabId=-202&amp;" byline="true"/>
+		<copy todir="${javadestdir}" >
+			<fileset dir="${javasrcdir}" includes="config_${option}_option.properties" />
+			<mapper type="merge" to="config_option.properties" />
+		</copy>
+		<copy file="${javasrcdir}/EimOpeHistConf_sphinx.xml" tofile="${javadestdir}/EimOpeHistConf.xml"/>
+		<javac fork="true" srcdir="${javasrcdir}" destdir="${javadestdir}" encoding="UTF-8" debug="${javac.opt.debug}" includeantruntime="false">
+			 <classpath>
+				<fileset dir="${webdir}/WEB-INF/lib">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${serverLibDir}/">
+					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${spring-batch.libdir}/">
+					<include name="**/*.jar"/>
+				</fileset>
+				<pathelement path="${JUNIT_HOME}/junit.jar"/>
+			</classpath>
+		</javac>
+		<mkdir dir="${javadestdir}/tool"/>
+		<copy todir="${javadestdir}/tool">
+			<fileset dir="${javasrcdir}/tool" includes="**/*.mf"/>
+		</copy>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Build Flex Application -->
+	<!-- ============================================= -->
+	<target name="FlexBuild">
+		<property  name="configEim" value="true"/>
+		<property  name="configSphinx" value="false"/>
+		<property  name="configSphinxStandalone" value="false"/>
+		<property  name="configProMo" value="false"/>
+		<property  name="eimOrsphinx" value="eim"/>
+		<antcall target="CleanFlexDest"/>
+		<antcall target="FlexResourceBuild"/>
+		<antcall target="FlexStyleBuild"/>
+		<antcall target="FlexBuildAdmin"/>
+		<antcall target="FlexBuildAppDoc"/>
+		<antcall target="FlexBuildAddOn"/>
+	</target>
+
+	<target name="PromoFlexBuild">
+		<property  name="configSphinx" value="false"/>
+		<property  name="configEim" value="false"/>
+		<property  name="configSphinxStandalone" value="false"/>
+		<property  name="configProMo" value="true"/>
+		<property  name="eimOrsphinx" value="shinx"/>
+		<antcall target="CleanFlexDest"/>
+		<antcall target="FlexResourceBuild"/>
+		<antcall target="FlexStyleBuild"/>
+		<antcall target="FlexBuildAdmin"/>
+		<antcall target="FlexBuildAppDoc"/>
+		<antcall target="FlexBuildAddOn"/>
+	</target>
+
+	<target name="SphinxFlexBuild">
+		<property  name="configSphinx" value="true"/>
+		<property  name="configSphinxStandalone" value="false"/>
+		<property  name="configEim" value="false"/>
+		<property  name="configProMo" value="false"/>
+		<property  name="eimOrsphinx" value="shinx"/>
+		<antcall target="CleanFlexDest"/>
+		<antcall target="FlexResourceBuild"/>
+		<antcall target="FlexStyleBuild"/>
+		<antcall target="FlexBuildAdmin"/>
+		<antcall target="SphinxFlexBuildAppDoc"/>
+		<antcall target="FlexBuildAddOn"/>
+	</target>
+
+	<target name="FlexBuildAdmin">
+		<!-- System Maintenance Main -->
+
+		<echo message="Building admin/topView${SWF_PREFIX}.swf" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/admin/topView${SWF_PREFIX}.swf"/>
+			<arg line="${flexsrcdir}/admin/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+			<arg line="-define=CONFIG::eim,${configEim}"/>
+			<arg line="-define=CONFIG::sphinx,${configSphinx}"/>
+			<arg line="-define=CONFIG::sphinxStandalone,${configSphinxStandalone}"/>
+			<arg line="-define=CONFIG::proMo,${configProMo}"/>
+			<arg line="-load-config+=${flexsrcdir}/metadata-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-admin-config.xml"/>
+		</exec>
+
+		<!-- System Maintenance Login -->
+		<echo message="Building admin/index1" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/admin/index1.swf"/>
+			<arg line="${flexsrcdir}/admin/index1.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+		<echo message="Building admin/index2" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/admin/index2.swf"/>
+			<arg line="${flexsrcdir}/admin/index2.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+
+	</target>
+
+	<target name="FlexBuildAppDoc">
+		<!-- Document Management Main -->
+		<echo message="Building document/topView${SWF_PREFIX}.swf" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-use-resource-bundle-metadata=false"/>
+			<arg line="-o ${flexdestdir}/app/document/topView${SWF_PREFIX}.swf"/>
+			<arg line="${flexsrcdir}/app/document/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+			<arg line="-define=CONFIG::eim,${configEim}"/>
+			<arg line="-define=CONFIG::sphinx,${configSphinx}"/>
+			<arg line="-define=CONFIG::sphinxStandalone,${configSphinxStandalone}"/>
+			<arg line="-define=CONFIG::proMo,${configProMo}"/>
+			<arg line="-load-config+=${flexsrcdir}/metadata-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-aspera-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-main-for-doc-config.xml"/>
+		</exec>
+		<!-- Document Management Login -->
+		<echo message="Building document/index1" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-allow-source-path-overlap"/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/app/document/index1.swf"/>
+			<arg line="${flexsrcdir}/app/document/index1.mxml"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+		<echo message="Building document/index2" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/app/document/index2.swf"/>
+			<arg line="${flexsrcdir}/app/document/index2.mxml"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+	</target>
+
+	<target name="SphinxFlexBuildAppDoc">
+		<echo message="Building document/topView4ProMo.swf" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-use-resource-bundle-metadata=false"/>
+			<arg line="-o ${flexdestdir}/app/document/topView4ProMo.swf"/>
+			<arg line="${flexsrcdir}/app/document/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+			<arg line="-define=CONFIG::eim,${configEim}"/>
+			<arg line="-define=CONFIG::sphinx,${configSphinx}"/>
+			<arg line="-define=CONFIG::sphinxStandalone,${configSphinxStandalone}"/>
+			<arg line="-define=CONFIG::proMo,${configProMo}"/>
+			<arg line="-load-config+=${flexsrcdir}/metadata-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-aspera-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-main-for-doc-config.xml"/>
+		</exec>
+		<!-- Document Management Login -->
+		<echo message="Building document/index1" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-allow-source-path-overlap"/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/app/document/index1.swf"/>
+			<arg line="${flexsrcdir}/app/document/index1.mxml"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+		<echo message="Building document/index2" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/app/document/index2.swf"/>
+			<arg line="${flexsrcdir}/app/document/index2.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=false"/>
+		</exec>
+		<echo message="Building document/topView${SWF_PREFIX}.swf" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-use-resource-bundle-metadata=false"/>
+			<arg line="-o ${flexdestdir}/app/document/topView${SWF_PREFIX}.swf"/>
+			<arg line="${flexsrcdir}/app/document/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+			<arg line="-define=CONFIG::eim,false"/>
+			<arg line="-define=CONFIG::sphinx,false"/>
+			<arg line="-define=CONFIG::sphinxStandalone,true"/>
+			<arg line="-define=CONFIG::proMo,false"/>
+			<arg line="-load-config+=${flexsrcdir}/metadata-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-aspera-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-detail-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-doc-common-config.xml"/>
+			<arg line="-load-config+=${flexsrcdir}/springas-main-for-doc-config.xml"/>
+		</exec>
+	</target>
+
+
+	<target name="FlexBuildAddOn">
+		<!-- Build PDF Convert Setting Add-On -->
+		<echo message="Building admin/addon/CTCAddOnPDFConvertSetting" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/admin/addon/CTCAddOnPDFConvertSetting.swf"/>
+			<arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFConvertSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+		</exec>
+		<!-- Build Set Expiration Date Setting Add-On -->
+		<echo message="Building admin/addon/CTCAddOnSetExpirationDateSetting" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-o ${flexdestdir}/admin/addon/CTCAddOnSetExpirationDateSetting.swf"/>
+			<arg line="${flexsrcdir}/admin/addon/CTCAddOnSetExpirationDateSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+		</exec>
+        <!-- Build PDF Divide Add-On -->
+        <echo message="Building admin/addon/CTCAddOnPDFDivideSetting" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+            <arg line="-locale "/>
+            <arg line="-sp ${flexsrcdir}"/>
+            <arg line="-o ${flexdestdir}/admin/addon/CTCAddOnPDFDivideSetting.swf"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFDivideSetting.mxml"/>
+        	<arg line="-library-path+=${flexsrcdir}/lib"/>
+        	<arg line="-static-link-runtime-shared-libraries=true"/>
+        	<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+        </exec>
+        <!-- Build PDF Sign&Security Add-On -->
+        <echo message="Building admin/addon/CTCAddOnPDFSignatureSetting" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+            <arg line="-locale "/>
+            <arg line="-sp ${flexsrcdir}"/>
+            <arg line="-o ${flexdestdir}/admin/addon/CTCAddOnPDFSignatureSetting.swf"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFSignatureSetting.mxml"/>
+        	<arg line="-library-path+=${flexsrcdir}/lib"/>
+        	<arg line="-static-link-runtime-shared-libraries=true"/>
+        	<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+        </exec>
+		<!-- Build PDF InsertURL Add-On -->
+		<echo message="Building admin/addon/CTCAddOnPDFInsetURL.mxml" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+        	<arg line="-locale "/>
+            <arg line="-sp ${flexsrcdir}"/>
+            <arg line="-o ${flexdestdir}/admin/addon/CTCAddOnPDFInsetURL.swf"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFInsetURL.mxml"/>
+        	<arg line="-library-path+=${flexsrcdir}/lib"/>
+        	<arg line="-static-link-runtime-shared-libraries=true"/>
+        	<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-debug=true"/>
+        </exec>
+
+		<!-- Build Multi-Instance (Adding Request Parameter) Add-On -->
+		<echo message="Building app/addon/CTCAddOnMultiInstance" />
+		<exec executable="${FLEX_HOME}/bin/compc.exe">
+			<arg line="-include-sources ${flexsrcdir}/common/http/parameter/RequestParameterAddBaseModule.as" />
+			<arg line="-include-sources ${flexsrcdir}/common/http/parameter/RequestParameterData.as" />
+			<arg line="-output ${flexdestdir}/app/addon/MultiInstance.swc" />
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+		</exec>
+	</target>
+
+	<!-- Promo組込み用 Aspera用FlexFramework利用箇所SWC -->
+	<target name="mkAsperaDocumentSWC">
+		<exec executable="${FLEX_HOME}/bin/compc.exe">
+			<arg line="-locale "/>
+			<arg line="-include-resource-bundles=resource_eim_document"/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+			<arg line="-include-sources ${flexsrcdir}/jp/co/ctc_g/eim/app/document/model/file/AsperaFileDocDownloader.as" />
+			<arg line="-output ${flexdestdir}/asperaDocument.swc" />
+			<arg line="-theme='${FLEX_HOME}/frameworks/themes/Halo/halo.swc'"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+		</exec>
+		<copy file="${flexdestdir}/asperaDocument.swc" todir="${releasedir}" />
+	</target>
+
+	<!-- ============================================= -->
+	<!-- resource.propertie リソースバンドルを確認  -->
+	<!-- ============================================= -->
+	<target name="CheckResourceBundle">
+		<antcall target="CheckResourceBuildAdmin"/>
+		<antcall target="CheckResourceBuildAppDoc"/>
+		<antcall target="CheckResourceBuildAddOn"/>
+	</target>
+	<target name="CheckResourceBuildAdmin">
+		<!-- System Maintenance Main -->
+		<echo message="CheckResourceBuilding admin/topView" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesAdminTopView.txt"/>
+			<arg line="${flexsrcdir}/admin/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+		</exec>
+	</target>
+
+	<target name="CheckResourceBuildAppDoc">
+		<!-- Document Management Main -->
+		<echo message="CheckResourceBuilding document/topView" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesDocumentTopView.txt"/>
+			<arg line="${flexsrcdir}/app/document/topView.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+		</exec>
+	</target>
+
+	<target name="CheckResourceBuildAddOn">
+		<!-- Build PDF Convert Setting Add-On -->
+		<echo message="CheckResourceBuilding admin/addon/CTCAddOnPDFConvertSetting" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesCTCAddOnPDFConvertSetting.txt"/>
+			<arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFConvertSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+		</exec>
+		<!-- Build Set Expiration Date Setting Add-On -->
+		<echo message="CheckResourceBuilding admin/addon/CTCAddOnSetExpirationDateSetting" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesCTCAddOnSetExpirationDateSetting.txt"/>
+			<arg line="${flexsrcdir}/admin/addon/CTCAddOnSetExpirationDateSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+		</exec>
+        <!-- Build PDF Divide Add-On -->
+        <echo message="CheckResourceBuilding admin/addon/CTCAddOnPDFDivideSetting" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+            <arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesCTCAddOnPDFDivideSetting.txt"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFDivideSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+        </exec>
+        <!-- Build PDF Sign&Security Add-On -->
+        <echo message="CheckResourceBuilding admin/addon/CTCAddOnPDFSignatureSetting" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+            <arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesCTCAddOnPDFSignatureSetting.txt"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFSignatureSetting.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+        </exec>
+        <!-- Build PDF InsertURL Add-On -->
+        <echo message="CheckResourceBuilding admin/addon/CTCAddOnPDFInsetURL" />
+        <exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+            <arg line="-locale "/>
+			<arg line="-sp ${flexsrcdir}"/>
+			<arg line="-resource-bundle-list=${flexdestdir}/myresourcesCTCAddOnPDFInsetURL.txt"/>
+            <arg line="${flexsrcdir}/admin/addon/CTCAddOnPDFInsetURL.mxml"/>
+			<arg line="-library-path+=${flexsrcdir}/lib/"/>
+        </exec>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Build Flex resource.propertie  -->
+	<!-- ============================================= -->
+	<target name="FlexResourceBuild">
+		<antcall target="resourceBuild_common"/>
+	</target>
+	<target name="resourceBuild_common" description="eimOrsphinxの値を事前に設定してください">
+		<echo message="*** Building resource_eim_document.propertie (共通) ***" />
+		<concat destfile="${flexdestdir}/ja_JP/resource_eim_document.properties" >
+			<fileset dir="flex/resources/ja_JP" >
+				<include name="resource_common.properties"/>
+				<include name="resource_${eimOrsphinx}.properties"/>
+			</fileset>
+		</concat>
+		<copy file="flex/resources/ja_JP/resource_framework.properties" todir="${flexdestdir}/ja_JP" />
+		<copy file="flex/resources/ja_JP/resource_eim_form.properties" todir="${flexdestdir}/ja_JP" />
+		<concat destfile="${flexdestdir}/en_US/resource_eim_document.properties" >
+			<fileset dir="flex/resources/en_US/" >
+				<include name="resource_common.properties"/>
+				<include name="resource_${eimOrsphinx}.properties"/>
+			</fileset>
+		</concat>
+		<copy file="flex/resources/en_US/resource_framework.properties" todir="${flexdestdir}/en_US" />
+		<copy file="flex/resources/en_US/resource_eim_form.properties" todir="${flexdestdir}/en_US" />
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale ja_JP en_US"/>
+			<arg line="-source-path=${flexdestdir}/{locale}"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-include-resource-bundles=collections,components,containers,controls,core,effects,formatters,layout,logging,messaging,modules,rpc,skins,states,styles,validators,SharedResources,resource_eim_document,resource_eim_form,resource_framework"/>
+			<arg line="-o ${flexdestdir}/resource_eim_document${SWF_PREFIX}.swf"/>
+		</exec>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Build Flex style                              -->
+	<!-- ============================================= -->
+	<target name="FlexStyleBuild" description="eimOrsphinx、cssTypeの値を事前に設定してください">
+		<echo message="*** Building style ***" />
+		<concat destfile="${flexdestdir}/css/style.css" >
+			<fileset dir="${flexsrcdir}/css/">
+				<include name="style_${cssType}.css"/>
+				<include name="eim-document.css"/>
+			</fileset>
+		</concat>
+		<exec executable="${FLEX_HOME}/bin/mxmlc.exe">
+			<arg line="-locale "/>
+			<arg line="-source-path=${flexdestdir}/css"/>
+			<arg line="-static-link-runtime-shared-libraries=true"/>
+			<arg line="-o ${flexdestdir}/style${SWF_PREFIX}.swf"/>
+			<arg line="${flexdestdir}/css/style.css"/>
+		</exec>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Make Release Web Context Files (標準品)-->
+	<!-- ============================================= -->
+	<target name="ReleaseMake">
+		<antcall target="CleanRelease"/>
+		<mkdir dir="${workWebappDir}"/>
+		<mkdir dir="${pdftmpdir}"/>
+
+		<copydir src="${webdir}" dest="${workWebappDir}" excludes="**/CVS/**,**/.svn/**,**/_svn/**,javasrc/**,common/**,WEB-INF/classes/**/*.class, WEB-INF/*.xml,WEB-INF/lib/ProMoCIPFilter.jar,WEB-INF/lib/WWZZBCookies.jar"/>
+
+		<copy todir="${workWebappDir}/WEB-INF">
+			<fileset dir="${webdir}/WEB-INF" includes="web_eim.xml"/>
+			<mapper type="merge" to="web.xml"/>
+		</copy>
+
+		<copy file="${webdir}/WEB-INF/mvc-servlet.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-admin.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-form.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-doc.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-box.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-search.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/weblogic.xml" todir="${workWebappDir}/WEB-INF" />
+
+		<antcall target="eimDocJarMake" />
+		
+		<!-- 管理画面で参照するjspを文書管理APからコピー -->
+		<mkdir dir="${publish}"/>
+		<copy todir="${publish}">
+			<fileset dir="${webdir}/app/document/publish"/>
+		</copy>
+
+		<!-- システム管理・ドキュメント管理共通で参照するjspをcommonフォルダからコピー -->
+		<mkdir dir="${workspaceManagementAppDir}"/>
+		<copy todir="${workspaceManagementAppDir}">
+			<fileset dir="${webdir}/common/workspace"/>
+		</copy>
+		<mkdir dir="${workspaceManagementAdminDir}"/>
+		<copy todir="${workspaceManagementAdminDir}">
+			<fileset dir="${webdir}/common/workspace"/>
+		</copy>
+
+		<!-- 共通のjspをコピー -->
+		<mkdir dir="${commonUser}"/>
+		<copy todir="${commonUser}">
+			<fileset dir="${webdir}/common/user"/>
+		</copy>
+		<mkdir dir="${commonOpehist}"/>
+		<copy todir="${commonOpehist}">
+			<fileset dir="${webdir}/common/opehist"/>
+		</copy>
+
+		<!-- HTML5対応版に必要なファイルをclientフォルダのclient.zipを解凍して配置 -->
+		<delete dir="${workWebappDir}/client"/>
+		<unzip src="${clientdir}/client.zip" dest="${workWebappDir}/client"/>
+
+		<!-- config_doc_version.propertiesにバージョン番号を埋め込む -->
+		<tstamp>
+			<format property="version"  pattern="yyyyMMddHHmm" />
+		</tstamp>
+		<replace file="${workWebappDir}/WEB-INF/classes/${version.file}" token="@VERSION@" value="${version}"></replace>
+
+		<!-- config_doc.propertiesのSWF_PREFIXをbuild.properties記載の値に置き換え -->
+		<replace file="${workWebappDir}/WEB-INF/classes/config_doc.properties" token="@SWF_PREFIX@" value="${SWF_PREFIX}"/>
+
+		<antcall target="PrintRevision"/>
+		<mkdir dir="${releasedir}" />
+		<copy file="${javasrcdir}/adminApplication_eim.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<war destfile="${releasedir}/${warfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,admin/index?*.jsp">
+			<exclude name="agent/**"/>
+		</war>
+
+		<!-- システム管理(汎用)単体でのリリース用war作成 -->
+		<!-- 【開発時は使用しない為コメントアウトします。開発完了時にはコメントアウトを解除して利用してください】 -->
+		<copy file="${workWebappAdminIndexGeneralJsp}" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication_eimadmin.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<!-- infinispan_tools.xmlをコピー(ドキュメント管理V6.15時点APIキャッシュ未サポートのため汎用にのみ含める) -->
+		<copy file="${javasrcdir}/infinispan_tools.xml" tofile="${workWebappDir}/WEB-INF/classes/infinispan_tools.xml" overwrite="true"/>
+		<war destfile="${releasedir}/${adminWarfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,app/**,admin/index?*.jsp">
+		</war>
+		<!-- infinispan_tools.xmlを削除 -->
+		<delete file="${workWebappDir}/WEB-INF/classes/infinispan_tools.xml"/>
+
+
+		<!-- 帳票アプリケーション用システム管理のリリース用war作成 -->
+		<!-- release_workへ帳票用のファイルをコピー -->
+		<copy file="${javasrcdir}/${workflowConfXMLForm}" tofile="${workWebappDir}/WEB-INF/classes/${workflowConfXMLEIM}" overwrite="true"/>
+		<copy file="${javasrcdir}/${mailtypeConfXMLForm}" tofile="${workWebappDir}/WEB-INF/classes/${mailtypeConfXMLEIM}" overwrite="true"/>
+
+		<copy file="${workWebappAdminIndexFormJsp}" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication_eimformadmin.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<war destfile="${releasedir}/${formAdminWarfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,app/**,admin/index?*.jsp">
+		</war>
+
+		<antcall target="ReleaseMake_CopyConfig"/>
+		<!-- release_workのコピーを元に戻す -->
+		<copy file="${javasrcdir}/${workflowConfXMLEIM}" tofile="${workWebappDir}/WEB-INF/classes/${workflowConfXMLEIM}" overwrite="true"/>
+		<copy file="${javasrcdir}/${mailtypeConfXMLEIM}" tofile="${workWebappDir}/WEB-INF/classes/${mailtypeConfXMLEIM}" overwrite="true"/>
+		<copy file="${webdir}/admin/index.jsp" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+	</target>
+	<!-- ============================================= -->
+	<!-- Make Release Web Context Files (Sphinx)-->
+	<!-- ============================================= -->
+	<target name="SphinxReleaseMake">
+		<antcall target="CleanRelease"/>
+		<mkdir dir="${workWebappDir}"/>
+		<mkdir dir="${pdftmpdir}"/>
+		<copydir src="${webdir}" dest="${workWebappDir}" excludes="**/CVS/**,**/.svn/**,**/_svn/**,javasrc/**,common/**,WEB-INF/classes/**/*.class,WEB-INF/classes/**/*.mf, WEB-INF/*.xml"/>
+		<copy todir="${workWebappDir}/WEB-INF">
+			<fileset dir="${webdir}/WEB-INF" includes="web_Sphinx.xml"/>
+			<mapper type="merge" to="web.xml"/>
+		</copy>
+
+		<copy file="${webdir}/WEB-INF/mvc-servlet.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-admin.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-doc.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-form.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/mvc-servlet-box.xml" todir="${workWebappDir}/WEB-INF" />
+		<copy file="${webdir}/WEB-INF/weblogic.xml" todir="${workWebappDir}/WEB-INF" />
+
+		<!-- config_doc.propertiesのSWF_PREFIXをbuild.properties記載の値に置き換え -->
+		<replace file="${workWebappDir}/WEB-INF/classes/config_doc.properties" token="@SWF_PREFIX@" value="${SWF_PREFIX}"/>
+
+		<antcall target="eimDocJarMake" />
+		<copydir src="${flexdestdir}" dest="${workWebappDir}" includes="**/*.swf,**/*.swc"/>
+
+		<!-- 管理画面で参照するjspを文書管理APからコピー -->
+		<mkdir dir="${publish}"/>
+		<copy todir="${publish}">
+			<fileset dir="${webdir}/app/document/publish"/>
+		</copy>
+
+		<!-- システム管理・ドキュメント管理共通で参照するjspをcommonフォルダからコピー -->
+		<mkdir dir="${workspaceManagementAppDir}"/>
+		<copy todir="${workspaceManagementAppDir}">
+			<fileset dir="${webdir}/common/workspace"/>
+		</copy>
+		<mkdir dir="${workspaceManagementAdminDir}"/>
+		<copy todir="${workspaceManagementAdminDir}">
+			<fileset dir="${webdir}/common/workspace"/>
+		</copy>
+		<copy file="${javasrcdir}/adminApplication_eim.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<antcall target="PrintRevision"/>
+		<mkdir dir="${releasedir}" />
+		<war destfile="${releasedir}/${warfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,admin/index?*.jsp">
+			<exclude name="agent/**"/>
+		</war>
+
+		<!-- システム管理(文書管理用)単体でのリリース用war作成 -->
+		<!-- 【開発時は使用しない為コメントアウトします。開発完了時にはコメントアウトを解除して利用してください】 -->
+		<copy file="${workWebappAdminIndexGeneralJsp}" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication_eimadmin.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<antcall target="PrintRevision"/>
+		<war destfile="${releasedir}/${adminWarfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,app/**,admin/index?*.jsp">
+		</war>
+
+		<!-- 帳票アプリケーション用システム管理のリリース用war作成 -->
+		<!-- release_workへ帳票用のファイルをコピー -->
+		<copy file="${javasrcdir}/${workflowConfXMLForm}" tofile="${workWebappDir}/WEB-INF/classes/${workflowConfXMLEIM}" overwrite="true"/>
+		<copy file="${javasrcdir}/${mailtypeConfXMLForm}" tofile="${workWebappDir}/WEB-INF/classes/${mailtypeConfXMLEIM}" overwrite="true"/>
+		<copy file="${workWebappAdminIndexFormJsp}" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication_eimformadmin.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+		<war destfile="${releasedir}/${formAdminWarfile}"
+			basedir="${workWebappDir}" webxml="${workWebappDir}/WEB-INF/web.xml" excludes="**/web.xml,app/**,admin/index?*.jsp">
+		</war>
+
+		<antcall target="ReleaseMake_CopyConfig"/>
+		<!-- release_workのコピーを元に戻す -->
+		<copy file="${javasrcdir}/${workflowConfXMLEIM}" tofile="${workWebappDir}/WEB-INF/classes/${workflowConfXMLEIM}" overwrite="true"/>
+		<copy file="${javasrcdir}/${mailtypeConfXMLEIM}" tofile="${workWebappDir}/WEB-INF/classes/${mailtypeConfXMLEIM}" overwrite="true"/>
+		<copy file="${webdir}/admin/index.jsp" tofile="${workWebappAdminIndexJsp}" overwrite="true"/>
+		<copy file="${javasrcdir}/adminApplication.xml" tofile="${workWebappDir}/WEB-INF/classes/adminApplication.xml" overwrite="true"/>
+
+	</target>
+
+	<!-- ===================================================== -->
+	<!-- Make Release Web Context Files (外部連携IFモジュール) -->
+	<!-- ===================================================== -->
+	<target name="ExifModuleReleaseMake">
+		<delete dir="${workExifWebappDir}" />
+		<mkdir dir="${workExifWebappDir}/WEB-INF/classes"/>
+		<mkdir dir="${workExifWebappDir}/WEB-INF/jsp/eim/command"/>
+		<mkdir dir="${workExifWebappDir}/WEB-INF/jsp/includes"/>
+		<mkdir dir="${workExifWebappDir}/WEB-INF/lib"/>
+		<copy todir="${workExifWebappDir}/WEB-INF/jsp/eim/command">
+			<fileset dir="${webdir}/WEB-INF/jsp/eim/command"/>
+		</copy>
+		<copy todir="${workExifWebappDir}/WEB-INF/jsp/includes">
+			<fileset dir="${webdir}/WEB-INF/jsp/includes"/>
+		</copy>
+		<copy file="${javasrcdir}/config_exif.properties" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${javasrcdir}/resource_exif_en.properties" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${javasrcdir}/resource_exif_ja.properties" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${javasrcdir}/AppOpeHistConf_exif.xml" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${webdir}/WEB-INF/web_exif.xml" todir="${workExifWebappDir}/WEB-INF" />
+		<antcall target="commonConfigReleaseMake4Exif" />
+		<antcall target="eimCommandJarMake" />
+		<zip destfile="${releasedir}/exif.zip">
+			<zipfileset dir="${workExifWebappDir}" />
+		</zip>
+	</target>
+
+	<condition property="release.common.config">
+		<equals arg1="${include.common.config}" arg2="true" />
+	</condition>
+	<target name="commonConfigReleaseMake4Exif" if="release.common.config">
+		<copy file="${javadestdir}/config.properties" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${javasrcdir}/AppOpeHistConf.xml" todir="${workExifWebappDir}/WEB-INF/classes" />
+		<copy file="${webdir}/WEB-INF/web.xml" todir="${workExifWebappDir}/WEB-INF" />
+	</target>
+
+	<!-- ============================================= -->
+	<!-- I move an editing file in Release             -->
+	<!-- 編集ファイルをReleaseに移動する               -->
+	<!-- ※使用条件はReleaseフォルダが存在すること     -->
+	<!-- ============================================= -->
+	<target name="ReleaseMake_CopyConfig">
+		<delete dir="${releasedir}/config"/>
+		<mkdir dir="${releasedir}/config"/>
+		<copy todir="${releasedir}/config">
+			<fileset dir="${javasrcdir}">
+				<include name="*.hta"/>
+				<include name="config.properties"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Make Release Batch Context Files (標準品) -->
+	<!-- ============================================= -->
+	<target name="ReleaseBatchMake">
+		<antcall target="CleanBatchRelease"/>
+		<!-- create unix + windows share files -->
+		<!-- share files cleanup -->
+		<mkdir dir="${releasedir.batch}/share"/>
+		<delete dir="${releasedir.batch}/share"/>
+		<mkdir dir="${releasedir.batch}/share"/>
+		<copy todir="${releasedir.batch}/share/config">
+			<fileset dir="${javadestdir}">
+				<exclude name="applicationContext.xml"/>
+				<exclude name="log4j.xml"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<include name="*.dtd"/>
+				<include name="*.json"/>
+			</fileset>
+		</copy>
+		<move file="${releasedir.batch}/share/config/applicationContext-batch.xml" tofile="${releasedir.batch}/share/config/applicationContext.xml"/>
+		<copy todir="${releasedir.batch}/share/lib">
+			<fileset dir="${workWebappDir}/WEB-INF/lib">
+                <include name="*.jar"/>
+                <include name="*.dll"/>
+				<exclude name="ProMoCIPFilter.jar"/>
+				<exclude name="WWZZBCookies.jar"/>
+			</fileset>
+			<fileset dir="${serverLibDir}/common">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${serverLibDir}/tomcat11">
+				<include name="tomcat-catalina-*.jar" />
+				<include name="tomcat-juli-*.jar" />
+			</fileset>
+			<fileset dir="${serverLibDir}/atomikos">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${spring-batch.libdir}/">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
+		<!-- create batch classes jar -->
+		<jar destfile="${releasedir.batch}/share/lib/${jarfile.batch}" basedir="${javadestdir}" >
+			<include name="batch/*.class"/>
+			<include name="batch/**/*.class"/>
+		</jar>
+		<!-- for UNIX Batch -->
+		<copy todir="${releasedir.batch.docUnix}" >
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/unix">
+				<exclude name="SignEncryption.sh" />
+				<exclude name="DeletePdfTmpFile.sh" />
+				<exclude name="AddInitialDataForV680Html.sh" />
+				<exclude name="FileImport.sh" />
+				<exclude name="PDFAutoRegister.sh" />
+			</fileset>
+		</copy>
+		<fixcrlf srcdir="${releasedir.batch.docUnix}" includes="*.sh" eol="lf" eof="remove" />
+		<zip destfile="${releasedir}/${zipfile.docUnixBatch}">
+			<zipfileset dir="${releasedir.batch.docUnix}" prefix="docUnixBatch" />
+		</zip>
+
+		<!-- for docUnixEIMPack Batch -->
+		<copy todir="${releasedir.batch.docUnixEIMPack}" >
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/unix">
+				<exclude name="SignEncryption.sh" />
+				<exclude name="DeletePdfTmpFile.sh" />
+				<exclude name="PDFAutoRegister.sh" />
+				<exclude name="BoxArchivePurge.sh" />
+				<exclude name="BoxArchiveUpload.sh" />
+				<exclude name="log4j_boxArchive.xml" />
+			</fileset>
+		</copy>
+		<fixcrlf srcdir="${releasedir.batch.docUnixEIMPack}" includes="*.sh" eol="lf" eof="remove" />
+		<zip destfile="${releasedir}/${zipfile.docUnixEIMPackBatch}">
+			<zipfileset dir="${releasedir.batch.docUnixEIMPack}" prefix="docUnixEIMPackBatch" />
+		</zip>
+
+		<!-- for docUnixOption Batch -->
+		<copy todir="${releasedir.batch.docUnixOption}" >
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/unix">
+				<exclude name="SignEncryption.sh" />
+				<exclude name="DeletePdfTmpFile.sh" />
+				<exclude name="AddInitialDataForV680Html.sh" />
+				<exclude name="FileImport.sh" />
+				<exclude name="BoxArchivePurge.sh" />
+				<exclude name="BoxArchiveUpload.sh" />
+				<exclude name="log4j_boxArchive.xml" />
+			</fileset>
+		</copy>
+		<fixcrlf srcdir="${releasedir.batch.docUnixOption}" includes="*.sh" eol="lf" eof="remove" />
+		<zip destfile="${releasedir}/${zipfile.docUnixOptionBatch}">
+			<zipfileset dir="${releasedir.batch.docUnixOption}" prefix="docUnixOptionBatch" />
+		</zip>
+
+		<!-- for PDF(Windows) Batch -->
+		<copy todir="${releasedir.batch.pdf}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/pdf"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.pdfBatch}">
+			<zipfileset dir="${releasedir.batch.pdf}" prefix="pdf" />
+		</zip>
+		<!-- for OCR(Windows) Batch -->
+		<copy todir="${releasedir.batch.ocr}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/ocr"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.ocrBatch}">
+			<zipfileset dir="${releasedir.batch.ocr}" prefix="ocr" />
+		</zip>
+		<!-- for MIGRATION(Windows) Batch -->
+		<copy todir="${releasedir.batch.migration}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/migration"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.migrationBatch}">
+			<zipfileset dir="${releasedir.batch.migration}" prefix="migration" />
+		</zip>
+		
+		<!-- for maintenance Batch 
+		<copy todir="${releasedir.batch.maintenance}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/maintenance"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.maintenanceBatch}">
+			<zipfileset dir="${releasedir.batch.maintenance}" prefix="maintenance" />
+		</zip>-->
+		
+		<!-- for attributeupdate(Windows) Batch 
+		<copy todir="${releasedir.batch.attributeupdate}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/attributeupdate"/>
+		</copy>-->
+		<!-- configファイルをjarにアーカイブする。DB接続情報等を簡単に見れなくする簡易対応 -->
+		<!--<jar destfile="${releasedir.batch.attributeupdate}/lib/${jarfile.config}" basedir="${releasedir.batch.attributeupdate}/config" >
+			<include name="*.xml"/>
+			<include name="*.properties"/>
+			<include name="*.dtd"/>
+		</jar>
+		<delete dir="${releasedir.batch.attributeupdate}/config" />
+		<zip destfile="${releasedir}/${zipfile.attributeupdateBatch}">
+			<zipfileset dir="${releasedir.batch.attributeupdate}" prefix="attributeupdate" />
+		</zip>-->
+		
+	</target>
+	<target name="ReleaseOracleMake">
+		<delete dir="${releasedir.oracle}"/>
+		<mkdir dir="${releasedir.oracle}"/>
+		<copy todir="${releasedir.oracle}">
+			<fileset dir="oracle">
+				<exclude name="update_documentdb_v11_to_v20.sql"/>
+				<exclude name="update_documentdb_v20_to_v21.sql"/>
+				<exclude name="*daihatsu*.sql"/>
+				<exclude name="update_documentdb_v22_to_v40/*"/>
+				<exclude name="userTool/*"/>
+				<exclude name="update_documentdb_v501_MultiInstance.sql"/>
+				<include name="**/*.sql"/>
+				<include name="**/*.sh"/>
+			</fileset>
+		</copy>
+		<zip destfile="${releasedir}/docSQL_ORA.zip">
+			<zipfileset dir="${releasedir.oracle}" />
+		</zip>
+	</target>
+	<target name="SphinxReleaseOracleMake">
+		<delete dir="${releasedir.oracle}"/>
+		<mkdir dir="${releasedir.oracle}"/>
+		<copy todir="${releasedir.oracle}">
+			<fileset dir="oracle">
+				<exclude name="update_documentdb_v11_to_v20.sql"/>
+				<exclude name="update_documentdb_v20_to_v21.sql"/>
+				<exclude name="*daihatsu*.sql"/>
+				<include name="*.sql"/>
+				<include name="*.sh"/>
+			</fileset>
+		</copy>
+		<delete dir="${releasedir.oracle}/belong_ws"/>
+		<mkdir dir="${releasedir.oracle}/belong_ws"/>
+		<copy todir="${releasedir.oracle}/belong_ws">
+			<fileset dir="sql/belong_ws"/>
+		</copy>
+		<zip destfile="${releasedir}/docSQL_ORA.zip">
+			<zipfileset dir="${releasedir.oracle}" />
+		</zip>
+	</target>
+	<target name="ReleasePostgresqlMake">
+		<delete dir="${releasedir.postgresql}"/>
+		<mkdir dir="${releasedir.postgresql}"/>
+		<copy todir="${releasedir.postgresql}">
+			<fileset dir="postgresql">
+				<include name="**/*.sql"/>
+				<include name="**/*.sh"/>
+			</fileset>
+		</copy>
+		<zip destfile="${releasedir}/docSQL_PG.zip">
+			<zipfileset dir="${releasedir.postgresql}" />
+		</zip>
+	</target>
+
+	<!-- Init Script -->
+	<target name="ReleaseInitScriptMake">
+		<concat destfile="${releasedir.initDocScript.config}/resource_doc_ja.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_ja.properties"/>
+	    		<include name="resource_${eimOrsphinx}_ja.properties"/>
+	    	</fileset>
+	    </concat>
+		<concat destfile="${releasedir.initDocScript.config}/resource_doc_en.properties" >
+	    	<fileset dir="${javasrcdir}" >
+	    		<include name="resource_common_en.properties"/>
+	    		<include name="resource_${eimOrsphinx}_en.properties"/>
+	    	</fileset>
+		</concat>
+
+		<copy todir="${releasedir.initDocScript.lib}">
+			<fileset dir="${webdir}/WEB-INF/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${releasedir.initDocScript.lib}">
+			<fileset dir="${serverLibDir}/atomikos">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
+		<zip destfile="${scriptfile}">
+			<zipfileset dir="${scriptdir}"/>
+			<zipfileset dir="${javasrcdir}" prefix="config">
+				<exclude name="log4j.xml"/>
+				<exclude name="resource_common_ja.properties"/>
+				<exclude name="resource_common_en.properties"/>
+				<exclude name="resource_eim_ja.properties"/>
+				<exclude name="resource_eim_en.properties"/>
+				<exclude name="resource_sphinx_ja.properties"/>
+				<exclude name="resource_sphinx_en.properties"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<include name="*.dtd"/>
+			</zipfileset>
+			<zipfileset dir="${releasedir.initDocScript.config}" prefix="config">
+				<include name="*.*"/>
+			</zipfileset>
+			<zipfileset dir="${releasedir.initDocScript.lib}" prefix="lib">
+				<include name="*.*"/>
+			</zipfileset>
+		</zip>
+	</target>
+
+	<!-- Solr configuration & tools -->
+	<target name="ReleaseSolrMake">
+		<zip destfile="${zipfile.solr}">
+			<zipfileset dir="${solrdir}"/>
+		</zip>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Make Release Batch Context Files (Sphinx) -->
+	<!-- ============================================= -->
+	<target name="SphinxReleaseBatchMake">
+		<antcall target="CleanBatchRelease"/>
+		<!-- create unix + windows share files -->
+		<!-- share files cleanup -->
+		<mkdir dir="${releasedir.batch}/share"/>
+		<delete dir="${releasedir.batch}/share"/>
+		<mkdir dir="${releasedir.batch}/share"/>
+
+		<copy todir="${releasedir.batch}/share/config">
+			<fileset dir="${javadestdir}">
+				<exclude name="applicationContext.xml"/>
+				<exclude name="log4j.xml"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<include name="*.dtd"/>
+			</fileset>
+		</copy>
+		<move file="${releasedir.batch}/share/config/applicationContext-batch.xml" tofile="${releasedir.batch}/share/config/applicationContext.xml"/>
+		<copy todir="${releasedir.batch}/share/lib">
+			<fileset dir="${workWebappDir}/WEB-INF/lib" />
+			<fileset dir="${serverLibDir}/common">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${serverLibDir}/tomcat11">
+				<include name="tomcat-catalina-*.jar" />
+				<include name="tomcat-juli-*.jar" />
+			</fileset>
+			<fileset dir="${serverLibDir}/atomikos">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<!-- create batch classes jar -->
+		<jar destfile="${releasedir.batch}/share/lib/${jarfile.batch}" basedir="${javadestdir}" >
+			<include name="batch/*.class"/>
+			<include name="batch/util/*.class"/>
+		</jar>
+
+		<!-- for docUNIX Batch -->
+		<copy todir="${releasedir.batch.docUnix}" description="Sphinx用はSignEncryption.sh, DeletePdfTmpFile.shを含める">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/unix"/>
+			<exclude name="AddInitialDataForV680Html.sh" />
+			<exclude name="FileImport.sh" />
+			<exclude name="PDFAutoRegister.sh" />
+			<exclude name="BoxArchivePurge.sh" />
+			<exclude name="BoxArchiveUpload.sh" />
+			<exclude name="log4j_boxArchive.xml" />
+		</copy>
+		<fixcrlf srcdir="${releasedir.batch.docUnix}" includes="*.sh" eol="lf" eof="remove" />
+		<zip destfile="${releasedir}/${zipfile.docUnixBatch}">
+			<zipfileset dir="${releasedir.batch.docUnix}" prefix="docUnixBatch" />
+		</zip>
+
+		<!-- for PDF(Windows) Batch -->
+		<copy todir="${releasedir.batch.pdf}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/pdf"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.pdfBatch}">
+			<zipfileset dir="${releasedir.batch.pdf}" prefix="pdf" />
+		</zip>
+
+		<zip destfile="${releasedir}/${liblary.multi-instance}">
+			<zipfileset dir="${flexdestdir}/app/addon/" />
+		</zip>
+		<!-- for OCR(Windows) Batch -->
+		<copy todir="${releasedir.batch.ocr}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/ocr"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.ocrBatch}">
+			<zipfileset dir="${releasedir.batch.ocr}" prefix="ocr" />
+		</zip>
+		<!-- for MIGRATION(Windows) Batch -->
+		<copy todir="${releasedir.batch.migration}">
+			<fileset dir="${releasedir.batch}/share"/>
+			<fileset dir="${batchdir}/migration"/>
+		</copy>
+		<zip destfile="${releasedir}/${zipfile.migrationBatch}">
+			<zipfileset dir="${releasedir.batch.migration}" prefix="migration" />
+		</zip>
+	</target>
+
+	<!-- ======================================================== -->
+	<!-- ProMoCIPFilter.jarとWWZZBCookies.jarの追加(Sphinxのみ)-->
+	<!-- ======================================================== -->
+	<target name="ProMoCIPFilterMake">
+		<copy todir="${workWebappDir}/WEB-INF/lib">
+			<fileset dir="${webdir}/WEB-INF/lib" includes="ProMoCIPFilter.jar"/>
+			<fileset dir="${webdir}/WEB-INF/lib" includes="WWZZBCookies.jar"/>
+		</copy>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Make Release Tool Files (Sphinxのみ)-->
+	<!-- ============================================= -->
+	<target name="ReleaseToolMake">
+		<antcall target="CleanToolRelease"/>
+		<!-- creat FileListCreator.jar -->
+		<jar destfile="${releasedir}/${jarfile.fileList}" basedir="${javadestdir}" includes="tool/file/*.class" manifest="${javadestdir}/tool/file/Manifest.mf"/>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Make Jar For EimDoc -->
+	<!-- ============================================= -->
+	<target name="eimDocJarMake">
+		<jar destfile="${workWebappDir}/WEB-INF/lib/${jarfile.online}" basedir="${javadestdir}" includes="**/*.class" excludes="batch/**,tool/**,eim/command/**"/>
+	</target>
+	
+	<!-- ============================================= -->
+	<!-- Make Jar For ExifCommand -->
+	<!-- ============================================= -->
+	<target name="eimCommandJarMake">
+		<jar destfile="${workExifWebappDir}/WEB-INF/lib/${jarfile.command}" basedir="${javadestdir}" includes="eim/command/**/*.class"/>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Clean -->
+	<!-- ============================================= -->
+	<target name="CleanAll">
+		<antcall target="CleanJavaDest"/>
+		<antcall target="CleanFlexDest"/>
+		<antcall target="CleanRelease"/>
+	</target>
+
+	<condition property="exist.javaDest">
+		<available file="${javadestdir}" />
+	</condition>
+	<target name="CleanJavaDest" if="exist.javaDest">
+		<delete>
+			<fileset dir="${javadestdir}" excludes="**/CVS/**,**/.svn/**,**/_svn/**"/>
+		</delete>
+	</target>
+	
+	<condition property="exist.flexDest">
+		<available file="${flexdestdir}" />
+	</condition>
+	<target name="CleanFlexDest" if="exist.flexDest">
+		<delete>
+			<fileset dir="${flexdestdir}" excludes="**/CVS/**,**/.svn/**,**/_svn/**"/>
+		</delete>
+	</target>
+
+	<condition property="exist.releaseDir">
+		<available file="${releasedir}" />
+	</condition>
+	<target name="CleanRelease" if="exist.releaseDir">
+		<antcall target="CleanBatchRelease"/>
+		<antcall target="CleanToolRelease"/>
+		<antcall target="CleanWorkDir"/>
+		<delete>
+			<fileset dir="${releasedir}" includes="**/*.*" excludes="agent/** *.jar"/>
+			<filename name="${jarfile.fileList}"/>
+		</delete>
+		<delete dir="${releasedir}/WEB-INF" />
+	</target>
+
+	<condition property="exist.workDir">
+		<available file="${workDir}" />
+	</condition>
+	<target name="CleanWorkDir" if="exist.workDir">
+		<delete dir="${workDir}" />
+		<mkdir dir="${workDir}"/>
+	</target>
+
+	<condition property="exist.batchRelease">
+		<available file="${releasedir.batch}" />
+	</condition>
+	<target name="CleanBatchRelease" if="exist.batchRelease">
+		<delete dir="${releasedir.batch}"/>
+		<delete>
+			<fileset dir="${releasedir}" includes="*.zip"/>
+		</delete>
+	</target>
+
+	<condition property="exist.toolRelease">
+		<available file="${releasedir}/tool" />
+	</condition>
+	<target name="CleanToolRelease" if="exist.toolRelease">
+		<delete>
+			<fileset dir="${releasedir}/tool" includes="${jarfile.fileList}"/>
+		</delete>
+	</target>
+
+	<!-- ============================================= -->
+	<!-- Debug -->
+	<!-- ============================================= -->
+    <target name="jsp2javasrc">
+        <taskdef classname="org.apache.jasper.JspC" name="jasper2" >
+            <classpath id="jspc.classpath">
+                <pathelement location="${JAVA_HOME}/lib/tools.jar"/>
+				<fileset dir="${serverLibDir}/">
+					<include name="**/*.jar"/>
+				</fileset>
+                <fileset dir="${webdir}/WEB-INF/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+        <jasper2
+                 uriroot="${webdir}"
+                 outputDir="work"
+                 verbose="1"
+        />
+    </target>
+    <target name="jspcompile">
+        <javac destdir="work/org/apache/jsp"
+               optimize="off"
+               debug="on" failonerror="true"
+               srcdir="work" encoding="UTF-8" includeantruntime="false">
+            <classpath>
+        		<fileset dir="${serverLibDir}/">
+        			<include name="**/*.jar"/>
+        		</fileset>
+                <pathelement location="${webdir}/WEB-INF/classes"/>
+                <fileset dir="${webdir}/WEB-INF/lib">
+                    <include name="*.jar"/>
+                </fileset>
+           </classpath>
+        </javac>
+    </target>
+
+</project>

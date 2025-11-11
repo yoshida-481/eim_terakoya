@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- アドバイス -->
+
+	<!-- ■■■■■■■■■ -->
+	<!--      属性情報      -->
+	<!-- ■■■■■■■■■ -->
+	<!-- 属性変更 操作履歴出力アドバイス -->
+	<bean id="attributeModificationOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2018"/>
+		<property name="recordInfoIdA" value="3"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForDetail" ref="operationHistoryDocumentToPathConverter"/>
+	</bean>
+
+	<!-- ■■■■■■■■■ -->
+	<!--    添付ファイル    -->
+	<!-- ■■■■■■■■■ -->
+	<!-- 添付ファイルダウンロード 操作履歴出力アドバイス -->
+	<bean id="attachementDownloadOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2030"/>
+		<property name="recordInfoIdA" value="25"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForTargetA" ref="accessCheckFileAccessToObjectConverter"/>
+		<property name="parameterConverterForDetail" ref="fileAccessToFilePathConverter"/>
+	</bean>
+
+	<!-- 添付ファイルダウンロード(WebDAV) 操作履歴出力アドバイス -->
+	<bean id="attachementDownloadWebDAVOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2030"/>
+		<property name="recordInfoIdA" value="25"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForDetail" ref="objectToFilePathConverter"/>
+	</bean>
+
+	<!-- ■■■■■■■■■ -->
+	<!--      Box連携       -->
+	<!-- ■■■■■■■■■ -->
+	<!-- Box表示 操作履歴出力アドバイス -->
+	<bean id="displayBoxOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2210"/>
+	</bean>
+
+	<!-- Boxにファイル登録 操作履歴出力アドバイス -->
+	<bean id="createFileInBoxOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2212"/>
+		<property name="recordInfoIdA" value="1"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="recordInfoIdB" value="36"/>
+		<property name="recordTypeIdB" value="12"/>
+		<property name="parameterConverterForTargetA" ref="operationHistoryObjectIDToNameConverter"/>
+		<property name="parameterConverterForTargetB" ref="operationHistoryDocumentIDToPathConverter"/>
+		<property name="parameterConverterForDetail" ref="operationHistoryObjectToBoxFilePathConverter"/>
+	</bean>
+
+	<!-- ■■■■■■■■■ -->
+	<!--      統合認証      -->
+	<!-- ■■■■■■■■■ -->
+	<!-- ログイン 操作履歴出力アドバイス -->
+	<bean id="loginOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<!-- TODO 設定変更要 -->
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="1"/>
+	</bean>
+
+	<!-- ■■■■■■■■■ -->
+	<!--     公開PDF作成    -->
+	<!-- ■■■■■■■■■ -->
+	<!-- 公開PDF作成 操作履歴出力アドバイス -->
+	<bean id="publicDocumentOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2213"/>
+		<property name="recordInfoIdA" value="37"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForDetail" ref="operationHistoryDocumentIDToPathConverter"/>
+	</bean>
+
+	<!-- ■■■■■■■■■ -->
+	<!--     公開PDF事前登録    -->
+	<!-- ■■■■■■■■■ -->
+	<!-- 公開PDF事前登録 操作履歴出力アドバイス -->
+	<bean id="preRegistPublicDocumentOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2214"/>
+		<property name="recordInfoIdA" value="40"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForDetail" ref="operationHistoryDocumentIDToPathConverter"/>
+	</bean>
+	
+	<!-- ■■■■■■■■■ -->
+	<!--     事前登録公開PDF削除    -->
+	<!-- ■■■■■■■■■ -->
+	<!-- 事前登録公開PDF削除 操作履歴出力アドバイス -->
+	<bean id="deletePreRegistPublicDocumentOperationHistoryAdvice" parent="operationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2215"/>
+		<property name="recordInfoIdA" value="41"/>
+		<property name="recordTypeIdA" value="12"/>
+		<property name="parameterConverterForDetail" ref="operationHistoryDocumentIDToPathConverter"/>
+	</bean>
+	
+	<!-- ■■■■■■■■■ -->
+	<!--        検索        -->
+	<!-- ■■■■■■■■■ -->
+	<!-- ページ指定ダウンロード 操作履歴出力アドバイス -->
+	<bean id="pageDownloadOperationHistoryAdvice" parent="documentOperationHistoryAdvice">
+		<property name="applicationTypeId" value="2"/>
+		<property name="operationTypeId" value="2030"/>
+		<property name="recordInfoIdA" value="25"/>
+		<property name="recordTypeIdA" value="12"/>
+	</bean>
+
+	<!-- プラグイン -->
+
+	<!-- ドキュメントObjectからパスを生成 -->
+	<bean id="operationHistoryDocumentToPathConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.DocumentToPathConverterPlugInImpl"/>
+
+	<!-- FileAccessからファイルまでのパスを生成 -->
+	<bean id="fileAccessToFilePathConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.FileAccessToFilePathConverterImpl">
+		<property name="formAttachedFileService" ref="formAttachedFileService"/>
+	</bean>
+
+	<!-- ObjectDomainからファイルまでのパスを生成 -->
+	<bean id="objectToFilePathConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.ObjectToFilePathConverterImpl">
+		<property name="formAttachedFileService" ref="formAttachedFileService"/>
+	</bean>
+
+	<!-- オブジェクトIDからオブジェクト名を生成 -->
+	<bean id="operationHistoryObjectIDToNameConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.ObjectIDToNameConverterPlugInImpl"/>
+
+	<!-- ドキュメントIDからパスを生成 -->
+	<bean id="operationHistoryDocumentIDToPathConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.DocumentIDToPathConverterPlugInImpl"/>
+
+	<!-- BoxフォルダIDからBoxフォルダパスを生成 -->
+	<bean id="operationHistoryObjectToBoxFilePathConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.BoxFolderIdToBoxFilePathConverterImpl">
+		<property name="boxFolderService" ref="boxFolderService2"/>
+	</bean>
+
+	<!-- IDからObjectDomainを生成 -->
+	<bean id="operationHistoryIdToObjectConverter" class="jp.co.ctc_g.eim.app.document.common.aop.plugin.impl.IdToObjectConverterPlugInImpl"/>
+
+
+	<!-- ポイントカット -->
+
+	<aop:config>
+
+		<!-- ■■■■■■■■■ -->
+		<!--      属性情報      -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 属性変更 操作履歴出力 -->
+		<aop:aspect order="40" ref="attributeModificationOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FormService.update(..)) and args(arg0) and args(arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- ■■■■■■■■■ -->
+		<!--    添付ファイル    -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 添付ファイルダウンロード 操作履歴出力 -->
+		<aop:aspect order="40" ref="attachementDownloadOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.FileTransferService.transmitFile(..)) and bean(fileTransferService2) and args(arg0,..) and args(arg1,..)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- 添付ファイルダウンロード(WebDAV) 操作履歴出力 -->
+		<aop:aspect order="40" ref="attachementDownloadWebDAVOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.app.form.business.service.FileObjectCreatorService.copy(..)) and args(arg0) and args(arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- ■■■■■■■■■ -->
+		<!--      Box連携       -->
+		<!-- ■■■■■■■■■ -->
+		<!-- Box表示 操作履歴出力 -->
+		<aop:aspect order="40" ref="displayBoxOperationHistoryAdvice">
+			<aop:after-returning
+				method="createNone"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.box.BoxAPIConnectionService.getEnterpriseBoxUser())"
+			/>
+		</aop:aspect>
+
+		<!-- Boxにファイル公開 操作履歴出力 -->
+		<aop:aspect order="40" ref="createFileInBoxOperationHistoryAdvice">
+			<aop:after-returning
+				method="createAll"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.box.BoxFileService.copyFromEIMFile(..)) and args(arg0) and args(arg1) and args(arg2)"
+				arg-names="arg0,arg1,arg2"
+			/>
+		</aop:aspect>
+
+		<!-- ■■■■■■■■■ -->
+		<!--      統合認証      -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 認証成功 操作履歴出力 -->
+		<aop:aspect order="40" ref="loginOperationHistoryAdvice">
+			<aop:after-returning
+				method="createNone"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.common.security.EIMDocumentSpnegoAuthenticationSuccessHandler.onAuthenticationSuccess(..))"
+			/>
+		</aop:aspect>
+
+		<!-- ■■■■■■■■■ -->
+		<!--     公開PDF作成    -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 公開PDF作成 操作履歴出力 -->
+		<aop:aspect order="40" ref="publicDocumentOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.PublicDocumentService.createAsync(..)) and args(arg0) and args(arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		<!-- ■■■■■■■■■ -->
+		<!--     公開PDF事前登録    -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 公開PDF作成 操作履歴出力 -->
+		<aop:aspect order="40" ref="preRegistPublicDocumentOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.PublicDocumentService.preRegistPublicPdf(..,..)) and args(arg0,..) and args(arg1,..)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+		<!-- ■■■■■■■■■ -->
+		<!--     事前登録公開PDF削除  -->
+		<!-- ■■■■■■■■■ -->
+		<!-- 事前登録公開PDF削除 操作履歴出力 -->
+		<aop:aspect order="40" ref="deletePreRegistPublicDocumentOperationHistoryAdvice">
+			<aop:after-returning
+				method="createWithDetail"
+				pointcut="execution(* jp.co.ctc_g.eim.app.document.business.service.PublicDocumentService.deletePreRegistPdf(..)) and args(arg0) and args(arg1)"
+				arg-names="arg0,arg1"
+			/>
+		</aop:aspect>
+
+		<!-- ■■■■■■■■■ -->
+		<!--        検索        -->
+		<!-- ■■■■■■■■■ -->
+		<!-- ページ指定ダウンロード　操作履歴出力 -->
+		<aop:aspect order="30" ref="pageDownloadOperationHistoryAdvice">
+			<aop:before
+				method="createWithDetailWriteInPathForFileAccessDomain"
+				pointcut="execution(* jp.co.ctc_g.eim.framework2.business.service.impl.FileTransferServiceImpl.transmitFile(..,..)) and bean(fileTransferServiceForSearch) and args(arg0,..)"
+				arg-names="arg0"
+			/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>

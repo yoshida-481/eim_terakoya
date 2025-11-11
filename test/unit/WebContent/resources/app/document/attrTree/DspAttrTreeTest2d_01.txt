@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+<node attrTreeId="[id_1]" attrTreeSettings="[settings_1]" classifyTarget="0" isBranch="true" isSearch="false" label="[name_1]" objTypeName="‘®«">
+</node>
+<node attrTreeId="[id_2]" attrTreeSettings="[settings_2]" classifyTarget="1" isBranch="true" isSearch="true" label="[name_2]" objTypeName="‘®«">
+<node isBranch="true" isLeaf="false" isSearch="false" label="a" objTypeName="‘®«" value="a">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="b" objTypeName="‘®«" value="b">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="c" objTypeName="‘®«" value="c">
+</node>
+<node isBranch="true" isLeaf="false" isSearch="false" label="d" objTypeName="‘®«" value="d">
+</node>
+
+</node>
+</nodes>

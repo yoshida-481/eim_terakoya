@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<langlist>
+    <language id="JA">
+        <label>Japanese</label>
+        <data>JA</data>
+        <locale>ja_JP</locale>
+        <namelist>
+            <item>
+                <lang>JA</lang>
+                <name>日本語</name>
+            </item>
+            <item>
+                <lang>EN</lang>
+                <name>英語</name>
+            </item>
+        </namelist>
+    </language>
+    <language id="EN">
+        <label>English</label>
+        <data>EN</data>
+        <locale>en_US</locale>
+        <namelist>
+            <item>
+                <lang>JA</lang>
+                <name>Japanese</name>
+            </item>
+            <item>
+                <lang>EN</lang>
+                <name>English</name>
+            </item>
+        </namelist>
+    </language>
+</langlist>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ============================= -->
+	<!-- データ収集JOBコンポーネント設定 -->
+	<!-- ============================= -->
+
+	<!-- Job (コンテンツ属性用) -->
+	<bean id="gatheringContentsAttributesJob" parent="gatheringDataJob" >
+		<property name="batchControlService" ref="gatherContentsAttributesControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlServiceForAlways" />
+	</bean>
+
+	<!-- バッチコントローラ (コンテンツ属性用) -->
+	<bean id="gatherContentsAttributesControlService" parent="gatherDataObjectControlService" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService" ref="gatherContensAttributesService" />
+	</bean>
+
+	<!-- データ収集インデックス更新処理 (コンテンツ属性用) -->
+	<bean id="gatherContensAttributesService" parent="gatherRefAndDataServiceForData">
+		<property name="updateNoticeService" ref="updateNoticeServiceForContentsAttributes" />
+	</bean>
+
+	<!-- 更新通知APIサービス（コンテンツ属性データ収集バッチ用） -->
+	<bean id="updateNoticeServiceForContentsAttributes" parent="updateNoticeServiceData">
+		<property name="dataTypeList" value="DOCUMENT,FOLDER,TAG"/>
+	</bean>
+
+	<!-- Job (ファイル全文・添付ファイル全文用) -->
+	<bean id="gatheringDocsAndFullTextJob" parent="gatheringDataJob" >
+		<property name="batchControlService" ref="gatherDocsAndFullTextControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlServiceForDaily" />
+	</bean>
+
+	<!-- バッチコントローラ (ファイル全文・添付ファイル全文用) -->
+	<bean id="gatherDocsAndFullTextControlService" parent="gatherDataObjectControlService" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService" ref="gatherDocsAndFullTextService" />
+	</bean>
+
+	<!-- データ収集インデックス更新処理 (ファイル全文・添付ファイル全文用) -->
+	<bean id="gatherDocsAndFullTextService" parent="gatherRefAndDataServiceForData">
+		<property name="updateNoticeService" ref="updateNoticeServiceForDocsAndFullText" />
+	</bean>
+
+	<!-- 更新通知APIサービス（ファイル全文・添付ファイル全文データ収集バッチ用） -->
+	<bean id="updateNoticeServiceForDocsAndFullText" parent="updateNoticeServiceData">
+		<property name="dataTypeList" value="DOCUMENT,FILE,ATTACHMENT"/>
+		<!-- 処理対象件数 (config_searchのTARGET_LIMITを参照せず個別に指定する) -->
+		<!-- <property name="targetLimit" value="10"/> -->
+	</bean>
+
+	<!-- =============================== -->
+	<!-- 参照元取得JOBコンポーネント設定 -->
+	<!-- =============================== -->
+
+	<!-- Job (親フォルダ・ワークスペース参照元用) -->
+	<bean id="gatheringParentRefJob" parent="gatheringRefJob" >
+		<property name="batchControlService" ref="gatherParentRefControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlServiceForAlways" />
+	</bean>
+
+	<!-- バッチコントローラ (親フォルダ・ワークスペース参照元用) -->
+	<bean id="gatherParentRefControlService" parent="gatherDataObjectControlService" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService" ref="gatherParentRefService" />
+	</bean>
+
+	<!-- 参照元取得処理 (親フォルダ・ワークスペース参照元用) -->
+	<bean id="gatherParentRefService" parent="gatherRefAndDataServiceForRef">
+		<property name="updateNoticeService" ref="updateNoticeServiceForParentRef" />
+	</bean>
+
+	<!-- 更新通知APIサービス（親フォルダ・ワークスペース参照元取得バッチ用） -->
+	<bean id="updateNoticeServiceForParentRef" parent="updateNoticeServiceRef">
+		<property name="dataTypeList" value="FOLDER_MASTER_ALL,WORKSPACE_MASTER_ALL,FOLDER_MASTER_LATEST,WORKSPACE_MASTER_LATEST"/>
+	</bean>
+
+	<!-- Job (システム管理情報参照元用) -->
+	<bean id="gatheringAdminRefJob" parent="gatheringRefJob" >
+		<property name="batchControlService" ref="gatherAdminRefControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlServiceForDaily" />
+	</bean>
+
+	<!-- バッチコントローラ (システム管理情報参照元用) -->
+	<bean id="gatherAdminRefControlService" parent="gatherDataObjectControlService" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService" ref="gatherAdminRefService" />
+	</bean>
+
+	<!-- 参照元取得処理 (システム管理情報参照元用) -->
+	<bean id="gatherAdminRefService" parent="gatherRefAndDataServiceForRef">
+		<property name="updateNoticeService" ref="updateNoticeServiceForAdminRef" />
+	</bean>
+
+	<!-- 更新通知APIサービス（システム管理情報参照元取得バッチ用） -->
+	<bean id="updateNoticeServiceForAdminRef" parent="updateNoticeServiceRef">
+		<property name="dataTypeList" value="SECURITY,USER,OBJECTTYPE,STATUSTYPE"/>
+	</bean>
+
+	<!-- =============================== -->
+	<!-- Job実行制御                     -->
+	<!-- =============================== -->
+
+	<!-- データ収集・参照元取得Job用実行制御サービス -->
+	<bean id="gatheringJobControlServiceForDaily" parent="gatheringJobControlService">
+		<property name="jobControlService" ref="jobControlWithinTimeServiceForDaily" />
+	</bean>
+
+	<!-- データ収集・参照元取得Job用実行制御サービス(常時実行Job用) -->
+	<bean id="gatheringJobControlServiceForAlways" parent="gatheringJobControlService">
+		<property name="jobControlService" ref="jobControlWithinTimeServiceForAlways" />
+	</bean>
+
+	<!-- Job実行制御サービス(日次実行Job用) -->
+	<bean id="jobControlWithinTimeServiceForDaily" parent="jobControlWithinTimeService" >
+		<!-- 最大ロック時間(分) -->
+		<property name="maxLockMinutes" value="${JOB_MAX_LOCK_MINUTE}" />
+	</bean>
+
+	<!-- Job実行制御サービス(常時実行Job用) -->
+	<bean id="jobControlWithinTimeServiceForAlways" parent="jobControlWithinTimeService" >
+		<!-- 最大ロック時間(分) -->
+		<property name="maxLockMinutes" value="120" />
+	</bean>
+
+</beans>

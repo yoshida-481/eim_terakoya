@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<bean id="NamespaceService" class="jp.co.ctc_g.eim.admin.business.service.impl.NamespaceServiceImpl">
+		<property name="NamespaceDao">
+			<ref bean="NamespaceDao"/>
+		</property>
+	</bean>
+
+	<!-- OCR処理サービス -->
+	<bean id="ocrProcessService" class="jp.co.ctc_g.eim.app.document.business.service.impl.OcrProcessServiceImpl"/>
+
+	<!-- 電子署名挿入サービス -->
+	<bean id="publishCommandPDFSignatureIoWebDocService" class="jp.co.ctc_g.eim.app.document.business.service.impl.PublishCommandPDFSignatureIoWebDocServiceImpl" scope="prototype"/>
+	<bean id="publishCommandPDFSignatureHGPScanService" class="jp.co.ctc_g.eim.app.document.business.service.impl.PublishCommandPDFSignatureHGPScanServiceImpl" scope="prototype"/>
+
+	<!-- ドキュメントフォームタイプサービス -->
+	<bean id="documentFormTypeService" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentFormTypeServiceImpl" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="objectTypeServiceForDocFormType"/>
+		<property name="formLayoutService" ref="formLayoutServiceForDocument"/>
+		<property name="formTypeFolderService" ref="formTypeFolderService"/>
+	</bean>
+
+	<!-- ドキュメントフォームタイプサービス(値リストを取得する) -->
+	<bean id="documentFormTypeServiceForHandlingValueList" parent="documentFormTypeService" >
+		<property name="formLayoutService" ref="formLayoutServiceForHandlingValueList"/>
+	</bean>
+
+	<!-- ドキュメントフォームサービス -->
+	<bean id="documentFormService" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentFormServiceImpl" >
+		<property name="objectService" 					ref="documentFormObjectService2ForAttributeAll"/>
+		<property name="objectServiceForAttributeAll"	ref="documentFormObjectService2ForAttributeAll"/>
+		<property name="objectServiceWithoutAttribute"	ref="objectServiceWithoutAttribute"/>
+		<property name="objectTypeService" 		ref="formObjectTypeService2"/>
+		<property name="attributeTypeService" 	ref="attributeTypeService2"/>
+		<property name="statusService" 			ref="formStatusService2"/>
+		<property name="eventExecService" 		ref="formEventExecService2"/>
+		<property name="eventService" 			ref="eventService2"/>
+		<!-- ドキュメント管理用カスタムサービス -->
+		<property name="formLayoutService" 		ref="formLayoutServiceForHandlingValueList"/>
+		<property name="statusTypeLayoutService" ref="statusTypeLayoutService"/>
+		<property name="codeService" 			ref="codeService2"/>
+		<property name="workflowService" 		ref="workflowService2"/>
+		<property name="formTempFileObjectService"	ref="dcoumentFormTempFileObjectService"/>
+		<property name="fileDao"				ref="fileDao2"/>
+		<property name="fileAccessService" 		ref="fileAccessService2"/>
+		<property name="formatService" 			ref="formatService2"/>
+		<property name="assignmentService" 		ref="assignmentService2"/>
+		<property name="formAssignmentService" 	ref="formAssignmentService2"/>
+		<property name="assignmentPlanService" 	ref="assignmentPlanService2"/>
+		<property name="userService" 			ref="userService2"/>
+		<property name="fileObjectCreatorService" 	ref="fileObjectCreatorService"/>
+		<property name="formListColumnService"	ref="formListColumnService"/>
+		<property name="searchMasterDisplayConfigService"    ref="searchMasterDisplayConfigService"/>
+		<property name="formEventService"       ref="formEventService"/>
+		<property name="formDao" ref="formDao"/>
+		<property name="attributeTypeLayoutConfDao" ref="attributeTypeLayoutConfDao"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="accessHistoryService" ref="accessHistoryService2"/>
+		<property name="accessRoleTypeListForGetById">
+			<list>
+				<value>UPDATE</value>
+				<value>APPROVE</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- HTML版用ドキュメントフォームサービス（更新時の楽観的排他チェックあり） -->
+	<bean id="htmlDocumentFormService" class="jp.co.ctc_g.eim.app.document.business.service.impl.HTMLDocumentFormServiceImpl" parent="documentFormService">
+	</bean>
+
+	<!-- スキャン用表紙ドキュメントフォームサービス -->
+	<bean id="coverDocumentFormService" class="jp.co.ctc_g.eim.app.document.business.service.impl.CoverDocumentFormServiceImpl" >
+		<property name="objectService"          ref="documentFormObjectService2ForAttributeAll"/>
+		<property name="objectServiceForAttributeAll" ref="documentFormObjectService2ForAttributeAll"/>
+		<property name="objectTypeService"    ref="formObjectTypeService2"/>
+		<property name="attributeTypeService"   ref="attributeTypeService2"/>
+		<property name="statusService"      ref="formStatusService2"/>
+		<property name="eventExecService"     ref="formEventExecService2"/>
+		<property name="eventService"       ref="eventService2"/>
+		<!-- ドキュメント管理用カスタムサービス -->
+		<property name="formLayoutService"    ref="formLayoutServiceForHandlingValueList"/>
+		<property name="statusTypeLayoutService" ref="statusTypeLayoutService"/>
+		<property name="codeService"      ref="codeService2"/>
+		<property name="workflowService"    ref="workflowService2"/>
+		<property name="formTempFileObjectService"  ref="dcoumentFormTempFileObjectService"/>
+		<property name="fileDao"        ref="fileDao2"/>
+		<property name="fileAccessService"    ref="fileAccessService2"/>
+		<property name="formatService"      ref="formatService2"/>
+		<property name="assignmentService"    ref="assignmentService2"/>
+		<property name="formAssignmentService"  ref="formAssignmentService2"/>
+		<property name="assignmentPlanService"  ref="assignmentPlanService2"/>
+		<property name="userService"      ref="userService2"/>
+		<property name="fileObjectCreatorService"   ref="fileObjectCreatorService"/>
+		<property name="formListColumnService"  ref="formListColumnService"/>
+		<property name="searchMasterDisplayConfigService"    ref="searchMasterDisplayConfigService"/>
+		<property name="formEventService"   ref="formEventService"/>
+		<property name="formDao" ref="formDao"/>
+		<property name="attributeTypeLayoutConfDao" ref="attributeTypeLayoutConfDao"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="accessHistoryService" ref="accessHistoryService2"/>
+		<property name="accessRoleTypeListForGetById">
+			<list>
+				<value>UPDATE</value>
+				<value>APPROVE</value>
+			</list>
+		</property>
+		<!-- e文書法対応用カスタムサービス -->
+		<property name="fileIoService" ref="fileIoService"/>
+		<property name="qrCodeService" ref="qrCodeService"/>
+		<property name="pdfService" ref="pdfService"/>
+	</bean>
+
+	<!-- 添付ファイルオブジェクトサービス -->
+	<bean id="dcoumentFormTempFileObjectService" parent="formTempFileObjectService2" >
+		<property name="objectService">
+			<ref bean="dcoumentFormTempFileObjectObjectService"/>
+		</property>
+	</bean>
+
+	<!-- オブジェクトサービス（添付ファイルオブジェクト用） -->
+	<bean id="dcoumentFormTempFileObjectObjectService" parent="objectService2" >
+		<property name="objectTypeDao">
+			<ref bean="dcoumentFormTempFileObjectObjectTypeDao"/>
+		</property>
+	</bean>
+
+	<!-- ドキュメントレイアウト情報保持オブジェクトタイプのサービス  -->
+	<bean id="documentObjectTypeLayoutService" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentObjectTypeLayoutServiceImpl">
+		<property name="objectTypeService" ref="objectTypeServiceForDocFormType"/>
+		<property name="objectService" ref="formLayoutObjectService2"/>
+		<property name="attributeTypeLayoutService" ref="attributeTypeLayoutService"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="nameSpaceListForNewCopyFlagUpdate">
+			<list>
+				<value>${NAMESPACE_FORM}</value>
+				<value>${APP_TASK_NAMESPACE}</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ドキュメントレイアウト情報保持オブジェクトタイプのサービス(値リストを取得する)  -->
+	<bean id="documentObjectTypeLayoutServiceForHandlingValueList"  parent="documentObjectTypeLayoutService">
+		<property name="handlingVlueList" value="true"/>
+	</bean>
+
+	<!-- WebDAVサービス -->
+	<bean id="documentWebDAVService" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentWebDAVServiceImpl" >
+		<property name="objectService">
+			<ref bean="objectService2"/>
+		</property>
+		<property name="formatService">
+			<ref bean="formatService2"/>
+		</property>
+		<property name="fileAccessService">
+			<ref bean="docfileAccessService"/>
+		</property>
+		<property name="attributeTypeService">
+			<ref bean="attributeTypeService2"/>
+		</property>
+		<property name="objectTypeService">
+			<ref bean="objectTypeService2"/>
+		</property>
+		<property name="workflowService">
+			<ref bean="workflowService2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+	</bean>
+
+	<!-- WebDAV通信用ファイルサービス -->
+	<bean id="documentFileObjectCreatorService" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentFileObjectCreatorServiceImpl">
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="formObjectTypeService2"/>
+		<property name="tempFileObjectService" ref="tempFileObjectService2"/>
+		<property name="fileAccessService" ref="fileAccessService2"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="accessHistoryService" ref="accessHistoryService2"/>
+		<property name="formAttachedFileService" ref="formAttachedFileService"/>
+	</bean>
+
+	<!-- attachementObjectService -->
+	<bean id="attachementObjectService" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="objectDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="attachementFileDao"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+
+	<!-- ドキュメントフォームオブジェクトサービス -->
+	<bean id="documentFormObjectService2ForAttributeAll" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao" ref="documentFormObjectDao2ForAttributeAll" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="formObjectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+
+	<!-- ドキュメントオブジェクトサービス -->
+	<bean id="documentObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="documentObjectDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+
+	<!-- QRコードサービス -->
+	<bean id="qrCodeService" class="jp.co.ctc_g.eim.app.document.business.service.impl.QRCodeServiceImpl">
+	</bean>
+
+	<!-- PDFサービス -->
+	<bean id="pdfService" class="jp.co.ctc_g.eim.app.document.business.service.impl.PDFServiceImpl">
+	</bean>
+
+	<!-- 回付状況一覧検索サービス -->
+	<bean id="circulationSearchService" class="jp.co.ctc_g.eim.app.document.business.service.impl.CirculationSearchServiceImpl" >
+		<property name="objectService" ref="objectServiceForCirculation"/>
+		<property name="userService" ref="userService2"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="objectTypeService" ref="objectTypeServiceForCirculation"/>
+		<property name="statusService" ref="statusServiceForCirculation"/>
+	</bean>
+
+	<!-- 回付状況確認用オブジェクトサービス -->
+	<bean id="objectServiceForCirculation" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="objectDaoForCirculation"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+
+	<!-- 回付状況確認用オブジェクトタイプサービス -->
+	<bean id="objectTypeServiceForCirculation" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForCirculation"/>
+		</property>
+	</bean>
+
+	<!-- 回付状況確認用ステータスサービス -->
+	<bean id="statusServiceForCirculation" class="jp.co.ctc_g.eim.framework2.business.service.impl.StatusServiceImpl" >
+		<property name="statusDao">
+			<ref bean="statusDaoForCirculation"/>
+		</property>
+	</bean>
+
+	<!-- 公開PDF作成サービス -->
+	<bean id="publicDocumentService" class="jp.co.ctc_g.eim.app.document.business.service.impl.PublicDocumentServiceImpl" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="objectTypeServiceForDocFormType"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="fileAccessService" ref="fileAccessService2"/>
+		<property name="workflowService" ref="workflowService2"/>
+	</bean>
+
+	<!-- オブジェクトサービス（チェックイン用） -->
+	<bean id="checkinObjectService" parent="objectService2" >
+		<property name="objectDao">
+			<ref bean="checkinObjectTypeDao"/>
+		</property>
+	</bean>
+	
+	<!-- オブジェクトサービス（Box連携用） -->
+	<bean id="createBoxDocumentObjectHelper" class="common.util.CreateBoxDocumentObjectHelper" >
+		<property name="documentService" ref="documentService2" />
+		<property name="objectService" ref="objectService2"/>
+	</bean>
+
+	<!-- フォルダアップロードサービス -->
+	<bean id="folderUploadService" class="jp.co.ctc_g.eim.app.document.business.service.impl.FolderUploadServiceImpl">
+		<property name="workspaceService" ref="workspaceService2"/>
+		<property name="folderService" ref="folderService2"/>
+		<property name="documentService" ref="documentService2"/>
+		<property name="attributeTypeService" 	ref="attributeTypeService2"/>
+		<property name="operationHistoryService" 	ref="operationHistoryService2"/>
+		<property name="objectDao" 	ref="objectDaoWithoutAttribute"/>
+	</bean>
+
+	<!-- ======================================================================================== -->
+	<!-- プラグイン -->
+	<!-- ======================================================================================== -->
+	<!-- OCR処理プラグイン -->
+<!--   <bean id="ocrProcessorPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.OcrProcessorImgtodigiPlugInImpl" scope="prototype"/> -->
+	<bean id="ocrProcessorPlugIn" class="jp.co.ctc_g.eim.app.document.business.service.impl.OcrProcessorHGPScanPlugInImpl" scope="prototype"/>
+
+	<!-- PDF変換処理プラグイン(Office用) -->
+	<bean id="officePdfConverterPlugin" class="jp.co.ctc_g.eim.app.document.business.service.impl.PdfConverterUsingOfficePlugInImpl" scope="prototype"/>
+
+	<!-- PDF変換処理プラグイン(HGPScan用) -->
+	<bean id="hgPdfConverterPlugin" class="jp.co.ctc_g.eim.app.document.business.service.impl.PdfConverterForHGPScanPlugInImpl" scope="prototype"/>
+
+</beans>

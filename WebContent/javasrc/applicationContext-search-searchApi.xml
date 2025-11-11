@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ========================== -->
+	<!-- 宣言型トランザクション設定 -->
+	<!-- ========================== -->
+
+	<tx:advice id="txAdviceSITE_A" transaction-manager="transactionManager_SITE_A">
+		<tx:attributes>
+			<tx:method name="getAuthCondition"  read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!--
+	<tx:advice id="txAdviceSITE_B" transaction-manager="transactionManager_SITE_B">
+		<tx:attributes>
+			<tx:method name="getAuthCondition"  read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<tx:advice id="txAdviceSITE_C" transaction-manager="transactionManager_SITE_C">
+		<tx:attributes>
+			<tx:method name="getAuthCondition"  read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	-->
+
+	<aop:config>
+		<aop:pointcut id="getAuthConditionSiteA"
+				expression="execution(* jp.co.ctc_g.eim.search.core.searchApi.business.service.module.impl.AuthConditionModuleImpl.*(..))"/>
+		<aop:advisor advice-ref="txAdviceSITE_A" pointcut-ref="getAuthConditionSiteA" />
+	</aop:config>
+	<!--
+	<aop:config>
+		<aop:pointcut id="getAuthConditionSiteB"
+				expression="execution(* jp.co.ctc_g.eim.search.core.searchApi.business.service.module.impl.AuthConditionModuleImpl.*(..))"/>
+		<aop:advisor advice-ref="txAdviceSITE_B" pointcut-ref="getAuthConditionSiteB" />
+	</aop:config>
+	<aop:config>
+		<aop:pointcut id="getAuthConditionSiteC"
+				expression="execution(* jp.co.ctc_g.eim.search.core.searchApi.business.service.module.impl.AuthConditionModuleImpl.*(..))"/>
+		<aop:advisor advice-ref="txAdviceSITE_C" pointcut-ref="getAuthConditionSiteC" />
+	</aop:config>
+	-->
+
+	<!-- ============== -->
+	<!-- モジュール定義 -->
+	<!-- ============== -->
+
+	<!-- 権限条件取得モジュール -->
+	<bean id="authModule" class="jp.co.ctc_g.eim.search.core.searchApi.business.service.module.impl.AuthConditionModuleImpl">
+		<!-- ユーザー所属取得プラグイン -->
+		<property name="siteCodeUserBelongPlugInListMap">
+			<map>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_A</value>
+					</key>
+					<list>
+						<ref bean="eimUserBelongPluginImpl"/>
+						<ref bean="eimRoleBelongPluginImpl"/>
+						<ref bean="eimGroupBelongPluginImpl"/>
+						<ref bean="eimCompBelongPluginImpl"/>
+					</list>
+				</entry>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_B</value>
+					</key>
+					<list>
+						<ref bean="eimUserBelongPluginImpl"/>
+						<ref bean="eimRoleBelongPluginImpl"/>
+						<ref bean="eimGroupBelongPluginImpl"/>
+						<ref bean="eimCompBelongPluginImpl"/>
+					</list>
+				</entry>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_C</value>
+					</key>
+					<list>
+						<ref bean="eimUserBelongPluginImpl"/>
+						<ref bean="eimRoleBelongPluginImpl"/>
+						<ref bean="eimGroupBelongPluginImpl"/>
+						<ref bean="eimCompBelongPluginImpl"/>
+					</list>
+				</entry>
+			</map>
+		</property>
+
+		<!-- 権限判定用の検索条件文字列モジュール -->
+		<property name="searchConditionModule">
+			<ref bean="searchConditionModule"/>
+		</property>
+
+		<!-- スーパーユーザー判定プラグイン -->
+		<property name="superUserPlugIn">
+			<ref bean="superUserPlugInImpl"/>
+		</property>
+
+		<!-- 追加検索文字列取得プラグイン -->
+		<property name="siteCodeAddSearchConditionPlugInMap">
+
+			<map>
+				<entry key="SITE_A" value-ref="EmptySearchConditionPlugInImpl"/>
+				<entry key="SITE_B" value-ref="EmptySearchConditionPlugInImpl"/>
+				<entry key="SITE_C" value-ref="EmptySearchConditionPlugInImpl"/>
+			</map>
+
+		</property>
+
+	</bean>
+
+	<!-- ============== -->
+	<!-- プラグイン定義 -->
+	<!-- ============== -->
+
+	<!-- ユーザ所属取得実装クラス(EIMUser) -->
+	<bean id="eimUserBelongPluginImpl" class="jp.co.ctc_g.eim.search.core.searchApi.eim.business.service.plugin.impl.EIMUserUserBelongPlugInImpl" />
+	<!-- ユーザ所属取得実装クラス(EIMRole) -->
+	<bean id="eimRoleBelongPluginImpl" class="jp.co.ctc_g.eim.search.core.searchApi.eim.business.service.plugin.impl.EIMRoleUserBelongPlugInImpl" />
+	<!-- ユーザ所属取得実装クラス(EIMGroup) -->
+	<bean id="eimGroupBelongPluginImpl" class="jp.co.ctc_g.eim.search.core.searchApi.eim.business.service.plugin.impl.EIMGroupUserBelongPlugInImpl" />
+	<!-- ユーザ所属取得実装クラス(EIMComp) -->
+	<bean id="eimCompBelongPluginImpl" class="jp.co.ctc_g.eim.search.core.searchApi.eim.business.service.plugin.impl.EIMCompUserBelongPlugInImpl" />
+	<!-- 追加検索条件取得用のPlugin(デフォルトでは空文字列返却のプラグインを実装) -->
+	<bean id="EmptySearchConditionPlugInImpl" class="jp.co.ctc_g.eim.search.core.searchApi.eim.business.service.plugin.impl.EmptySearchConditionPlugInImpl" />
+
+	<!-- スーパーユーザー判定プラグイン -->
+	<bean id="superUserPlugInImpl" class="jp.co.ctc_g.eim.search.core.searchApi.business.service.plugin.impl.GeneralSuperUserPlugInImpl" >
+		<property name="siteCodeSuperUserAccountCodeListMap">
+			<map>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_A</value>
+					</key>
+					<list>
+						<!--  スーパーユーザーのアカウントコード -->
+						<value>system</value>
+					</list>
+				</entry>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_B</value>
+					</key>
+					<list>
+						<!--  スーパーユーザーのアカウントコード -->
+						<value>system</value>
+					</list>
+				</entry>
+				<entry>
+					<key>
+						<!-- サイトコード -->
+						<value>SITE_C</value>
+					</key>
+					<list>
+						<!--  スーパーユーザーのアカウントコード -->
+						<value>system</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>
+
+
+
