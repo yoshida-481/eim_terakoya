@@ -1,0 +1,109 @@
+package jp.co.ctc_g.eim.common.presentation.web.dto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.co.ctc_g.eim.framework.business.domain.StatusTypeKindDomain;
+
+/**
+ * StatusTypeKindConfDTO
+ * <p>
+ * Struts->SpringMVCへの移行に際して、クライアントへ送信するXMLデータを再現したデータ転送用オブジェクトです。
+ */
+public class StatusTypeKindDTO {
+
+	/**
+	 * Strutsで生成したXMLデータにおける配列要素を再現するためのクラスです。
+	 */
+	public static class StatusTypeKindList {
+
+		private List<StatusTypeKindDTO> statusTypeKind = new ArrayList<StatusTypeKindDTO>();
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param statusTypeKindList
+		 */
+		public StatusTypeKindList(List<StatusTypeKindDomain> statusTypeKindList) {
+			for (StatusTypeKindDomain StatusTypeKindDomain : statusTypeKindList) {
+				statusTypeKind.add(new StatusTypeKindDTO(StatusTypeKindDomain));
+			}
+		}
+
+		public List<StatusTypeKindDTO> getStatusTypeKind() {
+			return statusTypeKind;
+		}
+
+		public void setStatusTypeKind(List<StatusTypeKindDTO> statusTypeKind) {
+			this.statusTypeKind = statusTypeKind;
+		}
+
+	}
+
+	/**
+	 * クライアントへ送信していたXMLデータにおいて、単数値のプロパティを保持する親要素を再現するためのクラスです。
+	 */
+	public class Attr {
+		/** ID */
+		private String id = null;
+
+		/** 名称 */
+		private String name = null;
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param StatusTypeKindDomain
+		 */
+		private Attr(StatusTypeKindDomain StatusTypeKindDomain) {
+			id = String.valueOf(StatusTypeKindDomain.getId());
+			name = StatusTypeKindDomain.getName();
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+	}
+
+	/**
+	 * Strutsで生成したXMLデータにおいて単数値のプロパティを保持する親要素です。
+	 */
+	private Attr attr = null;
+
+	/**
+	 * コンストラクタ<br>
+	 * StatusTypeKindDomainが保持しているプロパティ値を設定します。<br>
+	 *
+	 * @param StatusTypeKindDomain
+	 * @throws Exception
+	 */
+	public StatusTypeKindDTO(StatusTypeKindDomain StatusTypeKindDomain) {
+		setAttr(new Attr(StatusTypeKindDomain));
+	}
+
+	/**
+	 * @return attrを取得します。
+	 */
+	public Attr getAttr() {
+		return attr;
+	}
+
+	/**
+	 * @param attrを設定します。
+	 */
+	public void setAttr(Attr attr) {
+		this.attr = attr;
+	}
+}

@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/jee
+			http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<!-- メール種別実装 -->
+	<!-- ======================================================================================== -->
+
+	<!-- 承認依頼通知 -->
+	<bean id="MailRequestForApproval" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressRequestApprovalPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.APPROVAL.REQ" />
+		</property>
+	</bean>
+
+	<!-- 承認通知 -->
+	<bean id="MailApprove" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressApprovedPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.APPROVAL" />
+		</property>
+	</bean>
+
+	<!-- 差し戻し通知 -->
+	<bean id="MailSendBack" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressRejectionPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.SEND.BACK" />
+		</property>
+	</bean>
+
+	<!-- 公開通知 -->
+	<bean id="MailPublic" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressPublishPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.PUBLIC" />
+		</property>
+	</bean>
+
+	<!-- 承認依頼取消通知(承認済ユーザが通知) -->
+	<bean id="IMPL.TYPE.CANCEL.APPROVAL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressCancelApprovalPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.CANCEL" />
+		</property>
+	</bean>
+
+	<!-- 承認依頼取消通知(承認依頼者が通知) -->
+	<bean id="MailCancelApprovalRequest" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressCancelApprovalPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.CANCEL" />
+		</property>
+	</bean>
+
+	<!-- 受信確認 -->
+	<bean id="IMPL.TYPE.RECEPTION" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressApprovedPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.RECEPTION" />
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録完了通知 -->
+	<bean id="IMPL.TYPE.MYDOCUMENT.REGIST.SUCCESS" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.FROM.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.MYDOCUMENT.REGIST.SUCCESS" />
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(登録ユーザ取得失敗) -->
+	<bean id="IMPL.TYPE.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.FROM.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED" />
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(フォーマット取得失敗) -->
+	<bean id="IMPL.TYPE.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.FROM.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED" />
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録失敗通知 -->
+	<bean id="IMPL.TYPE.MYDOCUMENT.REGIST.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.FROM.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.MYDOCUMENT.REGIST.FAILED" />
+		</property>
+	</bean>
+
+	<!-- PDF署名処理失敗通知 -->
+	<bean id="IMPL.TYPE.SIGNATURE.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.SIGNATURE.REGST.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.SIGNATURE.FAILED" />
+		</property>
+	</bean>
+
+	<!-- 公開通知(バッチ用) -->
+	<bean id="MailPublicBatch" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.NOTIFYUSER.OF.PUBLISHMAIL" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.PUBLIC" />
+		</property>
+	</bean>
+
+
+	<!-- 公開ファイル比較処理完了通知 -->
+	<bean id="IMPL.TYPE.COMPARE.SUCCESS" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.PDFCOMPARE.OBJECT.CUSER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.COMPARE.SUCCESS" />
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理失敗通知 -->
+	<bean id="IMPL.TYPE.COMPARE.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.PDFCOMPARE.OBJECT.CUSER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.COMPARE.FAILED" />
+		</property>
+	</bean>
+
+	<!-- 公開ファイル結合処理失敗通知 -->
+	<bean id="IMPL.TYPE.JOIN.FAILED" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.JOIN.OBJECT.CUSER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.JOIN.FAILED" />
+		</property>
+	</bean>
+
+	<!-- 公開取消通知 -->
+	<bean id="MailPublicCancel" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefEntryToList">
+			<list>
+				<ref bean="userDefAddressPublishCancelPlugIn" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.PUBLIC.CANCEL" />
+		</property>
+	</bean>
+
+	<!-- 有効期限切れドキュメント削除通知 -->
+	<bean id="DisposeExpiredDocs" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentDisposeExpiredDocsPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefineEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.DISPOSE.EXPIRED.DOCS.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefineEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.DISPOSE.EXPIRED.DOCS" />
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- 有効期限事前通知 -->
+	<bean id="ExpirationDateNotice" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailTypeDocumentDisposeExpiredDocsPlugInImpl">
+		<!-- 送信先(To) -->
+		<property name="userDefineEntryToList">
+			<list>
+				<ref bean="IMPL.USER.TO.MAILADDRESS.EXPIRATION.DATE.NOTICE.USER" />
+			</list>
+		</property>
+		<!-- 送信先(Cc) -->
+		<property name="userDefineEntryCcList">
+			<list>
+			</list>
+		</property>
+		<!-- メッセージ -->
+		<property name="mailMessage">
+			<ref bean="IMPL.MESSAGE.EXPIRATION.DATE.NOTICE" />
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- メール送信先実装 -->
+	<!-- ======================================================================================== -->
+	<!--
+		※ applicationContext-doc-userDefGroup.xmlにて定義すること
+
+	 -->
+
+	<!-- メールメッセージ実装 -->
+	<!-- ======================================================================================== -->
+
+	<!-- 承認依頼通知 -->
+	<bean id="IMPL.MESSAGE.APPROVAL.REQ" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.USER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.COMMENT" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.URL" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 承認通知 -->
+	<bean id="IMPL.MESSAGE.APPROVAL" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.APPROVAL.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.COMMENT" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.APPROVAL.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 差し戻し通知 -->
+	<bean id="IMPL.MESSAGE.SEND.BACK" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.USER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.COMMENT" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 公開通知 -->
+	<bean id="IMPL.MESSAGE.PUBLIC" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.PUBLIC.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.USER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.MODIFYUSER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.COMMENT" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.DOWNLOAD.URL" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録完了通知 -->
+	<bean id="IMPL.MESSAGE.MYDOCUMENT.REGIST.SUCCESS" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.NOOBJID.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(登録ユーザ取得失敗) -->
+	<bean id="IMPL.MESSAGE.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.NOOBJID.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(フォーマット取得失敗) -->
+	<bean id="IMPL.MESSAGE.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED.MESSAGE" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録失敗通知 -->
+	<bean id="IMPL.MESSAGE.MYDOCUMENT.REGIST.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.FAILED.MESSAGE" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 承認依頼取消通知 -->
+	<bean id="IMPL.MESSAGE.CANCEL" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.CANCEL.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.USER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.PROPERTY" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.CANCEL.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 受信確認 -->
+	<bean id="IMPL.MESSAGE.RECEPTION" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.RECEPTION.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.RECEPTION.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.RECEPTION.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.RECEPTION.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.RECEPTION.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.RECEPTION.DAY" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- PDF署名処理失敗通知 -->
+	<bean id="IMPL.MESSAGE.SIGNATURE.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.URL" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.ERROR" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理完了通知 -->
+	<bean id="IMPL.MESSAGE.COMPARE.SUCCESS" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.COMPARE.SUCCESS.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.SUCCESS.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.RESULTFILENAME" />
+				<ref bean="COMMON.SEPARATE" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.ORGFILENAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.TARGETFILENAME" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理失敗通知 -->
+	<bean id="IMPL.MESSAGE.COMPARE.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.ORGFILENAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.TARGETFILENAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.ERROR" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル結合処理失敗通知 -->
+	<bean id="IMPL.MESSAGE.JOIN.FAILED" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.URL" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.FILENAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.TARGETFILENAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.ERROR" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 公開取消通知 -->
+	<bean id="IMPL.MESSAGE.PUBLIC.CANCEL" class="jp.co.ctc_g.eim.framework.business.service.impl.MailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.MESSAGE" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.USER" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.PROPERTY" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.COMMENT" />
+				<ref bean="COMMON.BLANK" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.URL" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 有効期限切れドキュメント通知 -->
+	<bean id="IMPL.MESSAGE.DISPOSE.EXPIRED.DOCS" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.DefaultMailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.MESSAGE" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.EXPIRATION.DATE" />
+
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- 有効期限事前通知 -->
+	<bean id="IMPL.MESSAGE.EXPIRATION.DATE.NOTICE" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.DefaultMailMessagePlugInImpl">
+		<!-- 件名 -->
+		<property name="mailTitle" ref="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.TITLE" />
+		<!-- 本文 -->
+		<property name="mailBodyList">
+			<list>
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.MESSAGE" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.PATH" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.NAME" />
+				<ref bean="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.EXPIRATION.DATE" />
+ 			</list>
+		</property>
+	</bean>
+
+	<!-- メール要素実装 -->
+	<!-- ======================================================================================== -->
+
+	<!-- 共通 -->
+	<bean id="COMMON.BLANK" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>APP.MAIL.COMMON.BLANK</value>
+		</property>
+	</bean>
+
+	<bean id="COMMON.SEPARATE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>APP.MAIL.COMMON.SEPARATE</value>
+		</property>
+	</bean>
+
+	<!-- 承認依頼通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventUserNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：依頼者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.USER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemRequestUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.USER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：コメント -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.COMMENT" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventCommentPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.COMMENT</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.REQ.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.REQ.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- 承認通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventUserNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：コメント -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.COMMENT" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventUserNameAndCommentPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.COMMENT</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.APPROVAL.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.APPROVAL.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- 差し戻し通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventUserNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：依頼者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.USER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemRequestUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.USER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：コメント -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.COMMENT" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventCommentPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.COMMENT</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SEND.BACK.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SEND.BACK.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- 公開通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：作成者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.USER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemCreateUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.USER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：更新者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.MODIFYUSER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemModifyUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.MODIFYUSER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：公開通知コメント -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.COMMENT" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPublicCommentPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.COMMENT</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：公開ファイルダウンロードURL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.DOWNLOAD.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPublicDownloadURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.DOWNLOAD.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- 承認依頼取消通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodySessionUserMsgPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：依頼者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.USER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemRequestUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.USER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.CANCEL.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.CANCEL.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- 受信確認 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodySessionUserMsgPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：参照日 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.RECEPTION.DAY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemReferenceDatePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.RECEPTION.DAY</value>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録完了通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PREFIX.RES.SYSTEM</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DOC.REGIST.SUCSSES</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.WITH.REPLACEWARD.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL(オブジェクトIDなし) -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.NOOBJID.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.WITH.REPLACEWARD.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>false</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：エラー内容 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.SUCCESS.ERROR" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemErrorMessagePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.ERROR</value>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(登録ユーザ取得失敗) -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PREFIX</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.USER.READ.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.USER.READ.FAILED</value>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録初期処理失敗通知(フォーマット取得失敗) -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PREFIX</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.INIT.FORMAT.READ.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.FORMAT.READ.FAILED</value>
+		</property>
+	</bean>
+
+	<!-- マイドキュメント登録失敗通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PREFIX.RES.SYSTEM</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.MYDOCUMENT.REGIST.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DOC.REGIST.FAILED</value>
+		</property>
+	</bean>
+
+	<!-- PDF署名処理失敗通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNATURE.FAILED.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNATURE.FAILED.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNATURE.FAILED.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：対象ファイル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemTargetFilePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNATURE.FAILED.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：エラー内容 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNATURE.FAILED.ERROR" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemErrorMessagePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNATURE.FAILED.ERROR</value>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理(共通) -->
+	<!-- 本文 アイテム：比較結果出力先ファイル名 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.RESULTFILENAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemCompareResultFileNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.RESULTFILENAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：比較元ファイル名 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.ORGFILENAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemCompareOriginalFileNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.ORGFILENAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：比較対象ファイル名 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.TARGETFILENAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemCompareTargetFileNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.TARGETFILENAME</value>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理完了通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.SUCCESS.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.SUCCESS.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.SUCCESS.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.SUCCESS.MESSAGE</value>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル比較処理失敗通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.FAILED.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyCompareFailedBodyMsgPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.FAILED.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：エラー内容 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.COMPARE.FAILED.ERROR" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemErrorMessagePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.COMPARE.FAILED.ERROR</value>
+		</property>
+	</bean>
+
+	<!-- 公開ファイル結合処理失敗通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：結合ファイル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.FILENAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemJoinFileNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.FILENAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：結合対象ファイル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.TARGETFILENAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemJoinTargetFileNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.TARGETFILENAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：出力先 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemJoinPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：エラー内容 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.JOIN.FAILED.ERROR" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemErrorMessagePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.JOIN.FAILED.ERROR</value>
+		</property>
+	</bean>
+
+	<!-- 署名・暗号化バッチ失敗通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.MESSAGE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：エラー内容 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.SIGNANDENCR.FAILED.ERROR" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemErrorMessagePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.SIGNANDENCR.FAILED.ERROR</value>
+		</property>
+	</bean>
+
+	<!-- 公開取消通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.TITLE" class="jp.co.ctc_g.eim.framework.business.service.impl.MailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodySessionUserMsgPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：公開取消者 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.USER" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemEventExecUserPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.USER</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：プロパティ -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.PROPERTY" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemPropertiePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.PROPERTY</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：コメント -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.COMMENT" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyLastEventCommentPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.COMMENT</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：URL -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.PUBLIC.CANCEL.URL" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemURLPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.PUBLIC.CANCEL.URL</value>
+		</property>
+		<property name="objIdFlg">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- 有効期限切れドキュメント削除通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.TITLE" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.DefaultMailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DISPOSE.EXPIRED.DOCS.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.MESSAGE" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.DefaultMailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DISPOSE.EXPIRED.DOCS.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DISPOSE.EXPIRED.DOCS.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DISPOSE.EXPIRED.DOCS.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：有効期限 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.DISPOSE.EXPIRED.DOCS.EXPIRATION.DATE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsExpirationDatePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.DISPOSE.EXPIRED.DOCS.EXPIRATION.DATE</value>
+		</property>
+	</bean>
+
+	<!-- 有効期限事前通知 -->
+	<!-- タイトル -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.TITLE" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.DefaultMailElementPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.EXPIRATION.DATE.NOTICE.TITLE</value>
+		</property>
+	</bean>
+	<!-- 本文 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.MESSAGE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemExpirationDateNoticeDatePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.EXPIRATION.DATE.NOTICE.MESSAGE</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：パス -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.PATH" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsPathPlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.EXPIRATION.DATE.NOTICE.PATH</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：名称 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.NAME" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsNamePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.EXPIRATION.DATE.NOTICE.NAME</value>
+		</property>
+	</bean>
+	<!-- 本文 アイテム：有効期限 -->
+	<bean id="IMPL.ELEMENT.EIM.MAIL.EXPIRATION.DATE.NOTICE.EXPIRATION.DATE" class="jp.co.ctc_g.eim.app.document.business.service.impl.MailElementBodyItemDisposeExpiredDocsExpirationDatePlugInImpl">
+		<property name="key">
+			<value>EIM.MAIL.EXPIRATION.DATE.NOTICE.EXPIRATION.DATE</value>
+		</property>
+	</bean>
+
+</beans>

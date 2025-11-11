@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================== -->
+	<!-- ドキュメント検索用Dao    -->
+	<!-- ======================== -->
+
+	<!-- リンクインデックス生成用 グループDao -->
+	<bean id="groupDaoForDocSearch" parent="groupDao2" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>1</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForDocSearch"/>
+		</property>
+	</bean>
+
+	<!-- リンクインデックス生成用 ユーザーDao -->
+	<bean id="userDaoForDocSearch" parent="userDaoLight2">
+		<property name="limit">
+			<value>0</value>
+		</property>
+	</bean>
+
+	<!-- リンクインデックス生成 ロールDao -->
+	<bean id="roleDaoForDocSearch" parent="roleDao2" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel" value="0" />
+		<property name="childRecursiveLevel" value="2" />
+	</bean>
+
+	<!-- リンクインデックス生成 複合グループDao -->
+<!-- 	<bean id="complexDaoForDocSearch" parent="complexDao2" > -->
+<!-- 		<property name="itemListForSingleTargetMethod"> -->
+<!-- 			<list> -->
+<!-- 				<value>USER_LIST</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 		<property name="itemListForMultiTargetMethod"> -->
+<!-- 			<list> -->
+<!-- 				<value>USER_LIST</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+</beans>

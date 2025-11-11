@@ -1,0 +1,1633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- jp.co.ctc_g.eim.framework2.business.service.cache配下のクラスが利用するDaoのBean定義     -->
+	<!-- ======================================================================================== -->
+
+	<!-- キャッシュ同期実行制御Dao -->
+	<bean id="cacheExclusionDao2" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.CacheExclusionDaoImpl" />
+
+	<!-- 以下の定義はapplicationContext-fw2-integrationを複製して作成しています。未使用Beanが含まれます。 -->
+
+	<!-- accessEntryDaoForCacheService -->
+	<bean id="accessEntryDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessEntryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoLightForCacheService"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- accessHistoryDaoForCacheService -->
+	<bean id="accessHistoryDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessHistoryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- accessRoleTypeDaoForCacheService -->
+	<bean id="accessRoleTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessRoleTypeDaoImpl" >
+	</bean>
+
+	<!-- accumulationMailDaoForCacheService -->
+	<bean id="accumulationMailDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccumulationMailDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- adminAuthTypeDaoForCacheService -->
+	<bean id="adminAuthTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.AdminAuthTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/adminAuth.xml -->
+		<property name="adminAuthFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoLightForCacheService -->
+	<bean id="assignmentDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="eventDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="assignmentEntryDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentDaoForCacheService -->
+	<bean id="assignmentDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>EVENT</value>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>EVENT</value>
+				<value>OBJECT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+		<property name="eventDao">
+			<ref bean="eventDaoLightForCacheService"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForCacheService"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<property name="limit">
+			<value>10000</value>
+		</property>
+	</bean>
+
+	<!-- assignmentEntryDaoForCacheService -->
+	<bean id="assignmentEntryDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentEntryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoForAssignmentEntryForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoForAssignmentEntryForCacheService"/>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoForAssignmentEntryForCacheService"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoLightForCacheService -->
+	<bean id="assignmentPlanDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentPlanDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="assignmentEntryDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- assignmentPlanDaoForCacheService -->
+	<bean id="assignmentPlanDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AssignmentPlanDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>OBJECT</value>
+				<value>STATUSTYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ENTRY_ELEMENT</value>
+				<value>ENTRY_LIST</value>
+				<value>OBJECT</value>
+				<value>STATUSTYPE</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForCacheService"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForCacheService"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoLightForCacheService -->
+	<bean id="attributeTypeDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoForCacheService -->
+	<bean id="attributeTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DEFAULT_VALUE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>DEFAULT_VALUE</value>
+			</list>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- attributeTypeDaoForCacheService -->
+	<bean id="attributeTypeAllDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AttributeTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- baseEventTypeDaoForCacheService -->
+	<bean id="baseEventTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.BaseEventTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- baseStatusTypeDaoForCacheService -->
+	<bean id="baseStatusTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.BaseStatusTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- complexDaoLightForCacheService -->
+	<bean id="complexDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- complexDaoForAssignmentEntryForCacheService -->
+	<bean id="complexDaoForAssignmentEntryForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- complexDaoForCacheService -->
+	<bean id="complexDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- configDaoForCacheService -->
+	<bean id="configDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ConfigDaoImpl"  init-method="init" >
+		<property name="configFilePathList">
+			<list>
+				<value>config</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- directoryDaoForCacheService -->
+	<bean id="directoryDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.DirectoryDaoImpl" >
+	</bean>
+
+	<!-- eventDaoLightForCacheService -->
+	<bean id="eventDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoLightForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- eventDaoForCacheService -->
+	<bean id="eventDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>TO_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>FROM_STATUS</value>
+				<value>TO_STATUS</value>
+				<value>CREATION_USER</value>
+			</list>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoLightForCacheService"/>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoLightForCacheService -->
+	<bean id="eventTypeDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDaoForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="guardConditionDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="mailTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- eventTypeDaoForCacheService -->
+	<bean id="eventTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.EventTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>BASE</value>
+				<value>FROM_STATUS_TYPE</value>
+				<value>TO_STATUS_TYPE</value>
+				<value>GUARD_CONDITION</value>
+				<value>NOTICE_MAIL</value>
+			</list>
+		</property>
+		<property name="baseEventTypeDao">
+			<ref bean="baseEventTypeDaoForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForCacheService"/>
+		</property>
+		<property name="guardConditionDao">
+			<ref bean="guardConditionDaoForCacheService"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoForCacheService"/>
+		</property>
+		<property name="mailTypeDao">
+			<ref bean="mailTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- fileDaoForCacheService -->
+	<bean id="fileDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FileDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DIRECTORY</value>
+				<value>FORMAT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>FORMAT</value>
+			</list>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForCacheService"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- formatDaoLightForCacheService -->
+	<bean id="formatDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FormatDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="directoryDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- formatDaoForCacheService -->
+	<bean id="formatDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.FormatDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoLightForCacheService -->
+	<bean id="groupDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForAssignmentEntryForCacheService -->
+	<bean id="groupDaoForAssignmentEntryForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForCacheService -->
+	<bean id="groupDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>GROUP_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>GROUP_OBJECT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- guardConditionDaoForCacheService -->
+	<bean id="guardConditionDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.GuardConditionDaoImpl"  init-method="init" >
+		<!-- 設定例：/WorkFlowConf.xml -->
+		<property name="workflowConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- languageDaoForCacheService -->
+	<bean id="languageDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.LanguageDaoImpl"  init-method="init" >
+		<!-- 設定例：/language.xml -->
+		<property name="langInfoConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- mailTypeDaoForCacheService -->
+	<bean id="mailTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.MailTypeDaoImpl"  init-method="init" >
+		<!-- 設定例：/MailTypeConf.xml -->
+		<property name="mailTypeConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- objectDaoLightForCacheService -->
+	<bean id="objectDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForCacheService"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForCacheService"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForSequenceForCacheService -->
+	<bean id="objectDaoForSequenceForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<property name="attributeTypeListForSingleTargetMethod">
+			<list>
+				<value>連続データID</value>
+			</list>
+		</property>
+		<property name="attributeTypeListForMultiTargetMethod">
+			<list>
+				<value>連続データID</value>
+			</list>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>SECURITY</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForCacheService"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForCacheService"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- objectDaoForCacheService -->
+	<bean id="objectDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="limit">
+			<value>-2</value>
+		</property>
+		<property name="bulkCount">
+			<value>200</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="statusDao">
+			<ref bean="statusDaoLightForCacheService"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoForCacheService"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForCacheService"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!-- オブジェクト複数取得メソッドでステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiTarget">
+			<value>false</value>
+		</property>
+		<!-- オブジェクト単数取得メソッドでステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleTarget">
+			<value>false</value>
+		</property>
+		<!--
+				getList(SearchSelectObject, SearchLimitCountCondition)において、
+					取得項目および属性項目の絞り込みの挙動を切り替えるフラグ
+				・true:引数⇒applicationContextのプロパティ⇒実装の順で参照します。
+				・false:引数⇒実装の順で参照します。
+						REVISION_GROUP_IDについては、applicationContextのみ参照します。
+				本設定ファイルでは、trueとします。
+				コメントアウトした場合はfalseと同じ挙動となります。
+		-->
+		<property name="enabledListForGetListSelectTarget">
+			<value>true</value>
+		</property>
+		<property name="isLoadProperty">
+			<value>false</value>
+		</property>
+		<!-- オブジェクト型属性はそのIDのみ保持する -->
+		<property name="refObjectExpansionDisabled" value="true" />
+	</bean>
+
+	<!-- objectTypeDaoLightForCacheService -->
+	<bean id="objectTypeDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="formatDao">
+			<null/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="workflowDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="sequenceDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- objectTypeDaoForCacheService -->
+	<bean id="objectTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ObjectTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForCacheService"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForCacheService"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoForSequenceForCacheService"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForCacheService"/>
+		</property>
+		<property name="sequenceDao">
+			<ref bean="sequenceDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- operationHistoryConfigDaoForCacheService -->
+	<bean id="operationHistoryConfigDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.OperationHistoryConfigDaoImpl" >
+		<!-- 設定例：/EimOpeHistConf.xml -->
+		<property name="fwOpeHistConfFilePath">
+			<null/>
+		</property>
+		<!-- 設定例：/AppOpeHistConf.xml -->
+		<property name="appOpeHistConfFilePath">
+			<null/>
+		</property>
+		<property name="operationHistoryLang">
+			<value>${OPERATION_HISTORY_LANG}</value>
+		</property>
+	</bean>
+
+	<!-- operationHistoryDaoForCacheService -->
+	<bean id="operationHistoryDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.OperationHistoryDaoImpl" >
+		<property name="limit">
+			<value>0</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="operationHistoryLang">
+			<value>${OPERATION_HISTORY_LANG}</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForCacheService"/>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoLightForCacheService"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForCacheService"/>
+		</property>
+		<property name="securityDao">
+			<ref bean="securityDaoForCacheService"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForCacheService"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForCacheService"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForCacheService"/>
+		</property>
+		<property name="relationTypeDao">
+			<ref bean="relationTypeDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForCacheService"/>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDaoForCacheService"/>
+		</property>
+		<property name="operationHistoryConfigDao">
+			<ref bean="operationHistoryConfigDaoForCacheService"/>
+		</property>
+
+		<property name="codeDao">
+			<ref bean="codeDaoForCacheService"/>
+		</property>
+		<property name="codeTypeDao">
+			<ref bean="codeTypeDaoForCacheService"/>
+		</property>
+
+	</bean>
+
+	<!-- relationDaoForCacheService -->
+	<bean id="relationDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>PARENT</value>
+				<value>CHILD</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>PARENT</value>
+				<value>CHILD</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>1000</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForCacheService"/>
+		</property>
+		<property name="relationTypeDao">
+			<ref bean="relationTypeDaoLightForCacheService"/>
+		</property>
+		<property name="attributeLoadingQueryTypeEnum">
+			<value>AUTO</value>
+		</property>
+		<!-- リレーション複数取得メソッドでリレーションと伴に取得される親オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiParentTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション複数取得メソッドでリレーションと伴に取得される子オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForMultiChildTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション単数取得メソッドでリレーションと伴に取得される親オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleParentTarget">
+			<value>false</value>
+		</property>
+		<!-- リレーション単数取得メソッドでリレーションと伴に取得される子オブジェクトのステータスリストを取得するかしないかを指定 -->
+		<property name="isTakeStatusListForSingleChildTarget">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- relationTypeDaoLightForCacheService -->
+	<bean id="relationTypeDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- relationTypeDaoForCacheService -->
+	<bean id="relationTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RelationTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- resourceDaoForCacheService -->
+	<bean id="resourceDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ResourceDaoImpl"  init-method="init" >
+		<property name="resourceFilePathList">
+			<list>
+				<value>resource</value>
+			</list>
+		</property>
+		<property name="messageLang">
+			<value>JA</value>
+		</property>
+		<property name="displayLang">
+			<value>EN</value>
+		</property>
+	</bean>
+
+	<!-- roleDaoLightForCacheService -->
+	<bean id="roleDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- roleDaoForAssignmentEntryForCacheService -->
+	<bean id="roleDaoForAssignmentEntryForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>1</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- roleDaoForCacheService -->
+	<bean id="roleDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>ROLE_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>2</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- securityDaoLightForCacheService -->
+	<bean id="securityDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SecurityDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="workflowDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="accessEntryDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- securityDaoForCacheService -->
+	<bean id="securityDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SecurityDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ENTRY_LIST</value>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLightForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForCacheService"/>
+		</property>
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoLightForCacheService -->
+	<bean id="statusDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoLightForCacheService"/>
+		</property>
+		<property name="assignmentPlanDao">
+			<ref bean="assignmentPlanDaoForCacheService"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForCacheService"/>
+		</property>
+		<!-- 設定無し -->
+		<property name="userDao">
+			<null/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- statusDaoForCacheService -->
+	<bean id="statusDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusDaoImpl" >
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForSingleTargetMethod">
+			<null/>
+		</property>
+		<!-- null（全て取得する） -->
+		<property name="attributeTypeListForMultiTargetMethod">
+			<null/>
+		</property>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>CREATION_USER</value>
+				<value>MODIFICATION_USER</value>
+				<value>ASSIGNMENT_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+			</list>
+		</property>
+		<property name="assignmentDao">
+			<ref bean="assignmentDaoLightForCacheService"/>
+		</property>
+		<property name="assignmentPlanDao">
+			<ref bean="assignmentPlanDaoForCacheService"/>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLightForCacheService"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLightForCacheService"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDaoForCacheService"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- statusTypeDaoLightForCacheService -->
+	<bean id="statusTypeDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="assignmentEntryDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="attributeTypeDao">
+			<null/>
+		</property>
+		<property name="baseStatusTypeDao">
+			<ref bean="baseStatusTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- statusTypeDaoForCacheService -->
+	<bean id="statusTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusTypeDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>ASSIGNMENT_ENTRY_LIST</value>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>BASE</value>
+				<value>ASSIGNMENT_ENTRY_LIST</value>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="assignmentEntryDao">
+			<ref bean="assignmentEntryDaoForCacheService"/>
+		</property>
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoLightForCacheService"/>
+		</property>
+		<property name="baseStatusTypeDao">
+			<ref bean="baseStatusTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- systemFunctionDaoForCacheService -->
+	<bean id="systemFunctionDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.SystemFunctionDaoImpl"  init-method="init" >
+		<!-- 設定例：/SysFuncEntryConf.xml -->
+		<property name="sysFuncEntryConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- userDaoLightForCacheService -->
+	<bean id="userDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.UserDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="limit">
+			<value>0</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<!-- 設定無し -->
+		<property name="groupDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="roleDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="objectDao">
+			<null/>
+		</property>
+		<property name="mailAddressUnique">
+			<value>${USER_MAILADDRESS_UNIQUE}</value>
+		</property>
+	</bean>
+
+	<!-- userDaoForCacheService -->
+	<bean id="userDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.UserDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP_LIST</value>
+				<value>ROLE_LIST</value>
+				<value>USER_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP_LIST</value>
+				<value>ROLE_LIST</value>
+				<value>USER_OBJECT</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>0</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLightForCacheService"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLightForCacheService"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLightForCacheService"/>
+		</property>
+		<property name="mailAddressUnique">
+			<value>${USER_MAILADDRESS_UNIQUE}</value>
+		</property>
+	</bean>
+
+	<!-- userDefinitionGroupDaoForCacheService -->
+	<bean id="userDefinitionGroupDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.xml.UserDefinitionGroupDaoImpl"  init-method="init" >
+		<!-- 設定例：/UserDefGroupConf.xml -->
+		<property name="userDefGroupConfFilePath">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- workflowDaoLightForCacheService -->
+	<bean id="workflowDaoLightForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.WorkflowDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<!-- 設定無し -->
+		<property name="eventTypeDao">
+			<null/>
+		</property>
+		<!-- 設定無し -->
+		<property name="statusTypeDao">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- workflowDaoForCacheService -->
+	<bean id="workflowDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.WorkflowDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>EVENT_TYPE_LIST</value>
+				<value>STATUS_TYPE_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="eventTypeDao">
+			<ref bean="eventTypeDaoForCacheService"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+	<!-- mailSenderForCacheService -->
+	<bean id="mailSenderForCacheService" class="jp.co.ctc_g.eim.framework2.integration.mail.impl.MailSenderImpl" >
+		<property name="smtpHost">
+			<null/>
+		</property>
+		<property name="smtpAddress">
+			<null/>
+		</property>
+		<property name="smtpName">
+			<null/>
+		</property>
+		<property name="mailEncoding">
+			<null/>
+		</property>
+		<property name="smtpUser">
+			<null/>
+		</property>
+		<property name="smtpPass">
+			<null/>
+		</property>
+		<!-- 接続タイムアウト時間(ミリ秒で指定。nullを指定した場合は無限。) -->
+		<property name="smtpConnectionTimeOut">
+			<null/>
+		</property>
+		<!-- 送信タイムアウト（ミリ秒で指定。nullを指定した場合は無限。) -->
+		<property name="smtpTimeOut">
+			<null/>
+		</property>
+	</bean>
+
+	<!-- fileAccessorForCacheService -->
+	<bean id="fileAccessorForCacheService" class="jp.co.ctc_g.eim.framework2.integration.file.impl.FileAccessorImpl" >
+		<property name="bufferdSize">
+			<value>4096</value>
+		</property>
+		<property name="flushSize">
+			<value>0</value>
+		</property>
+		<property name="zipEncoding">
+			<value>MS932</value>
+		</property>
+	</bean>
+
+	<!-- directoryAccessorForCacheService -->
+	<bean id="directoryAccessorForCacheService" class="jp.co.ctc_g.eim.framework2.integration.file.impl.DirectoryAccessorImpl" >
+	</bean>
+
+	<!-- codeTypeDaoForCacheService -->
+	<bean id="codeTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.CodeTypeDaoImpl" >
+		<property name="codeDao">
+			<ref bean="codeDaoForCacheService"/>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>CODE_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- codeDaoForCacheService -->
+	<bean id="codeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.CodeDaoImpl" >
+	</bean>
+
+	<!-- sequenceTypeDaoForCacheService -->
+	<bean id="sequenceTypeDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SequenceTypeDaoImpl" >
+	</bean>
+
+	<!-- sequenceDaoForCacheService -->
+	<bean id="sequenceDaoForCacheService" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SequenceDaoImpl" >
+		<property name="sequenceTypeDao">
+			<ref bean="sequenceTypeDaoForCacheService"/>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=
+		"http://www.springframework.org/schema/beans
+		 http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- ====================================================================================== -->
+	<!-- 文書管理用カスタム属性にUIコントロールを設定するスクリプト用ApplicationContextファイル -->
+	<!-- ====================================================================================== -->
+
+	<!-- アノテーションを有効にする -->
+	<context:annotation-config/>
+
+	<!-- コンフィグレーションクラスを読み込み各機能を有効にする -->
+	<context:component-scan base-package="jp.co.ctc_g.eim.framework2" use-default-filters="false">
+		<!-- MyBatis -->
+		<context:include-filter type="assignable" expression="jp.co.ctc_g.eim.framework2.integration.mybatis.MyBatisConfig"/>
+	</context:component-scan>
+
+	<!-- ApplicationContextを保持するApplicationContextAware -->
+	<bean id="applicationContextLoader" class="jp.co.ctc_g.eim.framework2.common.context.ApplicationContextLoader"/>
+
+	<!-- 各種プロパティ値の取得元となるプロパティファイルのロケーション -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ======================================= -->
+	<!-- 読み込むApplicationContextファイル      -->
+	<!-- ======================================= -->
+
+	<!-- EIMANAGER FW 標準コンテキストファイル -->
+	<import resource="applicationContext-fw2-business.xml" />
+	<import resource="applicationContext-fw2-integration.xml" />
+
+	<!-- EIMANAGER FW トランザクション管理用コンテキストファイル ※いずれか一つを有効にして下さい。 -->
+	<import resource="applicationContext-tx-batch.xml" /> <!-- バッチ用 通常トランザクション (JTA非対応) Oracle用 -->
+	<!-- <import resource="applicationContext-tx-batch-jta.xml" /> バッチ用 分散トランザクション (JTA対応) Oracle用 -->
+	<!-- <import resource="applicationContext-tx-batch-pg.xml" /> バッチ用 通常トランザクション (JTA非対応) PostgreSQL用 -->
+	<!-- <import resource="applicationContext-tx-batch-jta-pg.xml" /> バッチ用 分散トランザクション (JTA対応) PostgreSQL用 -->
+
+	<!-- EIMANAGER FW 提供 APIキャッシュ用コンテキストファイル -->
+	<import resource="applicationContext-eim-util.xml" />
+	<import resource="applicationContext-fw2-business-cache.xml" />
+	<import resource="applicationContext-fw2-integration-cache.xml" />
+	<import resource="applicationContext-fw2-integration-util.xml" />
+	<import resource="applicationContext-fw2-integration-for-util.xml" />
+	<import resource="applicationContext-fw2-integration-for-cacheService.xml" />
+
+</beans>

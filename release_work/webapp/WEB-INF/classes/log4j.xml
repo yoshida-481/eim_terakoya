@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- ============ -->
+	<!-- Appender設定 -->
+	<!-- ============ -->
+
+	<!-- 標準出力 -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<!-- 出力先-->
+		<param name="Target" value="System.out" />
+		<!-- 出力レベル -->
+		<param name="threshold" value="INFO"/>
+		<!-- レイアウト -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} [%c{1}]%C#%M:%L%n%p: %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- 通常ログファイル出力 -->
+	<appender name="DefaultLog" class="org.apache.log4j.RollingFileAppender">
+		<!-- 出力先-->
+		<param name="File" value="eim_web.log"/>
+		<!-- 最大ファイルサイズ -->
+		<param name="MaxFileSize" value="10000000"/>
+		<!-- 保管ログの最大数 -->
+		<param name="MaxBackupIndex" value="5"/>
+		<!-- 追加書き込み (true:追加 | false:上書き) -->
+		<param name="Append" value="true"/>
+		<!-- 出力レベル -->
+		<param name="threshold" value="INFO"/>
+		<!-- レイアウト -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} %p [%c{1}]%C#%M:%L %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- デバッグログファイル出力 -->
+	<appender name="DebugLog" class="org.apache.log4j.RollingFileAppender">
+		<!-- 出力先-->
+		<param name="File" value="eim_web_debug.log"/>
+		<!-- 最大ファイルサイズ -->
+		<param name="MaxFileSize" value="10000000"/>
+		<!-- 保管ログの最大数 -->
+		<param name="MaxBackupIndex" value="5"/>
+		<!-- 追加書き込み (true:追加 | false:上書き) -->
+		<param name="Append" value="true"/>
+		<!-- 出力レベル -->
+		<param name="threshold" value="DEBUG"/>
+		<!-- レイアウト -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} %p [%c{1}]%C#%M:%L %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- トレースログファイル出力 -->
+	<appender name="TraceLog" class="org.apache.log4j.RollingFileAppender">
+		<!-- 出力先-->
+		<param name="File" value="eim_web_trace.log"/>
+		<!-- 最大ファイルサイズ -->
+		<param name="MaxFileSize" value="10000000"/>
+		<!-- 保管ログの最大数 -->
+		<param name="MaxBackupIndex" value="5"/>
+		<!-- 追加書き込み (true:追加 | false:上書き) -->
+		<param name="Append" value="true"/>
+		<!-- 出力レベル -->
+		<param name="threshold" value="TRACE"/>
+		<!-- レイアウト -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} %p [%c{1}]%C#%M:%L %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- ログ出力抑制 -->
+	<appender name="Null" class="org.apache.log4j.varia.NullAppender"/>
+
+	<!-- ========== -->
+	<!-- Logger設定 -->
+	<!-- ========== -->
+
+	<!-- Spring Transaction デバッグロガー -->
+	<logger name="org.springframework.transaction.jta">
+		<!-- DEBUGにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+	</logger>
+
+	<!-- Atomikos デバッグロガー -->
+	<logger name="com.atomikos">
+		<!-- DEBUGにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+	</logger>
+
+	<!-- AtomikosJdbcConnectionProxy 警告抑制ロガー -->
+	<logger name="com.atomikos.jdbc.internal.AbstractJdbcConnectionProxy">
+		<!-- WARNにするとステートメントの開放漏れを知らせる警告が出力されます。 -->
+		<!-- ここで、おそらく不備があり既に開放されているステートメントに対しても警告が出力される場合があります。 -->
+		<!-- 無用な警告出力を回避するためERRORを指定します。 -->
+		<!-- ログレベルの如何によらず、ステートメントの強制開放は実行されます。 -->
+		<level value="ERROR" />
+	</logger>
+
+	<!-- JGROUPロガー -->
+	<logger name="org.jgroups">
+		<!-- INFO以下にすると定期的にログが出力され続けます。 -->
+		<level value="WARN" />
+	</logger>
+
+	<!-- EIMANAGERオブジェクト検索チューニングロガー -->
+	<logger name="eim.util.internal.search.Searcher.tuneTrace">
+		<level value="INFO"></level>
+	</logger>
+
+	<!-- EIMANAGERオブジェクト検索トレースロガー -->
+	<logger name="eim.util.internal.search">
+		<!-- TRACEにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+		<appender-ref ref="TraceLog" />
+	</logger>
+
+	<!-- EIMANAGERキャッシュDao用デバッグロガー -->
+	<logger name="jp.co.ctc_g.eim.framework2.integration.dao.cache.impl">
+		<!-- DEBUGにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+		<appender-ref ref="DebugLog" />
+	</logger>
+
+	<!-- EIMANAGERキャッシュService用デバッグロガー -->
+	<logger name="jp.co.ctc_g.eim.framework2.business.service.cache.impl">
+		<!-- DEBUGにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+		<appender-ref ref="DebugLog" />
+	</logger>
+
+	<!-- EIMANAGER Common AOPデバッグロガー -->
+	<logger name="jp.co.ctc_g.eim.framework2.common.aop">
+		<!-- DEBUGにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+	</logger>
+
+	<!-- MyBatis トレースロガー -->
+	<logger name="jp.co.ctc_g.eim.framework2.integration.mybatis.mapper">
+		<!-- TRACEにすると出力されます。運用時はINFOに設定して下さい。 -->
+		<level value="INFO" />
+	</logger>
+
+	<!-- 検索FWログ -->
+	<logger name="jp.co.ctc_g.eim.search">
+		<!-- デバッグログを出力する場合DEBUG(またはTRACE)に変更 -->
+		<level value="INFO"></level>
+	</logger>
+
+	<!-- 検索インデックス更新バッチ -->
+	<logger name="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherRefAndDataServiceImpl">
+		<!-- INFOにすると起動終了ログが出力されます。WARNにすることでQuartzスケジュール実行時のログ出力を抑制します。 -->
+		<level value="WARN"></level>
+	</logger>
+
+	<!-- ======== -->
+	<!-- Root設定 -->
+	<!-- ======== -->
+
+	<root>
+		<!-- 出力レベル -->
+		<level value="INFO" />
+		<!-- 標準出力と通常ログファイル出力を行う -->
+		<appender-ref ref="stdout" />
+		<appender-ref ref="DefaultLog" />
+	</root>
+
+</log4j:configuration>

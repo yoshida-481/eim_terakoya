@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<!-- ==================================================== -->
+	<!-- データソース (インデックスデータ生成基盤用) for JNDI -->
+	<!-- ==================================================== -->
+
+	<!-- Baseセッション用 -->
+	<jee:jndi-lookup id="baseDataSource" jndi-name="jdbc/eimdb"/>
+
+	<!-- Lockセッション用 -->
+	<jee:jndi-lookup id="lockDataSource" jndi-name="jdbc/eimdbLock"/>
+
+	<!-- ================================= -->
+	<!-- データソース (検索API用) for JNDI -->
+	<!-- ================================= -->
+
+	<!-- 初期設定はBaseセッション用を共用 -->
+	<!-- サイトコードA -->
+	<!-- <jee:jndi-lookup id="dataSource_SITE_A" jndi-name="jdbc/eimdb"/> -->
+
+	<!-- サイトコードB -->
+	<!-- <jee:jndi-lookup id="dataSource_SITE_B" jndi-name="jdbc/SITE_Bdb"/> -->
+
+	<!-- サイトコードC -->
+	<!-- <jee:jndi-lookup id="dataSource_SITE_C" jndi-name="jdbc/SITE_Cdb"/> -->
+
+	<!-- ================================================================ -->
+	<!-- トランザクションマネージャー設定  (インデックスデータ生成基盤用) -->
+	<!-- ================================================================ -->
+
+	<!-- トランザクションマネージャー （Baseセッション用）-->
+	<bean id="baseTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="baseDataSource" />
+	</bean>
+
+	<!-- トランザクションマネージャー （Lockコネクション用）-->
+	<bean id="updateNoticeTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="lockDataSource" />
+	</bean>
+
+	<!-- ============================================= -->
+	<!-- トランザクションマネージャー設定  (検索API用) -->
+	<!-- ============================================= -->
+
+	<!-- transactionManager_SITE_A -->
+	<bean id="transactionManager_SITE_A" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 初期設定はBaseセッション用を共用 -->
+		<property name="dataSource" ref="baseDataSource"/>
+	</bean>
+
+	<!-- transactionManager_SITE_B -->
+	<!--
+	<bean id="transactionManager_SITE_B" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_SITE_B"/>
+	</bean>
+	-->
+
+	<!-- transactionManager_SITE_C -->
+	<!--
+	<bean id="transactionManager_SITE_C" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_SITE_C"/>
+	</bean>
+	-->
+
+</beans>

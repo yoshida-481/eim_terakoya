@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<bean id="workFlowDefAdminService" class="jp.co.ctc_g.eim.admin.business.service.impl.WorkFlowDefAdminServiceImpl">
+		<property name="workFlowDefService">
+			<ref bean="workFlowDefService"/>
+		</property>
+		<property name="workflowService">
+			<ref bean="workflowService2"/>
+		</property>
+		<property name="workFlowDefDocService">
+			<ref bean="workFlowDefDocService"/>
+		</property>
+		<property name="statusTypeService">
+			<ref bean="statusTypeService2"/>
+		</property>
+		<property name="statusTypeLayoutService">
+			<ref bean="adminStatusTypeLayoutService"/>
+		</property>
+		<property name="eventTypeService">
+			<ref bean="eventTypeService2"/>
+		</property>
+		<property name="attributeTypeLayoutService">
+			<ref bean="adminAttributeTypeLayoutService"/>
+		</property>
+		<property name="objectTypeService">
+			<ref bean="adminObjectTypeService"/>
+		</property>
+		<property name="objectService">
+			<ref bean="adminObjectService"/>
+		</property>
+		<property name="securityService">
+			<ref bean="adminSecurityService"/>
+		</property>
+	</bean>
+
+	<!-- キャッシュモニタービューサービス -->
+	<bean id="cacheMonitorViewService" class="jp.co.ctc_g.eim.admin.business.service.impl.CacheMonitorViewServiceImpl">
+		<property name="cacheMonitorViewDao">
+			<ref bean="cacheMonitorViewDao"/>
+		</property>
+	</bean>
+
+	<!-- adminObjectTypeService -->
+	<bean id="adminObjectTypeService" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao">
+			<ref bean="adminObjectTypeDao"/>
+		</property>
+	</bean>
+
+	<!-- adminObjectTypeService2 -->
+	<bean id="adminObjectTypeService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao">
+			<ref bean="adminObjectTypeDao2"/>
+		</property>
+	</bean>
+
+	<!-- adminObjectService2 -->
+	<bean id="adminObjectService" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="adminObjectDao"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+
+	<bean id="adminObjectServiceLight" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- securityService2 -->
+	<bean id="adminSecurityService" class="jp.co.ctc_g.eim.framework2.business.service.impl.SecurityServiceImpl" >
+		<property name="securityDao">
+			<ref bean="adminSecurityDao"/>
+		</property>
+	</bean>
+	
+	<!-- userServiceForAdminUser -->
+	<bean id="userServiceForAdminUser" class="jp.co.ctc_g.eim.framework2.business.service.impl.UserServiceImpl"  init-method="init" >
+		<property name="algorithm">
+			<null/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForAdminUser"/>
+		</property>
+	</bean>
+	
+	<!-- ユーザ検索用UserService -->
+	<bean id="userServiceForUserSearch"  parent="userServiceForAdminUser">
+		<property name="userDao">
+			<ref bean="userDaoForUserSearch"/>
+		</property>
+	</bean>
+	
+	<!-- ユーザ検索用GroupService -->
+	<bean id="groupServiceForUserSearch" class="jp.co.ctc_g.eim.framework2.business.service.impl.GroupServiceImpl" >
+		<property name="groupDao">
+			<ref bean="groupDaoForUserSearch"/>
+		</property>
+	</bean>
+	
+	<!-- ユーザ検索用GroupService (下位グループを含まない) -->
+	<bean id="groupServiceExcludeChildrenForUserSearch" parent="groupServiceForUserSearch">
+		<property name="groupDao">
+			<ref bean="groupDaoExcludeChildrenForUserSearch"/>
+		</property>
+	</bean>
+	
+	<!-- groupServiceForAdminUser -->
+	<bean id="groupServiceForAdminUser" class="jp.co.ctc_g.eim.framework2.business.service.impl.GroupServiceImpl" >
+		<property name="groupDao">
+			<ref bean="groupDaoLight2"/>
+		</property>
+	</bean>
+	
+	<!-- roleServiceForAdminUser -->
+	<bean id="roleServiceForAdminUser" class="jp.co.ctc_g.eim.framework2.business.service.impl.RoleServiceImpl" >
+		<property name="roleDao">
+			<ref bean="roleDaoLight2"/>
+		</property>
+	</bean>
+	
+	<!-- adminUserService -->
+	<bean id="adminUserService" class="jp.co.ctc_g.eim.admin.business.service.impl.AdminUserServiceImpl">
+		<property name="addNewLine" value="1" />
+		<property name="userService" >
+			<ref bean="userServiceForAdminUser" />
+		</property>
+		<property name="groupService" >
+			<ref bean="groupServiceForAdminUser" />
+		</property>
+		<property name="roleService" >
+			<ref bean="roleServiceForAdminUser" />
+		</property>
+		<property name="attributeTypeService" >
+			<ref bean="attributeTypeService2" />
+		</property>
+		<property name="objectTypeService" >
+			<ref bean="adminObjectTypeService" />
+		</property>
+		<property name="adminUserDao" >
+			<ref bean="adminUserDao" />
+		</property>
+	</bean>
+	
+	<!-- ユーザ検索用AdminUserService -->
+	<bean id="adminUserServiceForUserSearch" parent="adminUserService">
+		<property name="userService" >
+			<ref bean="userServiceForUserSearch" />
+		</property>
+	</bean>
+	
+	<!-- フォーマット更新用 -->
+	<bean id="formatServiceForFormatUpdate"  parent="formatService2" >
+		<property name="formatDao">
+			<ref bean="formatDaoForFormatUpdate"/>
+		</property>
+	</bean>
+</beans>

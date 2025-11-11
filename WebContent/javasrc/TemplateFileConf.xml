@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ルートのパスはconfig_eim_form.propertyにて定義 -->
+<templateFileConf>
+	<templateFileList>
+		<templateFile displayName="Excel" filePath="template_excel.xlsx"/>
+		<templateFile displayName="Word" filePath="template_word.docx"/>
+		<templateFile displayName="PowerPoint" filePath="template_powerpoint.pptx"/>
+	</templateFileList>
+</templateFileConf>

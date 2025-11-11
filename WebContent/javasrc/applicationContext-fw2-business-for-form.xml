@@ -1,0 +1,207 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	<!-- *************************************************** -->
+	<!-- 以下帳票コンポーネント用 EIMANAGER Service Beans    -->
+	<!-- *************************************************** -->
+	
+	<!-- accessEntryService2 -->
+	<bean id="formAccessEntryService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.AccessEntryServiceImpl" >
+		<property name="accessEntryDao" ref="formAccessEntryDao2" />
+	</bean>
+	
+	<!-- assignmentService2 -->
+	<bean id="formAssignmentService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.AssignmentServiceImpl" >
+		<property name="assignmentDao" ref="formAssignmentDao2" />
+	</bean>
+			
+	<!-- assignmentEntryService2 -->
+	<bean id="formAssignmentEntryService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.AssignmentEntryServiceImpl" >
+		<property name="assignmentEntryDao" ref="formAssignmentEntryDao2" />
+	</bean>
+	
+	<!-- eventService2 -->
+	<bean id="formEventService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.EventServiceImpl" >
+		<property name="eventDao" ref="formEventDao2" />
+	</bean>
+	
+	<!-- eventExecService2 -->
+	<bean id="formEventExecService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.EventExecServiceImpl" >
+		<property name="baseEventTypeDao" ref="baseEventTypeDao2" />
+		<property name="baseStatusTypeDao" ref="baseStatusTypeDao2" />
+		<property name="objectDao" ref="formObjectDao2" />
+		<property name="statusDao" ref="statusDao2" />
+		<property name="eventDao" ref="eventDaoLight2" />
+		<property name="eventTypeDao" ref="eventTypeDao2" />
+		<property name="assignmentDao" ref="assignmentDaoLight2" />
+		<property name="mailService" ref="formMailService2" />
+		<property name="baseEventTypePlugIn" ref="setAssignmentPlanBaseEventTypePlugIn" />
+		<property name="guardConditionPlugIn" ref="guardConditionPlugIn2" />
+		<property name="isStatusCreation">
+			<value>true</value>
+		</property>
+	</bean>
+	
+	<!-- mailService2 -->
+	<bean id="formMailService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.MailServiceImpl" >
+		<property name="mailTypeDao" ref="mailTypeDao2" />
+		<property name="sendType" value="split" />
+		<property name="mailTitleToSysLang" value="JA" />
+		<property name="mailBodyToSysLangList">
+			<list>
+				<value>JA</value>
+			</list>
+		</property>
+		<property name="mimeMessagePlugIn" ref="mimeMessagePlugIn2" />
+		<property name="mailSenderService" ref="formMailSenderService2" />
+		<property name="accumulationMailService" ref="accumulationMailService2" />
+	</bean>
+	
+	<!-- mailSenderService2 -->
+	<bean id="formMailSenderService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.MailSenderServiceImpl" >
+		<property name="mailSender" ref="formMailSender2" />
+	</bean>
+	
+	<!-- objectTypeService2 -->
+	<bean id="formObjectTypeService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao" ref="formObjectTypeDao2" />
+	</bean>
+	
+	<!-- objectService2 -->
+	<bean id="formWorkspaceObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao" ref="formWorkspaceObjectDao2" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="objectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+	
+	<!-- objectService2 -->
+	<bean id="formObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl">
+		<property name="objectDao" ref="formObjectDao2" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="formObjectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+	
+	<!-- objectService2 -->
+	<bean id="formObjectService2ForAttributeAll" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl">
+		<property name="objectDao" ref="formObjectDao2ForAttributeAll" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="formObjectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+	
+	<!-- objectService2 for Form move -->
+	<bean id="formObjectService2ForMove" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl">
+		<property name="objectDao" ref="formObjectDao2ForMove" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="formObjectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+	
+	<!-- objectService2 -->
+	<bean id="formLayoutObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl">
+		<property name="objectDao" ref="formLayoutObjectDao2" />
+		<property name="fileDao" ref="fileDao2" />
+		<property name="fileAccessor" ref="fileAccessor2" />
+		<property name="relationDao" ref="relationDao2" />
+		<property name="userDao" ref="userDaoLight2" />
+		<property name="accessRoleTypeDao" ref="accessRoleTypeDao2" />
+		<property name="objectTypeDao" ref="objectTypeDao2" />
+		<property name="namingService" ref="namingService2" />
+	</bean>
+	
+	<!-- statusService2 -->
+	<bean id="formStatusService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.StatusServiceImpl" >
+		<property name="statusDao" ref="formStatusDao2" />
+	</bean>
+	
+	<!-- userService2 -->
+	<bean id="formUserService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.UserServiceImpl"  init-method="init" >
+		<property name="algorithm" value="MD5" />
+		<property name="userDao" ref="formUserDao2" />
+	</bean>
+	
+	<!-- formAssignmentUserService2 -->
+	<bean id="formAssignmentUserService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.UserServiceImpl" >
+		<property name="userDao" ref="formUserDao2" />
+	</bean>
+	
+	<!-- tempFileObjectService2 -->
+	<bean id="formTempFileObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.TempFileObjectServiceImpl" >
+		<property name="objectService">
+			<ref bean="objectService2"/>
+		</property>
+		<property name="objectTypeService">
+			<ref bean="objectTypeService2"/>
+		</property>
+		<property name="fileAccessService">
+			<ref bean="formFileAccessService2"/>
+		</property>
+		<property name="formatService">
+			<ref bean="formatService2"/>
+		</property>
+		<property name="relationTypeService">
+			<ref bean="relationTypeService2"/>
+		</property>
+		<property name="objectTypeName">
+			<null/>
+		</property>
+		<!-- 設定例：NONE -->
+		<property name="duplicateCheckModeCreate">
+			<null/>
+		</property>
+		<!-- 設定例：NONE -->
+		<property name="duplicateCheckModeUpdate">
+			<null/>
+		</property>
+		<property name="relationTypeName">
+			<null/>
+		</property>
+	</bean>
+	
+	<!-- fileAccessService2 -->
+	<bean id="formFileAccessService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.FileAccessServiceImpl">
+		<property name="formatDao">
+			<ref bean="formatDao2"/>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLight2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+	</bean>
+
+	<!-- メンバーエントリーService for Form (グループ所属ユーザー and ユーザー所属グループ/ロール and メンバーロール) -->
+	<bean id="formMemberEntryService2" parent="memberEntryService2" >
+		<property name="memberEntryDao" ref="formMemberEntryDao2" />
+	</bean>
+
+</beans>

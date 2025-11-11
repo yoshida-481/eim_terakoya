@@ -1,0 +1,345 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- securityDaoForSelectEntry -->
+	<bean id="securityDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.SecurityDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ENTRY_LIST</value>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ACCESS_ENTRY_LIST</value>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+		<property name="workflowDao">
+			<ref bean="workflowDaoLight2"/>
+		</property>
+		<property name="statusTypeDao">
+			<ref bean="statusTypeDaoLight2"/>
+		</property>
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- securityDaoForStatusSecurityTree -->
+	<bean id="securityDaoForStatusSecurityTree" parent="securityDao2" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>STATUS_SECURITY_LIST</value>
+				<value>STATUS_TYPE</value>
+				<value>WORKFLOW</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- accessEntryDaoForSelectEntry -->
+	<bean id="accessEntryDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.AccessEntryDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>ACCESS_ROLE_LIST</value>
+				<value>ENTRY_ELEMENT</value>
+			</list>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoForSelectEntry"/>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoForSelectEntry"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoForSelectEntry"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForSelectEntry"/>
+		</property>
+		<property name="userDefinitionGroupDao">
+			<ref bean="userDefinitionGroupDao2"/>
+		</property>
+		<property name="systemFunctionDao">
+			<ref bean="systemFunctionDao2"/>
+		</property>
+	</bean>
+	
+	<!-- complexDaoForSelectEntry -->
+	<bean id="complexDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.ComplexDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP</value>
+				<value>ROLE</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoForSelectEntry"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoForSelectEntry"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForSelectEntry -->
+	<bean id="groupDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.GroupDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>GROUP_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>GROUP_OBJECT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>0</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_FW2}</value>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLight2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- groupDaoForWorkflowHistory -->
+	<bean id="groupDaoForWorkflowHistory" parent="groupDaoForSelectEntry" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- roleDaoForSelectEntry -->
+	<bean id="roleDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.RoleDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>ROLE_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>PARENT</value>
+				<value>CHILD_LIST</value>
+				<value>USER_LIST</value>
+				<value>ROLE_OBJECT</value>
+			</list>
+		</property>
+		<property name="parentRecursiveLevel">
+			<value>0</value>
+		</property>
+		<property name="childRecursiveLevel">
+			<value>0</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_FW2}</value>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoForSelectEntry"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- roleDaoForWorkflowHistory -->
+	<bean id="roleDaoForWorkflowHistory" parent="roleDaoForSelectEntry" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- userDaoForSelectEntry -->
+	<bean id="userDaoForSelectEntry" class="jp.co.ctc_g.eim.framework2.integration.dao.impl.UserDaoImpl" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>GROUP_LIST</value>
+				<value>ROLE_LIST</value>
+				<value>USER_OBJECT</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>GROUP_LIST</value>
+				<value>ROLE_LIST</value>
+				<value>USER_OBJECT</value>
+			</list>
+		</property>
+		<property name="limit">
+			<value>100000</value>
+		</property>
+		<property name="limitCondition">
+			<value>false</value>
+		</property>
+		<!-- 更新時に更新日時/更新者を更新するか -->
+		<property name="updatedModificationInfo">
+			<value>${UPDATED_MODIFICATION_INFO_FW2}</value>
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDaoLight2"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoLight2"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- fileDao2 with ディレクトリ情報 (更新情報更新無効化) -->
+	<bean id="fileDao2WithDirectoryDisabledUpdateMInfo" parent="fileDao2">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>DIRECTORY</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>DIRECTORY</value>
+			</list>
+		</property>
+		<property name="updatedModificationDate">
+			<value>false</value>
+		</property>
+		<property name="updatedModificationInfo">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- fileDao2 with 軽量フォーマットDao -->
+	<bean id="fileDao2WithFormatDaoLight2" parent="fileDao2">
+		<property name="formatDao">
+			<ref bean="formatDaoLight2"/>
+		</property>
+	</bean>
+
+	<!-- objectDao2 with オブジェクトタイプ and 更新者 -->
+	<bean id="objectDao2WithTypeAndMUser" parent="objectDao2">
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>TYPE</value>
+				<value>MODIFICATION_USER</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ドキュメント属性入力フォーム用オブジェクトタイプDao -->
+	<bean id="objectTypeDaoForDocFormType" parent="formObjectTypeDao2" >
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>ATTRIBUTE_TYPE_LIST</value>
+				<value>WORKFLOW</value>
+				<value>OBJECT_TYPE_OBJECT</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- assignmentEntryDao for 承認依頼先設定 -->
+	<bean id="assignmentEntryDaoForApproverSelection" parent="assignmentEntryDao2" >
+		<property name="groupDao">
+			<ref bean="groupDaoForApproverSelection"/>
+		</property>
+		<property name="roleDao">
+			<ref bean="roleDaoForApproverSelection"/>
+		</property>
+		<property name="complexDao">
+			<ref bean="complexDaoForApproverSelection"/>
+		</property>
+	</bean>
+
+	<!-- groupDao for 承認依頼先設定 -->
+	<bean id="groupDaoForApproverSelection" parent="groupDaoForAssignmentEntry" >
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- roleDao for 承認依頼先設定 -->
+	<bean id="roleDaoForApproverSelection" parent="roleDaoForAssignmentEntry" >
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+				<value>CHILD_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- complexDao for 承認依頼先設定 -->
+	<bean id="complexDaoForApproverSelection" parent="complexDaoForAssignmentEntry" >
+		<property name="itemListForMultiTargetMethod">
+			<list>
+				<value>USER_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

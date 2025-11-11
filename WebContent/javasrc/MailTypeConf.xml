@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MailTypeConf>
+
+	<mailTypeList>
+		<!-- ダミーメール種別（keyに対応するbeanが無いので動作しません） -->
+		<mailType key="dummyMailType" id="-2000">
+				<nameList>
+					<name lang="JA" langname="デフォルトメール種別" />
+					<name lang="EN" langname="Default Mail Type" />
+				</nameList>
+		</mailType>
+
+		<!-- 帳票コンポーネント用共通メール種別 -->
+		<mailType key="formMailTypePlugIn" id="-12000">
+				<nameList>
+					<name lang="JA" langname="帳票確認依頼通知" />
+					<name lang="EN" langname="Request for confirmation of form" />
+				</nameList>
+		</mailType>
+
+		<!-- 承認依頼通知 -->
+		<mailType key="MailRequestForApproval" id="-12001">
+				<nameList>
+					<name lang="JA" langname="承認依頼通知" />
+					<name lang="EN" langname="Request for approval" />
+				</nameList>
+		</mailType>
+		<!-- 承認通知 -->
+		<mailType key="MailApprove" id="-12002">
+				<nameList>
+					<name lang="JA" langname="承認通知" />
+					<name lang="EN" langname="Approve" />
+				</nameList>
+		</mailType>
+		<!-- 差戻し通知 -->
+		<mailType key="MailSendBack" id="-12003">
+				<nameList>
+					<name lang="JA" langname="差戻し通知" />
+					<name lang="EN" langname="SendBack" />
+				</nameList>
+		</mailType>
+		<!-- 承認依頼取消通知 -->
+		<mailType key="MailCancelApprovalRequest" id="-12004">
+				<nameList>
+					<name lang="JA" langname="承認依頼取消通知" />
+					<name lang="EN" langname="Cancel approval request" />
+				</nameList>
+		</mailType>
+		<!-- 公開通知 -->
+		<mailType key="MailPublic" id="-12005">
+				<nameList>
+					<name lang="JA" langname="公開通知" />
+					<name lang="EN" langname="Public" />
+				</nameList>
+		</mailType>
+		<!-- 公開取消通知 -->
+		<mailType key="MailPublicCancel" id="-12006">
+				<nameList>
+					<name lang="JA" langname="公開取消通知" />
+					<name lang="EN" langname="Public cancel" />
+				</nameList>
+		</mailType>
+
+		<!-- 有効期限切れドキュメント削除通知 -->
+		<mailType key="DisposeExpiredDocs" id="-12007">
+				<nameList>
+					<name lang="JA" langname="有効期限切れドキュメント削除通知" />
+					<name lang="EN" langname="Dispose Expired Docs" />
+				</nameList>
+		</mailType>
+
+		<!-- 有効期限事前通知 -->
+		<mailType key="ExpirationDateNotice" id="-12008">
+				<nameList>
+					<name lang="JA" langname="有効期限事前通知" />
+					<name lang="EN" langname="Expiration Date Notice" />
+				</nameList>
+		</mailType>
+
+		<!-- EIMANAGER タスク管理（-22000番台） -->
+		<!-- タスクコンポーネント用共通メール種別 -->
+		<mailType key="mailTypeTaskRequestConfirmationPlugIn" id="-22000">
+				<nameList>
+					<name lang="JA" langname="タスク確認依頼通知" />
+					<name lang="EN" langname="Request for confirmation of task" />
+				</nameList>
+		</mailType>
+		<mailType key="mailTypeTaskCompletionPlugIn" id="-22001">
+				<nameList>
+					<name lang="JA" langname="タスク完了通知" />
+					<name lang="EN" langname="Task completion notification" />
+				</nameList>
+		</mailType>
+
+	</mailTypeList>
+
+</MailTypeConf>

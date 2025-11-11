@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- =========================================== -->
+	<!-- 分散トランザクション (JTA対応) PostgreSQL用 -->
+	<!-- =========================================== -->
+
+	<!-- DataSource バッチ用 -->
+	<bean id="dataSource" class="jp.co.ctc_g.eim.framework2.integration.atomikos.AtomikosDataSourceBeanWrapper" destroy-method="close">
+		<property name="uniqueResourceName" value="eimdbXa" />
+		<property name="minPoolSize" value="4" />
+		<property name="maxPoolSize" value="128" />
+		<property name="xaDataSource">
+			<bean class="org.postgresql.xa.PGXADataSource">
+				<property name="url" value="jdbc:postgresql://${DB_HOST}:${DB_PORT}${DB_DELIMITER}${DB_ID}?currentSchema=${DB_SCHEMA}&amp;escapeSyntaxCallMode=call" />
+				<property name="user" value="${DB_USER}" />
+				<property name="password" value="${DB_PASS}" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Spring Transaction Manager JTA対応 -->
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" depends-on="userTransactionInithalizeer">
+		 <property name="allowCustomIsolationLevels" value="true" />
+	</bean>
+
+	<!-- UserTransactionの初期化 (バッチ処理において有効に機能します。Tomcat/WebLogic実行時は無視されます。) -->
+	<bean id="userTransactionInithalizeer" class="jp.co.ctc_g.eim.framework2.integration.dao.util.DBUtils" init-method="initUserTransaction">
+	</bean>
+
+</beans>

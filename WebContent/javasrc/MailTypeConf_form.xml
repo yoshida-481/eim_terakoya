@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MailTypeConf>
+
+	<mailTypeList>
+		<!-- 帳票コンポーネント用共通メール種別 -->
+		<mailType key="formMailTypePlugIn" id="-12000">
+				<nameList>
+					<name lang="JA" langname="帳票確認依頼通知" />
+					<name lang="EN" langname="Request for confirmation of form" />
+				</nameList>
+		</mailType>
+	</mailTypeList>
+
+</MailTypeConf>

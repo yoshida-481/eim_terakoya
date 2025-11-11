@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<applicationList>
+	<application name="General" id="general"></application>
+	<!--  <application name="Document" id="document"></application> -->
+	<!--  <application name="Form" id="form"></application> -->
+	<!--  <application name="Task" id="task"></application> -->
+</applicationList>

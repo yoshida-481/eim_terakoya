@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=
+		"http://www.springframework.org/schema/beans
+		 http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/tx
+		 http://www.springframework.org/schema/tx/spring-tx.xsd
+		 http://www.springframework.org/schema/aop
+		 http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ========================================================================================================= -->
+	<!-- 宣言型トランザクション管理                                                                                -->
+	<!-- トランザクションの処理内容を変えたいときは、ここに追記しAOPを適用するサービスとidで紐付ける               -->
+	<!-- rollback-for="Throwable" ロールバックを行う例外レベルを設定                                               -->
+	<!-- ========================================================================================================= -->
+
+	<!-- 宣言型トランザクションAdvice定義 (REQUIRED:境界内の子階層ではトランザクション制御を行わない) -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Throwable" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- ========================================================================================================================== -->
+	<!-- トランザクション境界ポイントカット指定                                                                                     -->
+	<!-- expression=                                                                                                                -->
+	<!--     "execution(戻り値〔*は任意の値という意味〕 パッケージ構成.インタフェース名.メソッド名(引数〔..は任意の値という意味〕)" -->
+	<!-- ========================================================================================================================== -->
+
+	<!-- FWサービスクラスに対するトランザクション設定 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation"
+			expression="execution(* jp.co.ctc_g.eim.framework.business.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" order="1"
+			pointcut-ref="serviceOperation" />
+	</aop:config>
+
+	<!-- FW2サービスクラスとファイルコントローラとシステム管理のインポート・エクスポートに対するトランザクション設定 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation-fw2"
+			expression="execution(* jp.co.ctc_g.eim.framework2.business.service.*.*(..))
+						or execution(* jp.co.ctc_g.eim.framework2.presentation.web.controller.FileTransferController.get*(..))
+						or execution(* jp.co.ctc_g.eim.admin.presentation.web.controller.AdminFileTransferController.xlsxDownload*(..))
+						or execution(* jp.co.ctc_g.eim.admin.business.service.impl.AdminUserServiceImpl.importUser*(..))" />
+		<aop:advisor advice-ref="txAdvice" order="1"
+			pointcut-ref="serviceOperation-fw2" />
+	</aop:config>
+
+	<!-- FW2キャッシュサービスに対するトランザクション設定 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation-fw3"
+			expression="execution(* jp.co.ctc_g.eim.framework2.business.service.cache.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" order="1"
+			pointcut-ref="serviceOperation-fw3" />
+	</aop:config>
+
+</beans>

@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ========================== -->
+	<!-- 宣言型トランザクション設定 -->
+	<!-- ========================== -->
+
+	<!-- トランザクション境界アドバイス (Baseセッション用) -->
+	<tx:advice id="txAdviceForBaseConnection" transaction-manager="baseTransactionManager">
+		<tx:attributes>
+			<tx:method name="*"  read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- トランザクション境界アドバイス (Lockコネクション用) -->
+	<tx:advice id="txAdviceForLockConnection" transaction-manager="updateNoticeTransactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Throwable" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- トランザクション境界ポイントカット (Baseセッション用) -->
+	<aop:config>
+		<aop:pointcut id="baseServiceOperation"
+				expression="execution(* jp.co.ctc_g.eim.search.core.indexBase.business.service.*.*(..))"/>
+		<aop:advisor advice-ref="txAdviceForBaseConnection" pointcut-ref="baseServiceOperation" />
+	</aop:config>
+
+	<!-- トランザクション境界ポイントカット (Lockコネクション用) -->
+	<aop:config>
+		<aop:pointcut id="lockServiceOperation"
+				expression="execution(* jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherRefAndDataServiceImpl+.execute(..))"/>
+		<aop:advisor advice-ref="txAdviceForLockConnection" pointcut-ref="lockServiceOperation" />
+	</aop:config>
+
+	<!-- ====================== -->
+	<!-- 参照元取得バッチ       -->
+	<!-- ====================== -->
+
+	<!-- バッチコントローラ  -->
+	<bean id="gatherRefObjectControlService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.BatchControlServiceImpl" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService">
+			<ref bean="gatherRefAndDataServiceForRef"/>
+		</property>
+	</bean>
+
+	<!-- 参照元取得処理 -->
+	<bean id="gatherRefAndDataServiceForRef" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherRefAndDataServiceImpl">
+		<property name="updateNoticeService">
+			<ref bean="updateNoticeServiceRef"/>
+		</property>
+		<property name="execUpdateNoticeService">
+			<ref bean="gatherRefObjExecUpdNoticeService"/>
+		</property>
+	</bean>
+
+	<!-- 参照元取得メイン処理ファサード -->
+	<bean id="gatherRefObjExecUpdNoticeService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherRefExecUpdNoticeServiceImpl">
+		<property name="updateNoticeService">
+			<ref bean="updateNoticeServiceRef"/>
+		</property>
+		<property name="refObjectModuleManager">
+			<ref bean="refObjectModuleManager"/>
+		</property>
+	</bean>
+
+	<!-- 参照元取得モジュール管理 -->
+	<bean id="refObjectModuleManager" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.module.impl.RefObjectModuleManagerImpl">
+		<property name="systemKindRefObjectModuleMap">
+			<map>
+				<entry key="DOCUMENT" value-ref="EIMRefObjectModule"/>
+				<entry key="SYSTEM" value-ref="EIMRefObjectModule"/>
+			</map>
+		</property>
+	</bean>
+
+	<!-- Job (Quartzスケジュール実行用) -->
+	<bean id="gatheringRefJob" class="jp.co.ctc_g.eim.search.core.indexBase.presentation.job.GatheringRefAndDataJob" >
+		<property name="batchControlService" ref="gatherRefObjectControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlService" />
+	</bean>
+
+	<!-- ====================== -->
+	<!-- 参照元取得プラグイン   -->
+	<!-- ====================== -->
+
+	<!-- 参照元取得プラグイン：オブジェクトタイプ_ドキュメント -->
+	<bean id="eimObjectTypeRefObjectPlugInImplDocument" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMObjectTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ドキュメント</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataType">
+			<value>DOCUMENT</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：オブジェクトタイプ_フォルダ -->
+	<bean id="eimObjectTypeRefObjectPlugInImplFolder" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMObjectTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>フォルダ</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataType">
+			<value>FOLDER</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：オブジェクトタイプ_タグ -->
+	<bean id="eimObjectTypeRefObjectPlugInImplTag" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMObjectTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>タグ</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataType">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：オブジェクトタイプ_ワークスペース -->
+	<bean id="eimObjectTypeRefObjectPlugInImplWorkspace" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMObjectTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>false</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ワークスペース</value>
+		</property>
+
+		<!-- データタイプ：ワークスペース -->
+		<property name="dataType">
+			<value>WORKSPACE</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ステータスタイプ_ドキュメント -->
+	<bean id="eimStatusTypeRefObjectPlugInImplDocument" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMStatusTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ドキュメント</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataType">
+			<value>DOCUMENT</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ステータスタイプ_フォルダ -->
+	<bean id="eimStatusTypeRefObjectPlugInImplFolder" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMStatusTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>フォルダ</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataType">
+			<value>FOLDER</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ステータスタイプ_タグ -->
+	<bean id="eimStatusTypeRefObjectPlugInImplTag" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMStatusTypeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>タグ</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataType">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ_ドキュメント -->
+	<bean id="eimUserRefObjectPlugInImplDocument" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ドキュメント</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataType">
+			<value>DOCUMENT</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ_フォルダ -->
+	<bean id="eimUserRefObjectPlugInImplFolder" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>フォルダ</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataType">
+			<value>FOLDER</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ_タグ -->
+	<bean id="eimUserRefObjectPlugInImplTag" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>タグ</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataType">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ_ワークスペース -->
+	<bean id="eimUserRefObjectPlugInImplWorkspace" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>false</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ワークスペース</value>
+		</property>
+
+		<!-- データタイプ：ワークスペース -->
+		<property name="dataType">
+			<value>WORKSPACE</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ属性_ドキュメント -->
+	<bean id="eimUserAttrRefObjectPlugInImplDocument" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserAttributeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ドキュメント</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataType">
+			<value>DOCUMENT</value>
+		</property>
+
+		<!-- 属性タイプ名称一覧 -->
+		<property name="attributeNameList">
+			<list>
+				<value>作成者</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ属性_フォルダ -->
+	<bean id="eimUserAttrRefObjectPlugInImplFolder" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserAttributeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>フォルダ</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataType">
+			<value>FOLDER</value>
+		</property>
+
+		<!-- 属性タイプ名称一覧 -->
+		<property name="attributeNameList">
+			<list>
+				<value>作成者</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ属性_タグ -->
+	<bean id="eimUserAttrRefObjectPlugInImplTag" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserAttributeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>タグ</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataType">
+			<value>TAG</value>
+		</property>
+
+		<!-- 属性タイプ名称一覧 -->
+		<property name="attributeNameList">
+			<list>
+				<value>作成者</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：ユーザ属性_ワークスペース -->
+	<bean id="eimUserAttrRefObjectPlugInImplWorkspace" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMUserAttributeRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>false</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ワークスペース</value>
+		</property>
+
+		<!-- データタイプ：ワークスペース -->
+		<property name="dataType">
+			<value>WORKSPACE</value>
+		</property>
+
+		<!-- 属性タイプ名称一覧 -->
+		<property name="attributeNameList">
+			<list>
+				<value>作成者</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：セキュリティ_ドキュメント -->
+	<bean id="eimSecurityRefObjectPlugInImplDocument" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMSecurityRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ドキュメント</value>
+		</property>
+
+		<!-- データタイプ：ドキュメント -->
+		<property name="dataType">
+			<value>DOCUMENT</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：セキュリティ_フォルダ -->
+	<bean id="eimSecurityRefObjectPlugInImplFolder" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMSecurityRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>フォルダ</value>
+		</property>
+
+		<!-- データタイプ：フォルダ -->
+		<property name="dataType">
+			<value>FOLDER</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：セキュリティ_タグ -->
+	<bean id="eimSecurityRefObjectPlugInImplTag" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMSecurityRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>true</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>タグ</value>
+		</property>
+
+		<!-- データタイプ：タグ -->
+		<property name="dataType">
+			<value>TAG</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得プラグイン：セキュリティ_ワークスペース -->
+	<bean id="eimSecurityRefObjectPlugInImplWorkspace" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMSecurityRefObjectPlugInImpl">
+		<!-- 子タイプ検索フラグ -->
+		<property name="searchChildType">
+			<value>false</value>
+		</property>
+
+		<!-- 処理対象オブジェクトタイプ -->
+		<property name="targetObjectType">
+			<value>ワークスペース</value>
+		</property>
+
+		<!-- データタイプ：ワークスペース -->
+		<property name="dataType">
+			<value>WORKSPACE</value>
+		</property>
+	</bean>
+
+	<!-- 参照元取得モジュール -->
+	<bean id="EIMRefObjectModule" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.module.impl.EIMRefObjectModuleImpl">
+
+		<!-- オブジェクトのデータタイプ別参照元取得プラグインリストマップ  -->
+		<property name="objectDataTypePlugInListMap">
+			<map>
+				<entry key="WORKSPACE_MASTER_ALL">
+					<list>
+						<ref bean="eimObjectRefObjectPlugInImplAll"/>
+					</list>
+				</entry>
+				<entry key="WORKSPACE_MASTER_LATEST">
+					<list>
+						<ref bean="eimObjectRefObjectPlugInImplLatest"/>
+					</list>
+				</entry>
+				<entry key="FOLDER_MASTER_ALL">
+					<list>
+						<ref bean="eimObjectRefObjectPlugInImplAll"/>
+					</list>
+				</entry>
+				<entry key="FOLDER_MASTER_LATEST">
+					<list>
+						<ref bean="eimObjectRefObjectPlugInImplLatest"/>
+					</list>
+				</entry>
+			</map>
+		</property>
+
+		<!-- オブジェクトタイプの参照元取得プラグインリスト  -->
+		<property name="objectTypePlugInList">
+			<list>
+				<ref bean="eimObjectTypeRefObjectPlugInImplDocument"/>
+				<ref bean="eimObjectTypeRefObjectPlugInImplFolder"/>
+				<ref bean="eimObjectTypeRefObjectPlugInImplTag"/>
+				<ref bean="eimObjectTypeRefObjectPlugInImplWorkspace"/>
+			</list>
+		</property>
+
+		<!-- ワークフローの参照元取得プラグインリスト  -->
+		<property name="workflowPlugInList">
+			<null/>
+		</property>
+
+		<!-- グループの参照元取得プラグインリスト  -->
+		<property name="groupPlugInList">
+			<null/>
+		</property>
+
+		<!-- ロールの参照元取得プラグインリスト  -->
+		<property name="rolePlugInList">
+			<null/>
+		</property>
+
+		<!-- ステータスタイプの参照元取得プラグインリスト  -->
+		<property name="statusTypePlugInList">
+			<list>
+				<ref bean="eimStatusTypeRefObjectPlugInImplDocument"/>
+				<ref bean="eimStatusTypeRefObjectPlugInImplFolder"/>
+				<ref bean="eimStatusTypeRefObjectPlugInImplTag"/>
+			</list>
+		</property>
+
+		<!-- ユーザの参照元取得プラグインリスト  -->
+		<property name="userPlugInList">
+			<list>
+				<ref bean="eimUserRefObjectPlugInImplDocument"/>
+				<ref bean="eimUserRefObjectPlugInImplFolder"/>
+				<ref bean="eimUserRefObjectPlugInImplTag"/>
+				<ref bean="eimUserRefObjectPlugInImplWorkspace"/>
+				<ref bean="eimUserAttrRefObjectPlugInImplDocument"/>
+				<ref bean="eimUserAttrRefObjectPlugInImplFolder"/>
+				<ref bean="eimUserAttrRefObjectPlugInImplTag"/>
+				<ref bean="eimUserAttrRefObjectPlugInImplWorkspace"/>
+			</list>
+		</property>
+
+		<!-- セキュリティの参照元取得プラグインリスト  -->
+		<property name="securityPlugInList">
+			<list>
+				<ref bean="eimSecurityRefObjectPlugInImplDocument"/>
+				<ref bean="eimSecurityRefObjectPlugInImplFolder"/>
+				<ref bean="eimSecurityRefObjectPlugInImplTag"/>
+				<ref bean="eimSecurityRefObjectPlugInImplWorkspace"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ================================== -->
+	<!-- データ収集インデックス更新バッチ   -->
+	<!-- ================================== -->
+
+	<!-- バッチコントローラ -->
+	<bean id="gatherDataObjectControlService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.BatchControlServiceImpl" >
+		<property name="loopMode" value="${LOOP_MODE}"/>
+		<property name="batchOriginalFacadeService">
+			<ref bean="gatherRefAndDataServiceForData"/>
+		</property>
+	</bean>
+
+	<!-- データ収集インデックス更新処理 -->
+	<bean id="gatherRefAndDataServiceForData" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherRefAndDataServiceImpl">
+		<property name="updateNoticeService">
+			<ref bean="updateNoticeServiceData"/>
+		</property>
+		<property name="execUpdateNoticeService">
+			<ref bean="gatherDataExecUpdNoticeService"/>
+		</property>
+	</bean>
+
+	<!-- データ収集インデックス更新メイン処理ファサード -->
+	<bean id="gatherDataExecUpdNoticeService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatherDataExecUpdNoticeServiceImpl">
+		<property name="outputCnt" value="${OUTPUT_CNT}"/>
+		<!-- データ収集サービス定義 -->
+		<property name="dataCollectionService">
+			<ref bean="dataCollectionService"/>
+		</property>
+		<!--データ出力モジュール定義 -->
+		<property name="dataOutputService">
+			<ref bean="dataOutputService"/>
+		</property>
+	</bean>
+
+	<!-- データ収集サービス -->
+	<bean id="dataCollectionService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.DataCollectionServiceImpl">
+		<property name="moduleManager">
+			<ref bean="dataCollectionModuleManager" />
+		</property>
+	</bean>
+
+	<!-- データ収集モジュール管理 -->
+	<bean id="dataCollectionModuleManager" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.module.impl.DataCollectionModuleManagerImpl">
+		<property name="systemKindRelationDataModuleMap">
+			<map>
+				<entry key="DOCUMENT" value-ref="eimRelationDataModule"/>
+			</map>
+		</property>
+		<property name="systemKindSecurityModuleMap">
+			<map>
+				<entry key="DOCUMENT" value-ref="eimSecurityModule"/>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 関連データ取得モジュール -->
+	<bean id="eimRelationDataModule" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.module.impl.EIMRelationDataModuleImpl">
+		<property name="dataTypePluginMap">
+			<map>
+				<entry key="DOCUMENT" value-ref="documentDataGatheringPlugIn"/>
+				<entry key="FOLDER" value-ref="folderDataGatheringPlugIn"/>
+				<entry key="TAG" value-ref="tagDataGatheringPlugIn"/>
+				<entry key="FILE" value-ref="documentFileDataGatheringPlugIn"/>
+				<entry key="ATTACHMENT" value-ref="attachmentFileDataGatheringPlugIn"/>
+			</map>
+		</property>
+	</bean>
+
+	<!-- セキュリティ取得モジュール -->
+	<bean id="eimSecurityModule" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.module.impl.EIMSecurityModuleImpl">
+		<property name="dataTypePluginMap">
+			<map>
+				<entry key="DOCUMENT">
+					<ref bean="documentSupportsLinkSecurityPlugIn"/>
+				</entry>
+				<entry key="FOLDER">
+					<ref bean="eimDocumentSecurityPlugIn"/>
+				</entry>
+				<entry key="TAG">
+					<ref bean="eimDocumentSecurityPlugIn"/>
+				</entry>
+				<entry key="FILE">
+					<ref bean="disabledSecurityPlugIn"/>
+				</entry>
+				<entry key="ATTACHMENT">
+					<ref bean="disabledSecurityPlugIn"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- EIM標準セキュリティプラグイン -->
+	<bean id="generalEIMSecurityPlugIn" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.GeneralEIMSecurityPlugInImpl">
+		<property name="readRoleType" value="READ" />
+		<property name="securityDao" ref="securityDao2" />
+		<property name="objectDao" ref="objectDao2" />
+		<property name="seriesDao">
+			<bean parent="seriesDao2">
+				<property name="membersDao">
+					<bean parent="membersDao2">
+						<property name="memberEntryDao">
+							<!-- メンバーエントリのエントリIDと役割リストを取得 -->
+							<bean parent="memberEntryDao2">
+								<property name="itemListForMultiTargetMethod">
+									<list>
+										<value>MEMBER_ROLE_LIST</value>
+									</list>
+								</property>
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- アクセス権限情報取得不要セキュリティプラグイン -->
+	<bean id="disabledSecurityPlugIn" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.DisabledEIMSecurityPlugInImpl">
+	</bean>
+
+	<!-- Job (Quartzスケジュール実行用) -->
+	<bean id="gatheringDataJob" class="jp.co.ctc_g.eim.search.core.indexBase.presentation.job.GatheringRefAndDataJob" >
+		<property name="batchControlService" ref="gatherDataObjectControlService" />
+ 		<property name="jobControlService" ref="gatheringJobControlService" />
+	</bean>
+
+	<!-- ================================ -->
+	<!-- ユーザ定義グループ取得プラグイン -->
+	<!-- ================================ -->
+
+	<!-- アクセス権限情報取得不要ユーザ定義グループ取得プラグイン -->
+	<bean id="disabledEIMUserDefGroupPlugIn" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.DisabledEIMUserDefGroupPlugInImpl">
+	</bean>
+
+	<!-- 「作成者」ユーザ定義グループ取得プラグイン -->
+	<bean id="creatorEIMUserDefGroupPlugIn" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.CreatorEIMUserDefGroupPlugInImpl"/>
+
+	<!-- 「担当者」ユーザ定義グループ取得プラグイン -->
+	<bean id="assignedPersonsEIMUserDefGroupPlugIn" class="jp.co.ctc_g.eim.search.core.indexBase.eim.business.service.plugin.impl.AssignedPersonsEIMUserDefGroupPlugInImpl">
+		<property name="statusDao">
+			<!-- statusDao2（アサイメントリストのみ取得） -->
+			<bean class="jp.co.ctc_g.eim.framework2.integration.dao.impl.StatusDaoImpl" parent="statusDao2">
+				<property name="itemListForMultiTargetMethod">
+					<list>
+						<value>ASSIGNMENT_LIST</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- ====================== -->
+	<!-- 検索Index更新バッチ    -->
+	<!-- ====================== -->
+
+	<!-- バッチコントローラ  -->
+	<bean id="multiThreadUpdateSearchIndexControlService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.MultiThreadBatchControlServiceImpl" scope="prototype">
+		<property name="batchOriginalFacadeService">
+			<ref bean="updateSearchIndexFacadeService"/>
+		</property>
+		<property name="fileCheckControlService">
+			<ref bean="fileCheckControlService"/>
+		</property>
+	</bean>
+
+	<!-- 検索Index更新メイン処理ファサード -->
+	<bean id="updateSearchIndexFacadeService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.UpdateSearchIndexFacadeServiceImpl" scope="prototype">
+		<property name="okFolderName"  value="${OK_BACKUP_FOLDER}"/>
+		<property name="ngFolderName"  value="${NG_BACKUP_FOLDER}"/>
+		<property name="targetInfo" value="${CHECK_FOLDER_INFO}"/>
+		<property name="fileCheckControlService">
+			<ref bean="fileCheckControlService"/>
+		</property>
+		<property name="indexOpeModule">
+			<ref bean="bizSearchIndexOperationModule"/>
+		</property>
+	</bean>
+
+	<!-- ファイル収集コントロールサービス -->
+	<bean id="fileCheckControlService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.FileCheckControlServiceImpl" scope="singleton">
+		<property name="targetInfo" value="${CHECK_FOLDER_INFO}"/>
+		<property name="stopFlagFilePath" value="${STOP_FLAG_FILE}"/>
+		<property name="loopCycle" value="${LOOP_CYCLE}"/>
+		<property name="fileCheckService">
+			<ref bean="fileCheckService"/>
+		</property>
+	</bean>
+
+	<!-- ファイル収集サービス -->
+	<bean id="fileCheckService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.FileCheckServiceImpl">
+		<property name="fileCheckDao">
+			<ref bean="fileCheckDao"/>
+		</property>
+	</bean>
+
+	<!-- ファイル収集DAO -->
+	<bean id="fileCheckDao" class="jp.co.ctc_g.eim.search.core.indexBase.integration.dao.impl.FileCheckDaoImpl">
+		<property name="targetFileExt" value="${TARGET_FILE_EXT}"/>
+	</bean>
+
+	<!-- ====================== -->
+	<!-- 更新通知APIサービス    -->
+	<!-- ====================== -->
+
+	<!-- 更新通知APIサービス（参照元取得バッチ用） -->
+	<bean id="updateNoticeServiceRef" class="jp.co.ctc_g.eim.search.core.updateNotice.business.service.impl.UpdateNoticeServiceImpl">
+		<property name="dataTypeList" value="${TARGET_DATA_TYPE_REF}"/>
+		<property name="updateNoticeConfig" value="${UPDATE_NOTICE_CONFIG}"/>
+		<property name="commitCnt" value="${COMMIT_CNT}"/>
+		<property name="targetLimit" value="${TARGET_LIMIT}"/>
+		<property name="updateNoticeDao">
+			<ref bean="updateNoticeDao"/>
+		</property>
+	</bean>
+
+	<!-- 更新通知APIサービス（データ収集バッチ用） -->
+	<bean id="updateNoticeServiceData" class="jp.co.ctc_g.eim.search.core.updateNotice.business.service.impl.UpdateNoticeServiceImpl">
+		<property name="dataTypeList" value="${TARGET_DATA_TYPE_DATA}"/>
+		<property name="updateNoticeConfig" value="${UPDATE_NOTICE_CONFIG}"/>
+		<property name="commitCnt" value="${COMMIT_CNT}"/>
+		<property name="targetLimit" value="${TARGET_LIMIT}"/>
+		<property name="updateNoticeDao">
+			<ref bean="updateNoticeDao"/>
+		</property>
+	</bean>
+
+	<!-- =============================== -->
+	<!-- Job実行制御                     -->
+	<!-- =============================== -->
+
+	<!-- データ収集・参照元取得Job用実行制御サービス -->
+	<bean id="gatheringJobControlService" class="jp.co.ctc_g.eim.search.core.indexBase.business.service.impl.GatheringJobControlServiceImpl">
+		<property name="jobControlService" ref="jobControlWithinTimeService" />
+	</bean>
+
+</beans>

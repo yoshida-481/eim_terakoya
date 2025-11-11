@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ========== -->
+	<!-- PlugIn実装 -->
+	<!-- ========== -->
+
+	<!-- 作成者プラグイン -->
+	<bean id="creatorUserDefinitionGroupPlugIn2" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.CreatorUserDefinitionGroupPlugInImpl">
+		<property name="objectService" ref="objectService2"/>
+	</bean>
+
+	<!-- 担当者プラグイン -->
+	<bean id="assignedPersonsUserDefinitionGroupPlugIn2" class="jp.co.ctc_g.eim.framework2.business.plugin.impl.AssignedPersonsUserDefinitionGroupPlugInImpl">
+		<property name="objectService" ref="objectService2"/>
+		<property name="assignmentService" ref="assignmentServiceLight2"/>
+	</bean>
+
+</beans>

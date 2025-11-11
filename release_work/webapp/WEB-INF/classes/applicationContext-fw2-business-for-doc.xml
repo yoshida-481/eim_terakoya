@@ -1,0 +1,109 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- objectServiceForSelectEntry -->
+	<bean id="objectServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="objectDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="fileAccessor2"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+
+	<!-- objectService2 with オブジェクトタイプ and 更新者 -->
+	<bean id="objectService2WithTypeAndMUser" parent="objectService2">
+		<property name="objectDao">
+			<ref bean="objectDao2WithTypeAndMUser"/>
+		</property>
+	</bean>
+
+	<!-- securityServiceForSelectEntry -->
+	<bean id="securityServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.SecurityServiceImpl" >
+		<property name="securityDao">
+			<ref bean="securityDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- securityServiceForStatusSecurityTree -->
+	<bean id="securityServiceForStatusSecurityTree" class="jp.co.ctc_g.eim.framework2.business.service.impl.SecurityServiceImpl" >
+		<property name="securityDao">
+			<ref bean="securityDaoForStatusSecurityTree"/>
+		</property>
+	</bean>
+
+	<!-- accessEntryServiceForSelectEntry -->
+	<bean id="accessEntryServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.AccessEntryServiceImpl" >
+		<property name="accessEntryDao">
+			<ref bean="accessEntryDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- complexServiceForSelectEntry -->
+	<bean id="complexServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.ComplexServiceImpl" >
+		<property name="complexDao">
+			<ref bean="complexDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- groupServiceForSelectEntry -->
+	<bean id="groupServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.GroupServiceImpl" >
+		<property name="groupDao">
+			<ref bean="groupDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- roleServiceForSelectEntry -->
+	<bean id="roleServiceForSelectEntry" class="jp.co.ctc_g.eim.framework2.business.service.impl.RoleServiceImpl" >
+		<property name="roleDao">
+			<ref bean="roleDaoForSelectEntry"/>
+		</property>
+	</bean>
+
+	<!-- ドキュメント属性入力フォーム用オブジェクトタイプサービス -->
+	<bean id="objectTypeServiceForDocFormType" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectTypeServiceImpl" >
+		<property name="objectTypeDao" ref="objectTypeDaoForDocFormType" />
+	</bean>
+
+	<!-- docfileAccessService -->
+	<bean id="docfileAccessService" class="jp.co.ctc_g.eim.framework2.business.service.impl.FileAccessServiceImpl" >
+		<property name="formatDao">	
+			<ref bean="formatDao2"/>
+		</property>
+		<property name="directoryDao">
+			<ref bean="directoryDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="objectDao">
+			<ref bean="objectDaoLight2"/>
+		</property>
+		<property name="fileAccessor">
+			<ref bean="docFileAccessor"/>
+		</property>
+	</bean>
+
+</beans>

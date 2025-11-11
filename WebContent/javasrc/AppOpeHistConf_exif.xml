@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 外部IFオプション付きでリリースする場合、AppOpeHistConf.xmlに下記設定を追加してください -->
+<!-- IDの競合を防ぐため、SVN管理下に配置します 2011.6.30 -->
+
+<opehistConf>
+	<!-- アプリケーション種別 -->
+	<application>
+		<ID_3 id="3" output="on">
+			<JA>外部コマンド</JA>
+			<EN>External Command</EN>
+		</ID_3>
+		
+	</application>
+	
+    <!-- 操作種別 -->
+    <operation>
+        <!-- 外部コマンド -->
+        <ID_2056 id="2056" output="on">
+        	<JA>ファイルダウンロード(パス指定) （外部コマンド）</JA>
+        	<EN>Get (External Command)</EN>
+        </ID_2056>
+        <ID_2057 id="2057" output="on">
+        	<JA>ファイルダウンロード(ID指定) （外部コマンド）</JA>
+        	<EN>Get By Id(External Command)</EN>
+        </ID_2057>
+        <ID_2058 id="2058" output="on">
+        	<JA>ファイルアップロード（外部コマンド）</JA>
+        	<EN>Put (External Command)</EN>
+        </ID_2058>
+        <ID_2059 id="2059" output="on">
+        	<JA>属性更新（外部コマンド）</JA>
+        	<EN>Update Attribute (External Command)</EN>
+        </ID_2059>
+        <ID_2060 id="2060" output="on">
+        	<JA>一覧表示（外部コマンド）</JA>
+        	<EN>List (External Command)</EN>
+        </ID_2060>
+        <ID_2062 id="2062" output="on">
+        	<JA>属性情報取得（外部コマンド）</JA>
+        	<EN>Get Attribute (External Command)</EN>
+        </ID_2062>
+        <ID_2065 id="2065" output="on">
+        	<JA>チェックアウト（実行ユーザ指定）（外部コマンド）</JA>
+        	<EN>Ckeck out By User(External Command)</EN>
+        </ID_2065>
+        <ID_2066 id="2066" output="on">
+        	<JA>チェックイン（実行ユーザ指定）（外部コマンド）</JA>
+        	<EN>Ckeck in By User(External Command)</EN>
+        </ID_2066>
+        <ID_2068 id="2068" output="on">
+        	<JA>フォルダ作成（外部コマンド）</JA>
+        	<EN>Create folder (External Command)</EN>
+        </ID_2068>
+        
+    </operation>
+    	
+    <!-- 操作対象情報 -->
+    <recordInfo>
+        <ID_46 id="46">
+            <JA>一覧表示対象</JA>
+            <EN>Traget to list</EN>
+        </ID_46>
+        <ID_47 id="47">
+            <JA>属性情報取得対象</JA>
+            <EN>Target to get object information</EN>
+        </ID_47>
+        <ID_48 id="48">
+            <JA>処理実行ユーザ</JA>
+            <EN>Proc User</EN>
+        </ID_48>
+    </recordInfo>
+</opehistConf>

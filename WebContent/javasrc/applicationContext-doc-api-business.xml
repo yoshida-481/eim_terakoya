@@ -1,0 +1,144 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ======================================================================================== -->
+	<!-- サービス -->
+	<!-- ======================================================================================== -->
+
+		<!-- Service実装 -->
+	<!-- ======================================================================================== -->
+	<!-- ワークスペースサービス -->
+	<bean id="workspaceService2" class="jp.co.ctc_g.eim.app.document.business.service.impl.WorkspaceServiceImpl" >
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="objectTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="userService" ref="userService2"/>
+		<property name="securityService" ref="securityService2"/>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>FOLDER_LIST</value>
+				<value>DOCUMENT_LIST</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- フォルダサービス -->
+	<bean id="folderService2" class="jp.co.ctc_g.eim.app.document.business.service.impl.FolderServiceImpl" >
+		<property name="objectDao" ref="objectDao2"/>
+		<property name="objectService" ref="objectService2"/>
+		<property name="objectTypeService" ref="objectTypeService2"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="workflowService" ref="workflowService2"/>
+		<property name="itemListForSingleTargetMethod">
+			<list>
+				<value>FOLDER_LIST</value>
+				<value>DOCUMENT_LIST</value>
+			</list>
+		</property>
+		<property name="objectTypeName" value="フォルダ" />
+		<property name="userService" ref="userService2"/>
+		<property name="includeGarbageBox">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<!-- ドキュメントサービス -->
+	<bean id="documentService2" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl" >
+		<property name="objectDao" ref="objectDao4"/>
+		<property name="objectService" ref="objectService4"/>
+		<property name="webdavObjectService" ref="webdavObjectService2"/>
+		<property name="objectTypeService" ref="objectTypeService2"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="workflowService" ref="workflowService2"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="fileDao" ref="fileDao2"/>
+		<property name="userService" ref="userService2"/>
+		<property name="includeGarbageBox">
+			<value>false</value>
+		</property>
+		<property name="createFileZEROSize">
+			<value>false</value>
+		</property>
+		<property name="includeFileSizeOfDocumentDomain">
+			<value>false</value>
+		</property>
+		<property name="fileUploadRule">
+			<!--  <value>FTP</value> -->
+			<value>IO</value>
+		</property>
+	</bean>
+
+	<!-- ドキュメントサービス (FTP用) -->
+	<bean id="documentServiceForFTP" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentServiceImpl" >
+		<property name="objectDao" ref="objectDao2"/>
+		<property name="objectService" ref="objectService2"/>
+		<property name="webdavObjectService" ref="webdavObjectService2"/>
+		<property name="objectTypeService" ref="objectTypeService2"/>
+		<property name="attributeTypeService" ref="attributeTypeService2"/>
+		<property name="relationTypeService" ref="relationTypeService2"/>
+		<property name="relationService" ref="relationService2"/>
+		<property name="workflowService" ref="workflowService2"/>
+		<property name="formatService" ref="formatService2"/>
+		<property name="fileDao" ref="fileDao2"/>
+		<property name="userService" ref="userService2"/>
+		<property name="includeGarbageBox">
+			<value>false</value>
+		</property>
+		<property name="createFileZEROSize">
+			<value>false</value>
+		</property>
+		<property name="includeFileSizeOfDocumentDomain">
+			<value>false</value>
+		</property>
+		<property name="fileUploadRule">
+			<value>FTP</value>
+			<!--  <value>IO</value> -->
+		</property>
+	</bean>
+
+	<!-- ドキュメントセキュリティーサービス -->
+	<bean id="documentSecurityService2" class="jp.co.ctc_g.eim.app.document.business.service.impl.DocumentSecurityServiceImpl" >
+		<property name="securityDao" ref="securityDao2"/>
+		<property name="workflowService" ref="workflowService2"/>
+	</bean>
+	
+	<!-- webdavObjectService2 -->
+	<bean id="webdavObjectService2" class="jp.co.ctc_g.eim.framework2.business.service.impl.ObjectServiceImpl" >
+		<property name="objectDao">
+			<ref bean="webdavObjectDao2"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDao2"/>
+		</property>
+		<property name="fileAccessor">
+			<!--
+			<ref bean="fileAccessor2"/>
+			-->
+			<ref bean="docFileAccessor"/>
+		</property>
+		<property name="relationDao">
+			<ref bean="relationDao2"/>
+		</property>
+		<property name="userDao">
+			<ref bean="userDaoLight2"/>
+		</property>
+		<property name="accessRoleTypeDao">
+			<ref bean="accessRoleTypeDao2"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDao2"/>
+		</property>
+		<property name="namingService">
+			<ref bean="namingService2"/>
+		</property>
+	</bean>
+	
+</beans>

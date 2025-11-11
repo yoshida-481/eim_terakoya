@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adminAuth>
+
+	<!-- システム管理種別毎で表示するチェックボックスの定義 -->
+	<authList>
+		<application id="general">
+			<auth id="general" value="0x1" >
+				<nameList>
+					<name lang="JA" langname="汎用システム管理" />
+					<name lang="EN" langname="General System Administration" />
+				</nameList>
+			</auth>
+			<auth id="objedit" value="0x400">
+				<nameList>
+					<name lang="JA" langname="オブジェクト管理" />
+					<name lang="EN" langname="Object Edit" />
+				</nameList>
+			</auth>
+		</application>
+
+		<application id="document">
+			<auth id="documenttype" value="0x2" >
+				<nameList>
+					<name lang="JA" langname="タイプ管理" />
+					<name lang="EN" langname="Type Administration" />
+				</nameList>
+			</auth>
+			<auth id="attribute" value="0x4" >
+				<nameList>
+					<name lang="JA" langname="属性管理" />
+					<name lang="EN" langname="Attribute Administration" />
+				</nameList>
+			</auth>
+			<auth id="workflow" value="0x8" >
+				<nameList>
+					<name lang="JA" langname="ワークフロー管理" />
+					<name lang="EN" langname="Workflow Administration" />
+				</nameList>
+			</auth>
+			<auth id="format" value="0x10" >
+				<nameList>
+					<name lang="JA" langname="フォーマット管理" />
+					<name lang="EN" langname="Format Administration" />
+				</nameList>
+			</auth>
+			<auth id="user" value="0x20" >
+				<nameList>
+					<name lang="JA" langname="ユーザ管理" />
+					<name lang="EN" langname="User Administration" />
+				</nameList>
+			</auth>
+			<auth id="security" value="0x40" >
+				<nameList>
+					<name lang="JA" langname="セキュリティ管理" />
+					<name lang="EN" langname="Security Administration" />
+				</nameList>
+			</auth>
+			<auth id="opehist" value="0x80" >
+				<nameList>
+					<name lang="JA" langname="操作履歴管理" />
+					<name lang="EN" langname="Operation History Administration" />
+				</nameList>
+			</auth>
+			<auth id="securityEntry" value="0x800" >
+				<nameList>
+					<name lang="JA" langname="セキュリティエントリ管理" />
+					<name lang="EN" langname="Security Entry Administration" />
+				</nameList>
+			</auth>
+			<auth id="attributeTree" value="0x200" >
+				<nameList>
+					<name lang="JA" langname="属性ツリービュー管理" />
+					<name lang="EN" langname="Attribute Tree View Administration" />
+				</nameList>
+			</auth>
+			<auth id="workspace" value="0x1000" >
+				<nameList>
+					<name lang="JA" langname="ワークスペース管理" />
+					<name lang="EN" langname="Creation Workspace Administration" />
+				</nameList>
+			</auth>
+		</application>
+
+		<application id="form">
+			<auth id="documenttype" value="0x2" >
+				<nameList>
+					<name lang="JA" langname="タイプ管理" />
+					<name lang="EN" langname="Type Administration" />
+				</nameList>
+			</auth>
+			<auth id="attribute" value="0x4" >
+				<nameList>
+					<name lang="JA" langname="属性管理" />
+					<name lang="EN" langname="Attribute Administration" />
+				</nameList>
+			</auth>
+			<auth id="workflow" value="0x8" >
+				<nameList>
+					<name lang="JA" langname="ワークフロー管理" />
+					<name lang="EN" langname="Workflow Administration" />
+				</nameList>
+			</auth>
+			<auth id="format" value="0x10" >
+				<nameList>
+					<name lang="JA" langname="フォーマット管理" />
+					<name lang="EN" langname="Format Administration" />
+				</nameList>
+			</auth>
+			<auth id="user" value="0x20" >
+				<nameList>
+					<name lang="JA" langname="ユーザ管理" />
+					<name lang="EN" langname="User Administration" />
+				</nameList>
+			</auth>
+			<auth id="security" value="0x40" >
+				<nameList>
+					<name lang="JA" langname="セキュリティ管理" />
+					<name lang="EN" langname="Security Administration" />
+				</nameList>
+			</auth>
+			<auth id="opehist" value="0x80" >
+				<nameList>
+					<name lang="JA" langname="操作履歴管理" />
+					<name lang="EN" langname="Operation History Administration" />
+				</nameList>
+			</auth>
+			<auth id="formworkspace" value="0x2000" >
+				<nameList>
+					<name lang="JA" langname="帳票ワークスペース管理" />
+					<name lang="EN" langname="Creation Workspace Administration" />
+				</nameList>
+			</auth>
+		</application>
+
+		<application id="task">
+			<auth id="task" value="0x100" >
+				<nameList>
+					<name lang="JA" langname="タスク用システム管理" />
+					<name lang="EN" langname="Task System Administration" />
+				</nameList>
+			</auth>
+			<auth id="bizMaster" value="0x20000" >
+				<nameList>
+					<name lang="JA" langname="タスクマスタ管理" />
+					<name lang="EN" langname="Buisiness Master Administration" />
+				</nameList>
+			</auth>
+			<auth id="project" value="0x40000" >
+				<nameList>
+					<name lang="JA" langname="プロジェクト管理" />
+					<name lang="EN" langname="Project Administration" />
+				</nameList>
+			</auth>
+		</application>
+	</authList>
+
+	<!-- システム管理者タイプ⇔チェックされる管理者権限の対応表 -->
+	<adminTypeList>
+
+		<!-- システム管理者（汎用） -->
+		<!--<application id="general">
+			<adminType>
+				<nameList>
+					<name lang="JA" langname="汎用システム管理者に設定する" />
+					<name lang="EN" langname="Authorize as General System Administrator" />
+				</nameList>
+				<authorityList>
+					<authority id="general" enable="true" />
+					<authority id="objedit" enable="true" />
+				</authorityList>
+			</adminType>
+		</application>-->
+
+		<!-- システム管理者（ドキュメント） -->
+		<application id="document">
+			<adminType>
+				<nameList>
+					<name lang="JA" langname="ドキュメントタイプ管理者に設定する" />
+					<name lang="EN" langname="Authorize as Document Administrator" />
+				</nameList>
+				<authorityList>
+					<authority id="documenttype" enable="true" />
+					<authority id="attribute" enable="true" />
+					<authority id="workflow" enable="true" />
+					<authority id="format" enable="false" />
+					<authority id="user" enable="false" />
+					<authority id="security" enable="false" />
+					<authority id="opehist" enable="false" />
+					<authority id="securityEntry" enable="false" />
+					<authority id="attributeTree" enable="false" />
+					<authority id="workspace" enable="false" />
+				</authorityList>
+			</adminType>
+			<adminType>
+				<nameList>
+					<name lang="JA" langname="セキュリティ管理者に設定する" />
+					<name lang="EN" langname="Authorize as Security Administrator" />
+				</nameList>
+				<authorityList>
+					<authority id="documenttype" enable="true" />
+					<authority id="attribute" enable="true" />
+					<authority id="workflow" enable="true" />
+					<authority id="format" enable="false" />
+					<authority id="user" enable="true" />
+					<authority id="security" enable="true" />
+					<authority id="opehist" enable="true" />
+					<authority id="securityEntry" enable="true" />
+					<authority id="attributeTree" enable="false" />
+					<authority id="workspace" enable="false" />
+				</authorityList>
+			</adminType>
+			<adminType>
+				<nameList>
+					<name lang="JA" langname="システム管理者に設定する" />
+					<name lang="EN" langname="Authorize as System Administrator" />
+				</nameList>
+				<authorityList>
+					<authority id="documenttype" enable="true" />
+					<authority id="attribute" enable="true" />
+					<authority id="workflow" enable="true" />
+					<authority id="format" enable="true" />
+					<authority id="user" enable="true" />
+					<authority id="security" enable="true" />
+					<authority id="opehist" enable="true" />
+					<authority id="securityEntry" enable="true" />
+					<authority id="attributeTree" enable="true" />
+					<authority id="workspace" enable="true" />
+				</authorityList>
+			</adminType>
+		</application>
+
+		<!-- システム管理者（帳票） -->
+		<application id="form">
+			<adminType>
+				<nameList>
+					<name lang="JA" langname="システム管理者に設定する" />
+					<name lang="EN" langname="Authorize as System Administrator" />
+				</nameList>
+				<authorityList>
+					<authority id="documenttype" enable="true" />
+					<authority id="attribute" enable="true" />
+					<authority id="workflow" enable="true" />
+					<authority id="format" enable="true" />
+					<authority id="user" enable="true" />
+					<authority id="security" enable="true" />
+					<authority id="opehist" enable="true" />
+					<authority id="formworkspace" enable="true" />
+				</authorityList>
+			</adminType>
+		</application>
+	</adminTypeList>
+</adminAuth>

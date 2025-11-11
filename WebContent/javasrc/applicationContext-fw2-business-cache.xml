@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ============== -->
+	<!-- Cache Services -->
+	<!-- ============== -->
+	
+	<bean id="objectCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.ObjectCacheServiceImpl">
+		<property name="objectDao">
+			<ref bean="objectDaoForCacheService"/>
+		</property>
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoLightForCacheService"/>
+		</property>
+		<property name="formatDao">
+			<ref bean="formatDaoLightForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="objectCacheDao"/>
+		</property>
+		<property name="fileCacheDao">
+			<ref bean="fileCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+		<property name="fileCacheService">
+			<ref bean="fileCacheService"/>
+		</property>
+		<property name="fileDao">
+			<ref bean="fileDaoForCacheService"/>
+		</property>
+		
+	</bean>
+	<bean id="formatCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.FormatCacheServiceImpl">
+		<property name="formatDao">
+			<ref bean="formatDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="formatCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+	<bean id="groupCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.GroupCacheServiceImpl">
+		<property name="groupDao">
+			<ref bean="groupDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="groupCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+		<bean id="attributeTypeCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.AttributeTypeCacheServiceImpl">
+		<property name="attributeTypeDao">
+			<ref bean="attributeTypeDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="attributeTypeCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+	<bean id="userCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.UserCacheServiceImpl">
+		<property name="userDao">
+			<ref bean="userDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="userCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+	<bean id="fileCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.FileCacheServiceImpl">
+		<property name="fileDao">
+			<ref bean="fileDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="fileCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+	<bean id="directoryCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.DirectoryCacheServiceImpl">
+		<property name="directoryDao">
+			<ref bean="directoryDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="directoryCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+	<bean id="objectTypeCacheService" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.ObjectTypeCacheServiceImpl">
+		<property name="objectTypeDao">
+			<ref bean="objectTypeDaoForCacheService"/>
+		</property>
+		<property name="cacheDao">
+			<ref bean="objectTypeCacheDao"/>
+		</property>
+		<property name="cacheExclusionDao">
+			<ref bean="cacheExclusionDao2"/>
+		</property>
+	</bean>
+
+	<!-- cacheMonitorService2 -->
+	<bean id="cacheMonitorService2" class="jp.co.ctc_g.eim.framework2.business.service.cache.impl.CacheMonitorServiceImpl" >
+		<property name="cacheMonitorDao">
+			<ref bean="cacheMonitorDao2"/>
+		</property>
+	</bean>
+</beans>
